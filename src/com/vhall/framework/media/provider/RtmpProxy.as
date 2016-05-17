@@ -25,6 +25,7 @@ package com.vhall.framework.media.provider
 		import org.mangui.hls.utils.Log;
 	}
 
+	/** Rtmp直播代理*/
 	public class RtmpProxy extends AbstractProxy
 	{
 		protected var _conn:NetConnection;
@@ -38,6 +39,7 @@ package com.vhall.framework.media.provider
 			createNet();
 		}
 		
+		/** 创建NetConnection链接*/
 		protected function createNet():void
 		{
 			_conn ||= new NetConnection();
@@ -61,17 +63,22 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		/** 通道连接建立成功，创建流对象*/
 		override protected function createStream():void
 		{
 			_ns = new NetStream(_conn);
 			_ns.client = client;
 
+			//取消硬件解码
 			_ns.useHardwareDecoder = false;
 			
 			var h264:H264VideoStreamSettings = new H264VideoStreamSettings();
-			h264.setProfileLevel(H264Profile.MAIN,H264Level.LEVEL_3_1);//设置视频编码的配置文件和级别
-			h264.setMode(-1,-1,-1);//设置视频的分辨率和fps，和推流端获取一致
-			h264.setKeyFrameInterval(-1);//视频I帧个camera一致
+			//设置视频编码的配置文件和级别
+			h264.setProfileLevel(H264Profile.MAIN,H264Level.LEVEL_3_1);
+			//设置视频的分辨率和fps，和推流端获取一致
+			h264.setMode(-1,-1,-1);
+			//视频I帧个camera一致
+			h264.setKeyFrameInterval(-1);
 			
 			_ns.videoStreamSettings = h264;
 			
@@ -87,6 +94,7 @@ package com.vhall.framework.media.provider
 			_autoPlay&&start();
 		}
 		
+		/** 播放connect中传入的流名称*/
 		override public function start():void
 		{
 			_ns&&_ns.play(_streamUrl);
@@ -160,6 +168,7 @@ package com.vhall.framework.media.provider
 		protected function onPlayStatus(...value):void{}
 		protected function onSeekPoint(...value):void{}
 		protected function onTextData(...value):void{}
+		
 		
 		override protected function gc():void
 		{

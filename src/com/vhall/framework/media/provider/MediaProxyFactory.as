@@ -13,6 +13,11 @@ package com.vhall.framework.media.provider
 
 	public class MediaProxyFactory
 	{
+		/**
+		 * 视频代理工厂
+		 * @param proxyType 代理类型MediaProxyType
+		 * @return 
+		 */		
 		public static function create(proxyType:String):IMediaProxy
 		{
 			var proxy:IMediaProxy;

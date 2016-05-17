@@ -15,6 +15,9 @@ package com.vhall.framework.media.provider
 		import org.mangui.hls.utils.Log;
 	}
 	
+	/**
+	 * http协议或者本地视频代理
+	 */		
 	public class HttpProxy extends RtmpProxy implements IProgress
 	{
 		public function HttpProxy()

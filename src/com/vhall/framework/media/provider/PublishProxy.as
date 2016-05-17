@@ -20,8 +20,10 @@ package com.vhall.framework.media.provider
 	import flash.media.scanHardware;
 	import flash.system.Security;
 	import flash.system.SecurityPanel;
-	import flash.utils.setInterval;
 	
+	/**
+	 * 推流代理
+	 */	
 	public class PublishProxy extends RtmpProxy implements IPublish
 	{
 		private var _cam:Camera;
@@ -100,12 +102,17 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		/**
+		 * 获取可以使用的Camera
+		 * @param name Camera名称，null或者空为获取默认Camera
+		 * @return 
+		 */		
 		private function getCameraByName(name:String):Camera
 		{
 			if(Camera.isSupported)
 			{
-				var cam:Camera = Camera.getCamera(Camera.names.indexOf(name).toString());
-				
+				var cam:Camera = Camera.getCamera(name==""||name==null?null:Camera.names.indexOf(name).toString());
+
 				cam.setMode(854,480,15);
 				cam.setQuality(0,75);
 				cam.setKeyFrameInterval(15);
@@ -115,12 +122,17 @@ package com.vhall.framework.media.provider
 			return null;
 		}
 		
+		/**
+		 * 获取可以使用的麦克
+		 * @param name 麦克名称，null或者空为获取默认麦克
+		 * @return 
+		 */		
 		private function getMicrophoneByName(name:String):Microphone
 		{
 			if(Microphone.isSupported)
 			{
-				var mic:Microphone = Microphone.getMicrophone(Microphone.names.indexOf(name));
-				
+				var mic:Microphone = Microphone.getMicrophone(name==""||name==null?-1:Microphone.names.indexOf(name));
+
 				mic.codec = SoundCodec.SPEEX;
 				mic.setSilenceLevel(0);
 				mic.encodeQuality = 8;
@@ -147,6 +159,10 @@ package com.vhall.framework.media.provider
 			return _mic;
 		}
 		
+		/**
+		 * 设置麦克的音量
+		 * @param value
+		 */		
 		override public function set volume(value:Number):void
 		{
 			super.volume = value;

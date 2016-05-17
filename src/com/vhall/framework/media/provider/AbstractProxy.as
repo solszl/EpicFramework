@@ -17,6 +17,9 @@ package com.vhall.framework.media.provider
 		import org.mangui.hls.utils.Log;
 	}
 	
+	/**
+	 * 视频播放推拉流抽象类
+	 */
 	public class AbstractProxy implements IMediaProxy
 	{
 		protected var _type:String;
@@ -42,6 +45,9 @@ package com.vhall.framework.media.provider
 			_type = type;
 		}
 		
+		/**
+		 * 创建流方法，需子类重写
+		 */		
 		protected function createStream():void
 		{
 			
@@ -69,6 +75,7 @@ package com.vhall.framework.media.provider
 			_streamUrl = streamUrl;
 			_handler = handler;
 			
+			//简单验证协议和代理是否匹配
 			if(_type == MediaProxyType.HLS)
 			{
 				const p:String = uri.replace(/\?.+/ig,"");
@@ -92,15 +99,26 @@ package com.vhall.framework.media.provider
 		
 		}
 		
+		/**
+		 * 回收资源
+		 */		
 		protected function gc():void
 		{
 			
 		}
 		
+		/**
+		 * 处理回调
+		 * @param type 状态码MediaProxyType
+		 * @param data 可选参数0到多个
+		 */		
 		protected function excute(type:String, ...data):void
 		{
-			var args:Array = data.length != 0 ? [type].concat(data):[type];
-			_handler&&_handler.apply(null,args);
+			if(_handler!=null&&_handler is Function)
+			{
+				var args:Array = data.length != 0 ? [type].concat(data):[type];
+				_handler&&_handler.apply(null,args);
+			}
 		}
 		
 		public function get volume():Number
@@ -135,7 +153,7 @@ package com.vhall.framework.media.provider
 		
 		public function set time(value:Number):void
 		{
-			
+			_time = value;
 		}
 		
 		public function get stream():NetStream

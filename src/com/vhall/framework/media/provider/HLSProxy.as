@@ -19,6 +19,7 @@ package com.vhall.framework.media.provider
 	import org.mangui.hls.event.HLSPlayMetrics;
 	import org.mangui.hls.utils.Log;
 
+	/** HLS视频播放代理*/
 	public class HLSProxy extends AbstractProxy
 	{
 		private var _hls:HLS;
@@ -156,6 +157,9 @@ package com.vhall.framework.media.provider
 			_durationReady = false;
 		}
 		
+		/**
+		 * 视频时长初始化
+		 */		
 		private function setDuration(value:Number):void
 		{
 			if(!_durationReady)
@@ -177,6 +181,9 @@ package com.vhall.framework.media.provider
 			if(stream) stream.seek(value);
 		}
 			
+		/**
+		 * 视频加载相关信息初始化
+		 */		
 		private function set loadMetrics(value:HLSLoadMetrics):void
 		{
 			if(value&&!_loadMetrics)
@@ -185,6 +192,9 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		/**
+		 * 视频播放相关信息初始化
+		 */		
 		private function set playMetrics(value:HLSPlayMetrics):void
 		{
 			if(value&&!_playMetrics)

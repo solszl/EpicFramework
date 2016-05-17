@@ -25,6 +25,9 @@ package com.vhall.framework.media.video
 		import org.mangui.hls.utils.Log;
 	}	
 	
+	/**
+	 * 封装视频播放video
+	 */	
 	public class VideoPlayer extends Sprite
 	{
 		private var _video:Video;
@@ -38,11 +41,16 @@ package com.vhall.framework.media.video
 		
 		private var _cameraView:Boolean = false;
 		
+		/**
+		 * 推流时候使用的摄像头和麦克 
+		 */		
 		private var _cam:*;
 		private var _mic:*;
 		
 		public function VideoPlayer()
 		{
+			this.mouseChildren = false;
+			
 			_video = new Video();
 			_videoToW = _video.width;
 			_videoToH = _video.height;
@@ -50,11 +58,23 @@ package com.vhall.framework.media.video
 			addChild(_video);
 		}
 		
+		/**
+		 * 创建一个视频播放器
+		 * @return 
+		 */		
 		public static function create():VideoPlayer
 		{
 			return new VideoPlayer();
 		}
 		
+		/**
+		 * 链接通道，播放流
+		 * @param type 播放器播放类型
+		 * @param uri 播放服务器地址
+		 * @param stream 播放流名称
+		 * @param handler 回调处理函数
+		 * @param autoPlay 是否自动播放，直播时候忽略
+		 */		
 		public function connect(type:String,uri:String,stream:String = null,handler:Function = null,autoPlay:Boolean = true):void
 		{
 			_proxy = MediaProxyFactory.create(type);
@@ -92,6 +112,14 @@ package com.vhall.framework.media.video
 			},autoPlay);
 		}
 		
+		/**
+		 * 播放器推流
+		 * @param cam 推流画面来源，Camera实例或者Camera名称，null或者空为去默认摄像头
+		 * @param mic 推流音频来源，Microphone实例或者Microphone名称，null或者空为去默认麦克
+		 * @param uri 推流服务器地址
+		 * @param stream 推流流名称
+		 * @param handler 处理回调函数
+		 */		
 		public function publish(cam:*, mic:*, uri:String, stream:String,handler:Function = null):void
 		{
 			_cam = cam;
@@ -100,6 +128,9 @@ package com.vhall.framework.media.video
 			connect(MediaProxyType.PUBLISH, uri, stream, handler)
 		}
 		
+		/**
+		 * 更新video尺寸，位置
+		 */		
 		private function updateVideo():void
 		{
 			if(_cameraView)
@@ -118,6 +149,10 @@ package com.vhall.framework.media.video
 			_video.y = _videoToH - _video.height >> 1;
 		}
 		
+		/**
+		 * 播放器获得视频来源
+		 * @param source Camera或者netStream
+		 */		
 		public function attachView(source:*):void
 		{
 			if(source is Camera)
@@ -131,6 +166,10 @@ package com.vhall.framework.media.video
 			}
 		}
 		
+		/**
+		 * 设置播放器显示矩形
+		 * @param port
+		 */		
 		public function set viewPort(port:Rectangle):void
 		{
 			_videoToW = port.width;
