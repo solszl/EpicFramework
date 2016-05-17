@@ -1,9 +1,9 @@
 package com.vhall.framework.ui.controls
 {
+	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.utils.StringUtil;
 	
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
 	import flash.system.Capabilities;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -21,8 +21,6 @@ package com.vhall.framework.ui.controls
 		private var _formmat:TextFormat;
 		/**	文本内容*/
 		private var _text:String;
-		/**	文本变化变量*/
-		private var _textChanged:Boolean = false;
 		/**	文本格式发生变化的变量*/
 		private var _textformmatChanged:Boolean = false;
 		public function Label(parent:DisplayObjectContainer=null, xpos:Number=0, ypos:Number=0)
@@ -37,6 +35,7 @@ package com.vhall.framework.ui.controls
 			_tf = new TextField();
 			_tf.defaultTextFormat = new TextFormat("SimSun",14);
 			_tf.selectable = false;
+			_tf.autoSize = "left";
 			_formmat = _tf.defaultTextFormat;
 			addChild(_tf);
 		}
@@ -55,9 +54,8 @@ package com.vhall.framework.ui.controls
 			{
 				_text = "";
 			}
-			
-			_textChanged = true;
-			invalidate();
+			this._tf.text = text;
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**
@@ -90,7 +88,7 @@ package com.vhall.framework.ui.controls
 			
 			this._formmat.color = value;
 			_textformmatChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**	获取文本颜色*/
@@ -116,7 +114,7 @@ package com.vhall.framework.ui.controls
 				_formmat.font = value;
 			}
 			_textformmatChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**
@@ -140,7 +138,7 @@ package com.vhall.framework.ui.controls
 			this._formmat.size = value;
 			
 			_textformmatChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**
@@ -161,7 +159,7 @@ package com.vhall.framework.ui.controls
 			
 			this._formmat.align = value;
 			_textformmatChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**
@@ -184,7 +182,7 @@ package com.vhall.framework.ui.controls
 			
 			this._formmat.bold = value;
 			_textformmatChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**
@@ -207,7 +205,7 @@ package com.vhall.framework.ui.controls
 			
 			this._formmat.underline = value;
 			_textformmatChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**
@@ -230,7 +228,7 @@ package com.vhall.framework.ui.controls
 			
 			this._tf.multiline = value;
 			_textformmatChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**
@@ -253,7 +251,7 @@ package com.vhall.framework.ui.controls
 			
 			this._tf.wordWrap = value;
 			_textformmatChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**
@@ -276,7 +274,7 @@ package com.vhall.framework.ui.controls
 			
 			this._tf.selectable = value;
 			_textformmatChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		/**
@@ -292,11 +290,6 @@ package com.vhall.framework.ui.controls
 		override protected function invalidate():void
 		{
 			super.invalidate();
-			if(_textChanged)
-			{
-				this._tf.text = text;
-				_textChanged = false;
-			}
 			
 			if(_textformmatChanged)
 			{

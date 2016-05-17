@@ -1,5 +1,6 @@
 package com.vhall.framework.ui.controls
 {
+	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.load.ResourceItems;
 	import com.vhall.framework.load.ResourceLibrary;
 	import com.vhall.framework.load.ResourceLoader;
@@ -62,7 +63,7 @@ package com.vhall.framework.ui.controls
 			this._rect = value;
 			this._useScale9Rect = value != null;
 			
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
 		public function get rect():Rectangle
@@ -75,7 +76,7 @@ package com.vhall.framework.ui.controls
 			super.width = value;
 			_w = value;
 			_sizeChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override public function set height(value:Number):void
@@ -83,7 +84,7 @@ package com.vhall.framework.ui.controls
 			super.height = value;
 			_h = value;
 			_sizeChanged = true;
-			invalidate();
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override public function setSize(w:Number, h:Number):void
@@ -192,7 +193,7 @@ package com.vhall.framework.ui.controls
 
 		private function complete(item:Object, content:Object, domain:ApplicationDomain):void
 		{
-			if (source == item.url)
+			if (source != item.url)
 			{
 				return;
 			}
@@ -232,7 +233,7 @@ package com.vhall.framework.ui.controls
 			if(_w != bitmap.bitmapData.width || _h != bitmap.bitmapData.height)
 			{
 				_sizeChanged = true;
-				invalidate();
+				RenderManager.getInstance().invalidate(invalidate);
 			}
 		}
 

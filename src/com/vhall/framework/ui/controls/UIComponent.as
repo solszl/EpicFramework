@@ -1,5 +1,6 @@
 package com.vhall.framework.ui.controls
 {
+	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.utils.StringUtil;
 	
 	import flash.display.DisplayObjectContainer;
@@ -77,6 +78,7 @@ package com.vhall.framework.ui.controls
 		/**显示边框*/
 		public function showBorder(color:uint = 0xff0000):void
 		{
+			RenderManager.getInstance().validateNow();
 			with (this)
 			{
 				graphics.lineStyle(1, color);
