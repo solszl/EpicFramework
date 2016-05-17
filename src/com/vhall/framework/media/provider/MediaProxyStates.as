@@ -23,6 +23,10 @@ package com.vhall.framework.media.provider
 		
 		public static const UN_PUBLISH_NOTIFY:String = "unPublishNotify";
 		
+		public static const PUBLISH_BAD_NAME:String = "publishBadName";
+		
+		public static const UN_PUBLISH_SUCCESS:String = "unPublishSuccess";
+		
 		public static const DURATION_NOTIFY:String = "durationUpdate";
 		
 		public static const STREAM_SIZE_NOTIFY:String = "streamSizeNotify";

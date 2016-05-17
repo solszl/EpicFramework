@@ -10,11 +10,14 @@
 package com.vhall.framework.media.interfaces
 {
 	import flash.media.Camera;
+	import flash.media.Microphone;
 
 	public interface IPublish
 	{
 		function publish(cam:*,mic:*):void;
 		
 		function get usedCam():Camera;
+		
+		function get usedMic():Microphone;
 	}
 }

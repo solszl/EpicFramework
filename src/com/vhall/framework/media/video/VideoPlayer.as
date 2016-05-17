@@ -13,11 +13,17 @@ package com.vhall.framework.media.video
 	import com.vhall.framework.media.interfaces.IPublish;
 	import com.vhall.framework.media.provider.MediaProxyFactory;
 	import com.vhall.framework.media.provider.MediaProxyStates;
+	import com.vhall.framework.media.provider.MediaProxyType;
 	
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.media.Camera;
 	import flash.media.Video;
+	
+	CONFIG::LOGGING
+	{
+		import org.mangui.hls.utils.Log;
+	}	
 	
 	public class VideoPlayer extends Sprite
 	{
@@ -31,6 +37,9 @@ package com.vhall.framework.media.video
 		private var _videoToH:Number;
 		
 		private var _cameraView:Boolean = false;
+		
+		private var _cam:*;
+		private var _mic:*;
 		
 		public function VideoPlayer()
 		{
@@ -49,12 +58,18 @@ package com.vhall.framework.media.video
 		public function connect(type:String,uri:String,stream:String = null,handler:Function = null,autoPlay:Boolean = true):void
 		{
 			_proxy = MediaProxyFactory.create(type);
+			
 			_proxy.connect(uri,stream,function(states:String,...value):void
 			{
 				switch(states)
 				{
 					case MediaProxyStates.CONNECT_NOTIFY:
-						attachView(_proxy.stream);
+						if(_proxy.type == MediaProxyType.PUBLISH){
+							var iPub:IPublish = _proxy as IPublish;
+							iPub.publish(_cam,_mic);
+						}else{
+							attachView(_proxy.stream);
+						}
 						break;
 					case MediaProxyStates.STREAM_SIZE_NOTIFY:
 						updateVideo();
@@ -63,7 +78,26 @@ package com.vhall.framework.media.video
 						_video.attachCamera((_proxy as IPublish).usedCam);
 						break;
 				}
+				
+				if(handler != null){
+					var args:Array = value.length != 0 ? [states].concat(value):[states];
+					try{
+						handler&&handler.apply(null,args);
+					}catch(e:Error){
+						CONFIG::LOGGING{
+							Log.warn("处理播放器外部回调" + states + "业务出错：" + e.message);
+						}
+					}
+				}
 			},autoPlay);
+		}
+		
+		public function publish(cam:*, mic:*, uri:String, stream:String,handler:Function = null):void
+		{
+			_cam = cam;
+			_mic = mic;
+			_cameraView = true;
+			connect(MediaProxyType.PUBLISH, uri, stream, handler)
 		}
 		
 		private function updateVideo():void

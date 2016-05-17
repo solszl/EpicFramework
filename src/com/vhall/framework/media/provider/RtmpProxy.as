@@ -14,6 +14,9 @@ package com.vhall.framework.media.provider
 	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.media.H264Level;
+	import flash.media.H264Profile;
+	import flash.media.H264VideoStreamSettings;
 	import flash.media.SoundTransform;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
@@ -62,7 +65,15 @@ package com.vhall.framework.media.provider
 		{
 			_ns = new NetStream(_conn);
 			_ns.client = client;
+
 			_ns.useHardwareDecoder = false;
+			
+			var h264:H264VideoStreamSettings = new H264VideoStreamSettings();
+			h264.setProfileLevel(H264Profile.MAIN,H264Level.LEVEL_3_1);//设置视频编码的配置文件和级别
+			h264.setMode(-1,-1,-1);//设置视频的分辨率和fps，和推流端获取一致
+			h264.setKeyFrameInterval(-1);//视频I帧个camera一致
+			
+			_ns.videoStreamSettings = h264;
 			
 			_ns.addEventListener(NetStatusEvent.NET_STATUS,statusHandler);
 			_ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
@@ -83,9 +94,9 @@ package com.vhall.framework.media.provider
 		
 		protected function statusHandler(e:NetStatusEvent):void
 		{
-			CONFIG::LOGGING{
-				Log.info(e.info.code);
-			}
+			/*CONFIG::LOGGING{
+				Log.info("未处理业务",e.info.code);
+			}*/
 			switch(e.info.code)
 			{
 				case InfoCode.NetConnection_Connect_Success:
@@ -122,6 +133,8 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetStream_Video_DimensionChange:
 					//视频源尺寸改变
 					excute(MediaProxyStates.STREAM_SIZE_NOTIFY);
+					break;
+				default:
 					break;
 			}
 		}
