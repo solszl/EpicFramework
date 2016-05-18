@@ -51,6 +51,12 @@ package com.vhall.framework.ui.controls
 			
 		}
 		
+		override public function set alpha(value:Number):void
+		{
+			super.alpha = value;
+			value == 0 ? visible = false : true;
+		}
+		
 		/**
 		 * 移动 
 		 * @param xpos 横坐标

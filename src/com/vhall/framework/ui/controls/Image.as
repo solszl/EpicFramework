@@ -4,6 +4,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.load.ResourceItems;
 	import com.vhall.framework.load.ResourceLibrary;
 	import com.vhall.framework.load.ResourceLoader;
+	import com.vhall.framework.ui.utils.ComponentUtils;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -128,6 +129,11 @@ package com.vhall.framework.ui.controls
 				//直接将该数据复制
 				fillByBitmapdata(value as BitmapData);
 			}
+			else if(value is DisplayObject)
+			{
+				fillByBitmapdata(ComponentUtils.getDisplayBmd(value as DisplayObject));
+				
+			}
 			else
 			{
 				// WTF?
@@ -210,7 +216,6 @@ package com.vhall.framework.ui.controls
 			graphics.beginFill(0x00DEFF, 0.3);
 			graphics.drawRect(0, 0, 5, 5);
 			graphics.endFill();
-
 			trace(msg);
 		}
 		
