@@ -1,5 +1,6 @@
 package com.vhall.framework.ui.controls
 {
+	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.utils.StringUtil;
 	
 	import flash.display.DisplayObjectContainer;
@@ -13,6 +14,13 @@ package com.vhall.framework.ui.controls
 	 */	
 	public class UIComponent extends Sprite
 	{
+		/**
+		 *	构建基类 
+		 * @param parent 是否有父容器，当存在父容器的时候，该组件自动添加到父容器
+		 * @param xpos	默认横坐标位置
+		 * @param ypos	默认纵坐标位置
+		 * 
+		 */		
 		public function UIComponent(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
 			super();
@@ -70,6 +78,7 @@ package com.vhall.framework.ui.controls
 		/**显示边框*/
 		public function showBorder(color:uint = 0xff0000):void
 		{
+			RenderManager.getInstance().validateNow();
 			with (this)
 			{
 				graphics.lineStyle(1, color);
