@@ -31,5 +31,17 @@ package com.vhall.framework.media.interfaces
 		 * @return 
 		 */		
 		function get usedMic():Microphone;
+		
+		/**
+		 * 关闭摄像头采集
+		 * @param bool
+		 */		
+		function set cameraMuted(bool:Boolean):void;
+		
+		/**
+		 * 关闭麦克风采集
+		 * @param bool
+		 */		
+		function set microphoneMuted(bool:Boolean):void;
 	}
 }

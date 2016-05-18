@@ -97,14 +97,44 @@ package com.vhall.framework.media.provider
 		/** 播放connect中传入的流名称*/
 		override public function start():void
 		{
-			_ns&&_ns.play(_streamUrl);
+			super.start();
+			_ns && _ns.play(_streamUrl);
+		}
+		
+		override public function stop():void
+		{
+			super.stop();
+			_ns && _ns.dispose();
+		}
+		
+		override public function pause():void
+		{
+			super.pause();
+			
+			_ns && _ns.pause();
+		}
+		
+		override public function resume():void
+		{
+			super.resume();
+			_ns && _ns.resume();
+		}
+		
+		override public function toggle():void
+		{
+			super.toggle();
+			
+			if(_playing)
+				_ns && _ns.resume();
+			else
+				_ns && _ns.pause();
 		}
 		
 		protected function statusHandler(e:NetStatusEvent):void
 		{
-			/*CONFIG::LOGGING{
-				Log.info("未处理业务",e.info.code);
-			}*/
+			CONFIG::LOGGING{
+				Log.info(e.info.code);
+			}
 			switch(e.info.code)
 			{
 				case InfoCode.NetConnection_Connect_Success:
@@ -120,7 +150,7 @@ package com.vhall.framework.media.provider
 					excute(MediaProxyStates.STREAM_LOADING);
 					break;
 				case InfoCode.NetStream_Buffer_Full:
-					excute(MediaProxyStates.STREAM_PLAYING);
+					excute(MediaProxyStates.STREAM_FULL);
 					break;
 				case InfoCode.NetStream_Play_Start:
 					excute(MediaProxyStates.STREAM_START);
@@ -137,6 +167,9 @@ package com.vhall.framework.media.provider
 					break;
 				case InfoCode.NetStream_Seek_Notify:
 					excute(MediaProxyStates.SEEK_NOTIFY);
+					break;
+				case InfoCode.NetStream_Seek_Complete:
+					excute(MediaProxyStates.SEEK_COMPLETE);
 					break;
 				case InfoCode.NetStream_Video_DimensionChange:
 					//视频源尺寸改变
@@ -190,6 +223,8 @@ package com.vhall.framework.media.provider
 				_conn.removeEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 				_conn.close();
 			}
+			
+			super.gc();
 		}
 		
 		protected function errorHandler(event:Event):void

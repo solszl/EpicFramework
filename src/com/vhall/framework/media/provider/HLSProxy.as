@@ -65,7 +65,37 @@ package com.vhall.framework.media.provider
 		
 		override public function start():void
 		{
-			if(stream) stream.play();
+			super.start();
+			stream && stream.play();
+		}
+		
+		override public function stop():void
+		{
+			super.stop();
+			stream && stream.dispose();
+		}
+		
+		override public function pause():void
+		{
+			super.pause();
+			
+			stream && stream.pause();
+		}
+		
+		override public function resume():void
+		{
+			super.resume();
+			stream && stream.resume();
+		}
+		
+		override public function toggle():void
+		{
+			super.toggle();
+			
+			if(_playing)
+				stream && stream.resume();
+			else
+				stream && stream.pause();
 		}
 		
 		protected function onHLSHandler(e:HLSEvent):void
@@ -150,11 +180,22 @@ package com.vhall.framework.media.provider
 				_hls.removeEventListener(HLSEvent.FRAGMENT_LOADED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.FRAGMENT_PLAYING,onHLSHandler);
 				
+				_hls.removeEventListener(HLSEvent.FRAGMENT_SKIPPED,onHLSHandler);
+				_hls.removeEventListener(HLSEvent.TAGS_LOADED,onHLSHandler);
+				_hls.removeEventListener(HLSEvent.FRAGMENT_LOADED,onHLSHandler);
+				_hls.removeEventListener(HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED,onHLSHandler);
+				_hls.removeEventListener(HLSEvent.LEVEL_LOADED,onHLSHandler);
+				_hls.removeEventListener(HLSEvent.AUDIO_LEVEL_LOADED,onHLSHandler);
+				
 				_hls.removeEventListener(HLSEvent.WARNING,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.ERROR,onHLSHandler);
 			}
 			
 			_durationReady = false;
+			this._playMetrics = null;
+			this._loadMetrics = null;
+			_hls.dispose();
+			_hls = null;
 		}
 		
 		/**

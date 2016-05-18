@@ -73,6 +73,8 @@ package com.vhall.framework.media.provider
 		/** The seek operation is complete.Sent when NetStream.seek() is called on a stream in AS3 NetStream Data Generation Mode. The info object is extended to include info.seekPoint which is the same value passed to NetStream.seek().*/
 		public static const NetStream_Seek_Notify:String = "NetStream.Seek.Notify";
 		
+		public static const NetStream_Seek_Complete:String = "NetStream.Seek.Complete";
+		
 		/** The stream is resumed.*/
 		public static const NetStream_Unpause_Notify:String = "NetStream.Unpause.Notify";
 		

@@ -38,11 +38,6 @@ package com.vhall.framework.media.provider
 			scanHardware();
 		}
 		
-		override public function start():void
-		{
-			//推流取消播放功能
-		}
-		
 		override protected function statusHandler(e:NetStatusEvent):void
 		{
 			super.statusHandler(e);
@@ -102,6 +97,56 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		public function set cameraMuted(bool:Boolean):void
+		{
+			if(_ns)
+			{
+				var catchCam:Camera = bool ? null: _cam;
+				_ns.attachCamera(catchCam);
+			}
+		}
+		
+		public function set microphoneMuted(bool:Boolean):void
+		{
+			if(_ns)
+			{
+				var catchMic:Microphone = bool ? null: _mic;
+				_ns.attachAudio(catchMic);
+			}
+		}
+		
+		override public function start():void
+		{
+			//推流取消播放功能
+			_playing = true;
+		}
+		
+		override public function stop():void
+		{
+			_playing = false;
+			cameraMuted = microphoneMuted = false;
+			super.stop();
+		}
+		
+		override public function pause():void
+		{
+			_playing = false;
+			cameraMuted = microphoneMuted = false;
+		}
+		
+		override public function resume():void
+		{
+			_playing = true;
+			cameraMuted = microphoneMuted = true;
+		}
+		
+		override public function toggle():void
+		{
+			_playing = !_playing;
+			
+			cameraMuted = microphoneMuted = !_playing;
+		}
+		
 		/**
 		 * 获取可以使用的Camera
 		 * @param name Camera名称，null或者空为获取默认Camera
@@ -116,6 +161,7 @@ package com.vhall.framework.media.provider
 				cam.setMode(854,480,15);
 				cam.setQuality(0,75);
 				cam.setKeyFrameInterval(15);
+				cam.setMotionLevel(50);
 				
 				return cam;
 			}
@@ -157,6 +203,11 @@ package com.vhall.framework.media.provider
 		public function get usedMic():Microphone
 		{
 			return _mic;
+		}
+		
+		override public function get isPlaying():Boolean
+		{
+			return _playing;
 		}
 		
 		/**

@@ -44,6 +44,7 @@ package com.vhall.framework.media.provider
 		
 		override public function start():void
 		{
+			_playing = true;
 			_ns&&_ns.play(_uri);
 		}
 		
@@ -55,7 +56,7 @@ package com.vhall.framework.media.provider
 		
 		override public function get time():Number
 		{
-			if(_ns) _ns.time;
+			if(_ns) return _ns.time;
 			return 0;
 		}
 		

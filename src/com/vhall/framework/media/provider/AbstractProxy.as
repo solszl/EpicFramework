@@ -96,7 +96,7 @@ package com.vhall.framework.media.provider
 		
 		public function start():void
 		{
-		
+			_playing = true;
 		}
 		
 		/**
@@ -104,7 +104,7 @@ package com.vhall.framework.media.provider
 		 */		
 		protected function gc():void
 		{
-			
+			_playing = false;
 		}
 		
 		/**
@@ -163,18 +163,22 @@ package com.vhall.framework.media.provider
 		
 		public function stop():void
 		{
+			_playing = false;
 		}
 		
 		public function pause():void
 		{
+			_playing = false;
 		}
 		
 		public function resume():void
 		{
+			_playing = true;
 		}
 		
 		public function toggle():void
 		{
+			_playing = !_playing;
 		}
 	}
 }
