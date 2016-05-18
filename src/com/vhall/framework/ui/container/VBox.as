@@ -49,7 +49,6 @@ package com.vhall.framework.ui.container
 				ypos += child.height;
 				ypos += gap;
 
-				//取出来最高的，以便纵向布局使用
 				maxWidth = child.width > maxWidth ? child.width : maxWidth;
 			}
 
