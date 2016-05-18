@@ -37,6 +37,23 @@ package com.vhall.framework.media.interfaces
 		/** 开始播放*/		
 		function start():void;
 		
+		/**
+		 * 设置视频播放或者推流时候的缓冲区大小
+		 * @param value
+		 */		
+		function set bufferTime(value:Number):void;
+		
+		/**
+		 * 直播时设置缓存最大量，影响延迟
+		 * @param value
+		 */		
+		function set bufferTimeMax(value:Number):void;
+		
+		/**
+		 * 
+		 */
+		function set inBufferSeek(bool:Boolean):void;
+		
 		/** 视频音量*/
 		function get volume():Number;
 		

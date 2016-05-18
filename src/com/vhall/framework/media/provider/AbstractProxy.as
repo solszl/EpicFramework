@@ -38,7 +38,9 @@ package com.vhall.framework.media.provider
 		
 		protected var _time:Number = 0;
 		
-		protected var _handler:Function = null;		
+		protected var _handler:Function = null;
+		
+	
 		
 		public function AbstractProxy(type:String)
 		{
@@ -119,6 +121,21 @@ package com.vhall.framework.media.provider
 				var args:Array = data.length != 0 ? [type].concat(data):[type];
 				_handler&&_handler.apply(null,args);
 			}
+		}
+		
+		public function set bufferTimeMax(value:Number):void
+		{
+			
+		}
+		
+		public function set bufferTime(value:Number):void
+		{
+			
+		}
+		
+		public function set inBufferSeek(bool:Boolean):void
+		{
+			
 		}
 		
 		public function get volume():Number

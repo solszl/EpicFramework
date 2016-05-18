@@ -13,6 +13,7 @@ package com.vhall.framework.media.provider
 	import flash.net.NetStream;
 	
 	import org.mangui.hls.HLS;
+	import org.mangui.hls.HLSSettings;
 	import org.mangui.hls.constant.HLSPlayStates;
 	import org.mangui.hls.event.HLSEvent;
 	import org.mangui.hls.event.HLSLoadMetrics;
@@ -33,6 +34,10 @@ package com.vhall.framework.media.provider
 		public function HLSProxy()
 		{
 			super(MediaProxyType.HLS);
+			
+			HLSSettings.maxBufferLength = 30;
+			HLSSettings.manifestLoadMaxRetryTimeout = 2000;
+			HLSSettings.flushLiveURLCache = true;
 		}
 		
 		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true):void
