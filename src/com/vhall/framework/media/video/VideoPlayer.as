@@ -124,6 +124,17 @@ package com.vhall.framework.media.video
 		}
 		
 		/**
+		 * 切换正在播放视频的视频流 
+		 * @param uri
+		 * @param stream
+		 * @param autoPlay
+		 */		
+		public function changeVideoUrl(uri:String,stream:String = null,autoPlay:Boolean = true):void
+		{
+			_proxy && (_proxy.changeVideoUrl(uri, stream, autoPlay));
+		}
+		
+		/**
 		 * 播放器推流
 		 * @param cam 推流画面来源，Camera实例或者Camera名称，null或者空为去默认摄像头
 		 * @param mic 推流音频来源，Microphone实例或者Microphone名称，null或者空为去默认麦克

@@ -68,6 +68,17 @@ package com.vhall.framework.media.provider
 			_hls.load(_uri);
 		}
 		
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
+		{
+			super.changeVideoUrl(uri, streamUrl, autoPlay);
+			
+			_durationReady = false;
+			this._playMetrics = null;
+			this._loadMetrics = null;
+			
+			_hls.load(uri);
+		}
+		
 		override public function start():void
 		{
 			super.start();
@@ -96,11 +107,7 @@ package com.vhall.framework.media.provider
 		override public function toggle():void
 		{
 			super.toggle();
-			
-			if(_playing)
-				stream && stream.resume();
-			else
-				stream && stream.pause();
+			stream && stream.togglePause();
 		}
 		
 		protected function onHLSHandler(e:HLSEvent):void
@@ -140,7 +147,7 @@ package com.vhall.framework.media.provider
 					loadMetrics = e.loadMetrics;
 					break;
 				case HLSEvent.MEDIA_TIME:
-					_time = e.mediatime.position;
+					//_time = e.mediatime.position;
 					break;
 				case HLSEvent.PLAYBACK_COMPLETE:
 					excute(MediaProxyStates.STREAM_STOP);
