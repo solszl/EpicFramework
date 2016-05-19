@@ -51,6 +51,11 @@ package com.vhall.framework.ui.controls
 			
 		}
 		
+		protected function updateDisplay():void
+		{
+			
+		}
+		
 		protected function destory():void
 		{
 			
@@ -60,6 +65,38 @@ package com.vhall.framework.ui.controls
 		{
 			super.alpha = value;
 			value == 0 ? visible = false : true;
+		}
+		
+		protected var _width:Number = 0;
+		override public function set width(value:Number):void
+		{
+			if(_width == value)
+			{
+				return;
+			}
+			_width = value;
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+		
+		override public function get width():Number
+		{
+			return _width == 0 ? super.width : _width;
+		}
+		
+		protected var _height:Number = 0;
+		override public function set height(value:Number):void
+		{
+			if(_height == value)
+			{
+				return;
+			}
+			_height = value;
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+		
+		override public function get height():Number
+		{
+			return _height == 0 ? super.height : _height;
 		}
 		
 		/**
@@ -82,8 +119,8 @@ package com.vhall.framework.ui.controls
 		 */		
 		public function setSize(w:Number, h:Number):void
 		{
-			this.width = Math.round(w);
-			this.height = Math.round(h);
+			this._width = Math.round(w);
+			this._height = Math.round(h);
 		}
 		
 		/**显示边框*/
@@ -92,6 +129,7 @@ package com.vhall.framework.ui.controls
 			RenderManager.getInstance().validateNow();
 			with (this)
 			{
+				graphics.clear();
 				graphics.lineStyle(1, color);
 				graphics.drawRect(0, 0, width, height);
 			}

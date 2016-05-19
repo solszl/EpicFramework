@@ -93,18 +93,9 @@ package com.vhall.framework.ui.controls
 
 		override protected function invalidate():void
 		{
-			super.invalidate();
 			quad.source == null ? quadSkin = ComponentUtils.genInteractiveCircle(6, null, 0, 0, 0xFF0000) : quad.source;
+			super.invalidate();
 			updateDisplay();
-		}
-
-		/**
-		 *	布局
-		 *
-		 */
-		protected function updateDisplay():void
-		{
-
 		}
 
 		protected function onMouseHandler(e:MouseEvent):void

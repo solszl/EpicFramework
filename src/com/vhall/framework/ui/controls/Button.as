@@ -202,8 +202,9 @@ package com.vhall.framework.ui.controls
 			return propertiesDic[name][index];
 		}
 
-		private function updateDisplay():void
+		override protected function updateDisplay():void
 		{
+			super.updateDisplay();
 			// 让文本居中， 此处没考虑文本宽度 大于 背景的情况
 			var xpos:Number = bg.width - btnLabel.width >> 1;
 			var ypos:Number = bg.height - btnLabel.height >> 1;
