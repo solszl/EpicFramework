@@ -21,6 +21,8 @@ package com.vhall.framework.media.provider
 	import flash.system.Security;
 	import flash.system.SecurityPanel;
 	
+	import org.mangui.hls.utils.Log;
+	
 	/**
 	 * 推流代理
 	 */	
@@ -117,9 +119,30 @@ package com.vhall.framework.media.provider
 		
 		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
 		{
-			super.changeVideoUrl(uri, streamUrl, autoPlay);
+			var oldUri:String = this._uri;
+			var oldStreamUrl:String = this._streamUrl;
 			
-			_ns && _ns.publish(_streamUrl);
+			_autoPlay = autoPlay;
+			_uri = uri;
+			_streamUrl = streamUrl;
+			
+			valid();
+			
+			if(oldUri == uri && oldStreamUrl != streamUrl)
+			{
+				_ns && _ns.publish(_streamUrl);
+			}else{
+				//清除监听
+				clearNsListeners();
+				//重新链接
+				try{
+					_conn.connect(uri);
+				}catch(e:Error){
+					CONFIG::LOGGING{
+						Log.error("netConnection 切换链接失败:"+_uri);
+					}
+				}
+			}
 		}
 		
 		override public function start():void
