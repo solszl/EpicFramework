@@ -37,7 +37,7 @@ package com.vhall.framework.ui.container
 
 		override protected function layoutChildren():void
 		{
-			super.layoutChildren();
+//			super.layoutChildren();
 			var numChild:int = this.numChildren;
 			var child:DisplayObject;
 			var xpos:Number = marginLeft;

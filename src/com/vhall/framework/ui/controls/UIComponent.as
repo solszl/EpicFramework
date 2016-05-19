@@ -123,6 +123,18 @@ package com.vhall.framework.ui.controls
 			this._height = Math.round(h);
 		}
 		
+		/**
+		 * 如果有父容器，则讲自己从父容器中移除 
+		 * 
+		 */		
+		public function removeFromParent():void
+		{
+			if(this.parent)
+			{
+				this.parent.removeChild(this);
+			}
+		}
+		
 		/**显示边框*/
 		public function showBorder(color:uint = 0xff0000):void
 		{
@@ -135,6 +147,7 @@ package com.vhall.framework.ui.controls
 			}
 		}
 		
+		private static const info:String = "[{0}] width: {1} , height: {2} , x: {3} , y: {4} , haveParent, {5}, onStage: {6}";
 		/**
 		 *	拿到组件的宽,高,X,Y,以及反射出来的名字
 		 * @return
@@ -144,7 +157,83 @@ package com.vhall.framework.ui.controls
 		{
 			return StringUtil.substitute(info,getQualifiedClassName(this),width,height,x,y,this.parent != null, this.stage != null); 
 		}
+
+		private var _tooltip:Object;
+		private var _left:Object;
+		private var _right:Object;
+		private var _top:Object;
+		private var _bottom:Object;
+		private var _horizontalCenter:Number;
+		private var _verticalCenter:Number;
 		
-		private static const info:String = "[{0}] width: {1} , height: {2} , x: {3} , y: {4} , haveParent, {5}, onStage: {6}";
+		public function get tooltip():Object
+		{
+			return _tooltip;
+		}
+
+		public function set tooltip(value:Object):void
+		{
+			_tooltip = value;
+		}
+
+		public function get left():Object
+		{
+			return _left;
+		}
+
+		public function set left(value:Object):void
+		{
+			_left = value;
+		}
+
+		public function get right():Object
+		{
+			return _right;
+		}
+
+		public function set right(value:Object):void
+		{
+			_right = value;
+		}
+
+		public function get top():Object
+		{
+			return _top;
+		}
+
+		public function set top(value:Object):void
+		{
+			_top = value;
+		}
+
+		public function get bottom():Object
+		{
+			return _bottom;
+		}
+
+		public function set bottom(value:Object):void
+		{
+			_bottom = value;
+		}
+
+		public function get horizontalCenter():Number
+		{
+			return _horizontalCenter;
+		}
+
+		public function set horizontalCenter(value:Number):void
+		{
+			_horizontalCenter = value;
+		}
+
+		public function get verticalCenter():Number
+		{
+			return _verticalCenter;
+		}
+
+		public function set verticalCenter(value:Number):void
+		{
+			_verticalCenter = value;
+		}
 	}
 }
