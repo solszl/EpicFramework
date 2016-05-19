@@ -51,6 +51,11 @@ package com.vhall.framework.ui.controls
 			
 		}
 		
+		protected function destory():void
+		{
+			
+		}
+		
 		override public function set alpha(value:Number):void
 		{
 			super.alpha = value;

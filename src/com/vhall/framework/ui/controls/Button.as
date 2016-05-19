@@ -98,6 +98,7 @@ package com.vhall.framework.ui.controls
 				}
 
 				bg.source = getProperty("skin", state);
+				bg.setBitmapDataCallBK = updateDisplay;
 				btnLabel.text = getProperty("label", state).toString();
 				btnLabel.color = getProperty("labelColor", state);
 				lastState = state;

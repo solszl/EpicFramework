@@ -36,6 +36,8 @@ package com.vhall.framework.ui.controls
 		
 		private var _w:Number;
 		private var _h:Number;
+		
+		public var setBitmapDataCallBK:Function = null;
 
 		public function Image(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
@@ -148,7 +150,7 @@ package com.vhall.framework.ui.controls
 		{
 			if (value.indexOf("assets/") == 0)
 			{
-				bitmap.bitmapData = ResourceLibrary.getBitmapData(String(value));
+				setBitmapData(ResourceLibrary.getBitmapData(String(value)));
 				if (bitmap.bitmapData == null)
 				{
 					failed(null, "");
@@ -159,7 +161,7 @@ package com.vhall.framework.ui.controls
 			{
 				if (ResourceItems.hasLoaded(value))
 				{
-					bitmap.bitmapData = ResourceItems.getResource(value).bitmapData;
+					setBitmapData(ResourceItems.getResource(value).bitmapData);
 					
 					if (bitmap.bitmapData == null)
 					{
@@ -204,7 +206,7 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 
-			bitmap.bitmapData = (content as Bitmap).bitmapData;
+			setBitmapData((content as Bitmap).bitmapData);
 			
 			resizeIfNeed();
 			ResourceItems.addToCache(item.url, content as DisplayObject);
@@ -242,6 +244,17 @@ package com.vhall.framework.ui.controls
 			}
 		}
 
+		private function setBitmapData(bmd:BitmapData):void
+		{
+			bitmap.bitmapData = bmd;
+			if(setBitmapDataCallBK == null)
+			{
+				return;
+			}
+			
+			setBitmapDataCallBK();
+		}
+		
 		override protected function invalidate():void
 		{
 			super.invalidate();
