@@ -36,9 +36,13 @@ package com.vhall.framework.media.provider
 		
 		protected var _uri:String;
 		
-		protected var _time:Number = 0;
-		
-		protected var _handler:Function = null;		
+		protected var _handler:Function = null;
+
+		private var _bufferTimeMax:Number;
+
+		private var _bufferTime:Number;
+
+		private var _inBufferSeek:Boolean;
 		
 		public function AbstractProxy(type:String)
 		{
@@ -75,6 +79,20 @@ package com.vhall.framework.media.provider
 			_streamUrl = streamUrl;
 			_handler = handler;
 			
+			valid();
+		}
+		
+		public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true):void
+		{
+			_autoPlay = autoPlay;
+			_uri = uri;
+			_streamUrl = streamUrl;
+			
+			valid();
+		}
+		
+		protected function valid():void
+		{
 			//简单验证协议和代理是否匹配
 			if(_type == MediaProxyType.HLS)
 			{
@@ -121,6 +139,24 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		public function set bufferTimeMax(value:Number):void
+		{
+			_bufferTimeMax = value;
+			stream && (stream.bufferTimeMax = value);
+		}
+		
+		public function set bufferTime(value:Number):void
+		{
+			_bufferTime = value;
+			stream && (stream.bufferTime = value);
+		}
+		
+		public function set inBufferSeek(bool:Boolean):void
+		{
+			_inBufferSeek = bool;
+			stream && (stream.inBufferSeek = bool);
+		}
+		
 		public function get volume():Number
 		{
 			return _volume;
@@ -148,12 +184,11 @@ package com.vhall.framework.media.provider
 		
 		public function get time():Number
 		{
-			return _time;
+			return 0;
 		}
 		
 		public function set time(value:Number):void
 		{
-			_time = value;
 		}
 		
 		public function get stream():NetStream

@@ -20,6 +20,8 @@ package com.vhall.framework.media.provider
 	import flash.media.SoundTransform;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
+	import flash.net.NetStreamPlayOptions;
+	import flash.net.NetStreamPlayTransitions;
 	
 	CONFIG::LOGGING {
 		import org.mangui.hls.utils.Log;
@@ -71,17 +73,11 @@ package com.vhall.framework.media.provider
 
 			//取消硬件解码
 			_ns.useHardwareDecoder = false;
+			_ns.videoStreamSettings = h264Video;
 			
-			var h264:H264VideoStreamSettings = new H264VideoStreamSettings();
-			//设置视频编码的配置文件和级别
-			h264.setProfileLevel(H264Profile.MAIN,H264Level.LEVEL_3_1);
-			//设置视频的分辨率和fps，和推流端获取一致
-			h264.setMode(-1,-1,-1);
-			//视频I帧个camera一致
-			h264.setKeyFrameInterval(-1);
-			
-			_ns.videoStreamSettings = h264;
-			
+			bufferTime = 1;
+			bufferTimeMax = 2;
+						
 			_ns.addEventListener(NetStatusEvent.NET_STATUS,statusHandler);
 			_ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 			_ns.addEventListener(IOErrorEvent.IO_ERROR,errorHandler);
@@ -92,6 +88,51 @@ package com.vhall.framework.media.provider
 			excute(MediaProxyStates.CONNECT_NOTIFY);
 			
 			_autoPlay&&start();
+		}
+		
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
+		{
+			var oldUri:String = this._uri;
+			var oldStreamUrl:String = this._streamUrl;
+			
+			super.changeVideoUrl(uri, streamUrl, autoPlay);
+			
+			if(oldUri == uri && oldStreamUrl != streamUrl)
+			{
+				var nspo:NetStreamPlayOptions = new NetStreamPlayOptions();
+				nspo.oldStreamName = oldStreamUrl;
+				nspo.streamName = streamUrl;
+				nspo.transition = NetStreamPlayTransitions.SWITCH;
+				_autoPlay&&(_ns && _ns.play2(nspo));
+			}else{
+				//清除监听
+				clearNsListeners();
+				//重新链接
+				try{
+					_conn.connect(uri);
+				}catch(e:Error){
+					CONFIG::LOGGING{
+						Log.error("netConnection 切换链接失败:"+_uri);
+					}
+				}
+			}
+		}
+		
+		/**
+		 * 视频的h264编码
+		 * @return 
+		 */		
+		protected function get h264Video():H264VideoStreamSettings
+		{
+			var h264:H264VideoStreamSettings = new H264VideoStreamSettings();
+			//设置视频编码的配置文件和级别
+			h264.setProfileLevel(H264Profile.MAIN,H264Level.LEVEL_3_1);
+			//设置视频的分辨率和fps，和推流端获取一致
+			h264.setMode(-1,-1,-1);
+			//视频I帧个camera一致
+			h264.setKeyFrameInterval(-1);
+			
+			return h264;
 		}
 		
 		/** 播放connect中传入的流名称*/
@@ -123,17 +164,13 @@ package com.vhall.framework.media.provider
 		override public function toggle():void
 		{
 			super.toggle();
-			
-			if(_playing)
-				_ns && _ns.resume();
-			else
-				_ns && _ns.pause();
+			_ns && _ns.togglePause();
 		}
 		
 		protected function statusHandler(e:NetStatusEvent):void
 		{
 			CONFIG::LOGGING{
-				Log.info(e.info.code);
+				Log.info("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : ""));
 			}
 			switch(e.info.code)
 			{
@@ -188,8 +225,18 @@ package com.vhall.framework.media.provider
 		{
 			return {"onCuePoint":onCurePoint,"onImageData":onImageData,"onMetaData":onMetaData,"onPlayStatus":onPlayStatus,"onSeekPoint":onSeekPoint,"onTextData":onTextData};
 		}
-		protected function onCurePoint(...value):void{}
-		protected function onImageData(...value):void{}
+		protected function onCurePoint(...value):void
+		{
+			CONFIG::LOGGING{
+				Log.info("onCurePoint:"+JSON.stringify(value));
+			}
+		}
+		protected function onImageData(...value):void
+		{
+			CONFIG::LOGGING{
+				Log.info("onImageData:"+JSON.stringify(value));
+			}
+		}
 		protected function onMetaData(value:* = null):void
 		{
 			if(value&&value["duration"])
@@ -198,12 +245,27 @@ package com.vhall.framework.media.provider
 				excute(MediaProxyStates.DURATION_NOTIFY,_duration);
 			}
 		}
-		protected function onPlayStatus(...value):void{}
-		protected function onSeekPoint(...value):void{}
-		protected function onTextData(...value):void{}
+		protected function onPlayStatus(...value):void
+		{
+			CONFIG::LOGGING{
+				Log.info("onPlayStatus:"+JSON.stringify(value));
+			}
+		}
+		protected function onSeekPoint(...value):void
+		{
+			CONFIG::LOGGING{
+				Log.info("onSeekPoint:"+JSON.stringify(value));
+			}
+		}
+		protected function onTextData(...value):void
+		{
+			CONFIG::LOGGING{
+				Log.info("onTextData:"+JSON.stringify(value));
+			}
+		}
 		
-		
-		override protected function gc():void
+		//清除netstream的监听
+		protected function clearNsListeners():void
 		{
 			if(_ns)
 			{
@@ -214,7 +276,11 @@ package com.vhall.framework.media.provider
 				_ns.dispose();
 				_ns = null;
 			}
-			
+		}
+		
+		//清除netconnection的监听,会导致无法播放
+		protected function clearCnListeners():void
+		{
 			if(_conn)
 			{
 				_conn.removeEventListener(NetStatusEvent.NET_STATUS,statusHandler);
@@ -223,7 +289,12 @@ package com.vhall.framework.media.provider
 				_conn.removeEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 				_conn.close();
 			}
-			
+		}
+		
+		override protected function gc():void
+		{
+			clearNsListeners();
+			clearCnListeners();
 			super.gc();
 		}
 		
@@ -232,6 +303,17 @@ package com.vhall.framework.media.provider
 			CONFIG::LOGGING{
 				Log.error("netConnection 建立链接失败:"+event);
 			}
+		}
+		
+		override public function get time():Number
+		{
+			if(stream) return stream.time;
+			return 0;
+		}
+		
+		override public function set time(value:Number):void
+		{
+			stream && stream.seek(value);
 		}
 		
 		override public function get stream():NetStream

@@ -13,6 +13,7 @@ package com.vhall.framework.media.provider
 	import flash.net.NetStream;
 	
 	import org.mangui.hls.HLS;
+	import org.mangui.hls.HLSSettings;
 	import org.mangui.hls.constant.HLSPlayStates;
 	import org.mangui.hls.event.HLSEvent;
 	import org.mangui.hls.event.HLSLoadMetrics;
@@ -33,6 +34,10 @@ package com.vhall.framework.media.provider
 		public function HLSProxy()
 		{
 			super(MediaProxyType.HLS);
+			
+			HLSSettings.maxBufferLength = 30;
+			HLSSettings.manifestLoadMaxRetryTimeout = 2000;
+			HLSSettings.flushLiveURLCache = true;
 		}
 		
 		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true):void
@@ -63,6 +68,17 @@ package com.vhall.framework.media.provider
 			_hls.load(_uri);
 		}
 		
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
+		{
+			super.changeVideoUrl(uri, streamUrl, autoPlay);
+			
+			_durationReady = false;
+			this._playMetrics = null;
+			this._loadMetrics = null;
+			
+			_hls.load(uri);
+		}
+		
 		override public function start():void
 		{
 			super.start();
@@ -91,11 +107,7 @@ package com.vhall.framework.media.provider
 		override public function toggle():void
 		{
 			super.toggle();
-			
-			if(_playing)
-				stream && stream.resume();
-			else
-				stream && stream.pause();
+			stream && stream.togglePause();
 		}
 		
 		protected function onHLSHandler(e:HLSEvent):void
@@ -135,7 +147,7 @@ package com.vhall.framework.media.provider
 					loadMetrics = e.loadMetrics;
 					break;
 				case HLSEvent.MEDIA_TIME:
-					_time = e.mediatime.position;
+					//_time = e.mediatime.position;
 					break;
 				case HLSEvent.PLAYBACK_COMPLETE:
 					excute(MediaProxyStates.STREAM_STOP);

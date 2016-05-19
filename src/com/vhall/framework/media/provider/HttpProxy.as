@@ -11,6 +11,9 @@ package com.vhall.framework.media.provider
 {
 	import com.vhall.framework.media.interfaces.IProgress;
 	
+	import flash.net.NetStreamPlayOptions;
+	import flash.net.NetStreamPlayTransitions;
+	
 	CONFIG::LOGGING{
 		import org.mangui.hls.utils.Log;
 	}
@@ -33,6 +36,8 @@ package com.vhall.framework.media.provider
 			_streamUrl = streamUrl;
 			_handler = handler;
 			
+			valid();
+			
 			try{
 				_conn.connect(null);
 			}catch(e:Error){
@@ -40,6 +45,34 @@ package com.vhall.framework.media.provider
 					Log.error("netConnection 建立链接失败:"+_uri);
 				}
 			}
+		}
+		
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
+		{
+			var oldUri:String = this._uri;
+			var oldStreamUrl:String = this._streamUrl;
+			
+			_autoPlay = autoPlay;
+			_uri = uri;
+			_streamUrl = streamUrl;
+			
+			valid();
+			
+			if(oldUri != uri)
+			{
+				var npo:NetStreamPlayOptions = new NetStreamPlayOptions();
+				npo.oldStreamName = oldUri;
+				npo.streamName = uri;
+				npo.transition = NetStreamPlayTransitions.SWITCH;
+				_autoPlay&&(_ns && _ns.play2(npo));
+			}
+		}
+		
+		override protected function createStream():void
+		{
+			super.createStream();
+			
+			this.inBufferSeek = true;
 		}
 		
 		override public function start():void

@@ -115,6 +115,13 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
+		{
+			super.changeVideoUrl(uri, streamUrl, autoPlay);
+			
+			_ns && _ns.publish(_streamUrl);
+		}
+		
 		override public function start():void
 		{
 			//推流取消播放功能

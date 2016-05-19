@@ -34,8 +34,33 @@ package com.vhall.framework.media.interfaces
 		 */		
 		function connect(uri:String, streamUrl:String = null, handler:Function = null,autoPlay:Boolean = true):void;
 		
+		/**
+		 * 更换正在播放的视频
+		 * @param uri 服务器地址，http或者本地视频时候为文件路径
+		 * @param streamUrl 流名称，http或者本地视频时候，忽略
+		 * @param autoPlay 是否自动播放
+		 */		
+		function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true):void;
+		
 		/** 开始播放*/		
 		function start():void;
+		
+		/**
+		 * 设置视频播放或者推流时候的缓冲区大小
+		 * @param value
+		 */		
+		function set bufferTime(value:Number):void;
+		
+		/**
+		 * 直播时设置缓存最大量，影响延迟
+		 * @param value
+		 */		
+		function set bufferTimeMax(value:Number):void;
+		
+		/**
+		 * 设置为true时候优先从本地缓存中进行seek，不走服务器
+		 */
+		function set inBufferSeek(bool:Boolean):void;
 		
 		/** 视频音量*/
 		function get volume():Number;
@@ -52,7 +77,7 @@ package com.vhall.framework.media.interfaces
 		/** 回放视频的总时长*/
 		function get duration():Number;
 		
-		/** 回放视频当前时间点*/
+		/** 回放视频当前时间点,直播时候为观看时长，直播时候设置无效，只能读取*/
 		function get time():Number;
 		
 		/** @private*/
