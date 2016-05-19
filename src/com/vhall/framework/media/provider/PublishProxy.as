@@ -49,6 +49,7 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetStream_Play_PublishNotify:
 					break;
 				case InfoCode.NetStream_Publish_Start:
+					sendMetadata();
 					excute(MediaProxyStates.PUBLISH_NOTIFY);
 					break;
 				case InfoCode.NetStream_Publish_BadName:
@@ -61,6 +62,17 @@ package com.vhall.framework.media.provider
 					excute(MediaProxyStates.UN_PUBLISH_NOTIFY);
 					break;
 			}
+		}
+		
+		private function sendMetadata():void
+		{
+			var metaData:Object = {};
+			metaData.server = "http://www.vhall.com";
+			metaData.camera = _cam.name;
+			metaData.microphone = _mic.name;
+			metaData.width = _cam.width;
+			metaData.height = _cam.height;
+			stream && stream.send("@setDataFrame","onMetaData",metaData)
 		}
 		
 		public function publish(cam:*, mic:*):void
@@ -192,6 +204,8 @@ package com.vhall.framework.media.provider
 				cam.setQuality(0,75);
 				cam.setKeyFrameInterval(15);
 				cam.setMotionLevel(50);
+				//本地显示回放是否使用压缩后的视频流，设置为true显示画面和用户更像是
+				//cam.setLoopback(true);
 				
 				return cam;
 			}
@@ -211,6 +225,8 @@ package com.vhall.framework.media.provider
 
 				mic.codec = SoundCodec.SPEEX;
 				mic.setSilenceLevel(0);
+				mic.setUseEchoSuppression(true);//是否使用回音抑制功能
+				mic.setLoopBack(false);//麦克声音不在本地回放
 				mic.encodeQuality = 8;
 				mic.noiseSuppressionLevel = -30;
 				var micEnopt:MicrophoneEnhancedOptions = new MicrophoneEnhancedOptions();
