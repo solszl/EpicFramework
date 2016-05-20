@@ -61,12 +61,6 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetStream_Play_UnpublishNotify:
 					excute(MediaProxyStates.UN_PUBLISH_NOTIFY);
 					break;
-				case InfoCode.NetStream_Buffer_Flush:
-					break;
-				case InfoCode.NetStream_Buffer_Empty:
-					break;
-				case InfoCode.NetStream_Buffer_Full:
-					break;
 			}
 		}
 		
@@ -79,7 +73,6 @@ package com.vhall.framework.media.provider
 			metaData.width = _cam.width;
 			metaData.height = _cam.height;
 			stream && stream.send("@setDataFrame","onMetaData",metaData);
-			
 		}
 		
 		public function publish(cam:*, mic:*):void
@@ -278,10 +271,19 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
-		public function toString():String
+		/**
+		 * 推流延时，数字越大推流端网速越差，数值具体不代表任何其它意义
+		 * @return 
+		 */		
+		private function get latency():Number
 		{
-			if(stream) return "buffer:"+stream.bufferLength+",上传网速："+ stream.info;
-			return null
+			if(stream) return Number((stream.info.videoBufferByteLength + stream.info.audioBufferByteLength) / stream.info.maxBytesPerSecond);
+			return 0;
+		}
+		
+		override public function toString():String
+		{
+			return _type.toLocaleUpperCase() + " 推流LAG：" + latency.toFixed(2) + "s";
 		}
 	}
 }

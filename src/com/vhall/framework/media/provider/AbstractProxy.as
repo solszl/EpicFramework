@@ -215,5 +215,10 @@ package com.vhall.framework.media.provider
 		{
 			_playing = !_playing;
 		}
+		
+		public function toString():String
+		{
+			return "";
+		}
 	}
 }

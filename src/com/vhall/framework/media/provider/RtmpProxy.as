@@ -23,6 +23,8 @@ package com.vhall.framework.media.provider
 	import flash.net.NetStream;
 	import flash.net.NetStreamPlayOptions;
 	import flash.net.NetStreamPlayTransitions;
+	import flash.net.Responder;
+	import flash.utils.setInterval;
 	
 	CONFIG::LOGGING {
 		import org.mangui.hls.utils.Log;
@@ -89,6 +91,8 @@ package com.vhall.framework.media.provider
 			excute(MediaProxyStates.CONNECT_NOTIFY);
 			
 			_autoPlay&&start();
+			
+			_conn.call("checkBandwidth",null);
 		}
 		
 		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
@@ -231,14 +235,14 @@ package com.vhall.framework.media.provider
 			/*CONFIG::LOGGING{
 				Log.info("onBWCheck:"+JSON.stringify(value));
 			}*/
+			//网速检测，返回0告诉服务器已经收到数据
 			return 0;
 		}
 		protected function onBWDone(...value):void
 		{
-			CONFIG::LOGGING{
-				if(value && value.length<=4) return;
+			/*CONFIG::LOGGING{
 				Log.info("网速："+Number(value[0]/1024).toFixed(2)+" k/s"+" 延迟："+value[3]+" ms");
-			}
+			}*/
 		}
 		protected function onCurePoint(...value):void
 		{
@@ -355,6 +359,17 @@ package com.vhall.framework.media.provider
 				st.volume = _volume;
 				_ns.soundTransform = st;
 			}
+		}
+		
+		private function get bytesPerSecond():Number
+		{
+			if(stream) return stream.info.dataBytesPerSecond/1024;
+			return 0;
+		}
+		
+		override public function toString():String
+		{
+			return _type.toLocaleUpperCase() + "拉流：" + bytesPerSecond.toFixed(2) +" k/s";
 		}
 	}
 }

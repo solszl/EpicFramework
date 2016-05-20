@@ -399,7 +399,7 @@ package com.vhall.framework.media.video
 		
 		override public function toString():String
 		{
-			return String(_proxy);
+			return "[VideoPlayer " + String(_proxy)+"]";
 		}
 	}
 }
