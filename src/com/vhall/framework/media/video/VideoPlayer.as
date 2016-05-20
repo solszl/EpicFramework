@@ -396,6 +396,11 @@ package com.vhall.framework.media.video
 		{
 			return _viewPort.top;
 		}
+		
+		override public function toString():String
+		{
+			return String(_proxy);
+		}
 	}
 }
 

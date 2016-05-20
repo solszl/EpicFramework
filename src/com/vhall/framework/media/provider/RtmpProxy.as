@@ -12,6 +12,7 @@ package com.vhall.framework.media.provider
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.NetDataEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.media.H264Level;
@@ -81,7 +82,7 @@ package com.vhall.framework.media.provider
 			_ns.addEventListener(NetStatusEvent.NET_STATUS,statusHandler);
 			_ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 			_ns.addEventListener(IOErrorEvent.IO_ERROR,errorHandler);
-			//_ns.addEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
+			_ns.addEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
 			
 			volume = _volume;
 			
@@ -169,9 +170,9 @@ package com.vhall.framework.media.provider
 		
 		protected function statusHandler(e:NetStatusEvent):void
 		{
-			CONFIG::LOGGING{
+			/*CONFIG::LOGGING{
 				Log.info("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : ""));
-			}
+			}*/
 			switch(e.info.code)
 			{
 				case InfoCode.NetConnection_Connect_Success:
@@ -223,7 +224,21 @@ package com.vhall.framework.media.provider
 		 */		
 		protected function get client():Object
 		{
-			return {"onCuePoint":onCurePoint,"onImageData":onImageData,"onMetaData":onMetaData,"onPlayStatus":onPlayStatus,"onSeekPoint":onSeekPoint,"onTextData":onTextData};
+			return {"onBWCheck":onBWCheck,"onBWDone":onBWDone,"onCuePoint":onCurePoint,"onImageData":onImageData,"onMetaData":onMetaData,"onPlayStatus":onPlayStatus,"onSeekPoint":onSeekPoint,"onTextData":onTextData};
+		}
+		protected function onBWCheck(...value):Number
+		{
+			/*CONFIG::LOGGING{
+				Log.info("onBWCheck:"+JSON.stringify(value));
+			}*/
+			return 0;
+		}
+		protected function onBWDone(...value):void
+		{
+			CONFIG::LOGGING{
+				if(value && value.length<=4) return;
+				Log.info("网速："+Number(value[0]/1024).toFixed(2)+" k/s"+" 延迟："+value[3]+" ms");
+			}
 		}
 		protected function onCurePoint(...value):void
 		{
@@ -264,6 +279,16 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		protected function mediaHandler(e:NetDataEvent):void
+		{
+			if(!this.client.hasOwnProperty(e.info["handler"]))
+			{
+				CONFIG::LOGGING{
+					Log.info("本地回调未处理:"+JSON.stringify(e.info["handler"]));
+				}
+			}
+		}
+		
 		//清除netstream的监听
 		protected function clearNsListeners():void
 		{
@@ -272,7 +297,7 @@ package com.vhall.framework.media.provider
 				_ns.removeEventListener(NetStatusEvent.NET_STATUS,statusHandler);
 				_ns.removeEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 				_ns.removeEventListener(IOErrorEvent.IO_ERROR,errorHandler);
-				//_ns.removeEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
+				_ns.removeEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
 				_ns.dispose();
 				_ns = null;
 			}

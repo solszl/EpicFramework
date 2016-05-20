@@ -61,6 +61,12 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetStream_Play_UnpublishNotify:
 					excute(MediaProxyStates.UN_PUBLISH_NOTIFY);
 					break;
+				case InfoCode.NetStream_Buffer_Flush:
+					break;
+				case InfoCode.NetStream_Buffer_Empty:
+					break;
+				case InfoCode.NetStream_Buffer_Full:
+					break;
 			}
 		}
 		
@@ -72,7 +78,8 @@ package com.vhall.framework.media.provider
 			metaData.microphone = _mic.name;
 			metaData.width = _cam.width;
 			metaData.height = _cam.height;
-			stream && stream.send("@setDataFrame","onMetaData",metaData)
+			stream && stream.send("@setDataFrame","onMetaData",metaData);
+			
 		}
 		
 		public function publish(cam:*, mic:*):void
@@ -233,6 +240,7 @@ package com.vhall.framework.media.provider
 				micEnopt.autoGain = false;
 				micEnopt.nonLinearProcessing = false;
 				mic.enhancedOptions = micEnopt;
+				mic.rate = 22;
 				
 				volume = _volume;
 				
@@ -268,6 +276,12 @@ package com.vhall.framework.media.provider
 				//gain 0--100
 				_mic.gain = value * 100;
 			}
+		}
+		
+		public function toString():String
+		{
+			if(stream) return "buffer:"+stream.bufferLength+",上传网速："+ stream.info;
+			return null
 		}
 	}
 }
