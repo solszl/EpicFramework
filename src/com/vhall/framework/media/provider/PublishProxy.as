@@ -20,8 +20,13 @@ package com.vhall.framework.media.provider
 	import flash.media.scanHardware;
 	import flash.system.Security;
 	import flash.system.SecurityPanel;
+	import flash.utils.clearInterval;
+	import flash.utils.setInterval;
 	
-	import org.mangui.hls.utils.Log;
+	CONFIG::LOGGING
+	{
+		import org.mangui.hls.utils.Log;
+	}
 	
 	/**
 	 * 推流代理
@@ -30,6 +35,11 @@ package com.vhall.framework.media.provider
 	{
 		private var _cam:Camera;
 		private var _mic:Microphone;
+		
+		/**
+		 * 推流信息广播定时id 
+		 */		
+		private var _id:int;
 		
 		public function PublishProxy()
 		{
@@ -73,6 +83,15 @@ package com.vhall.framework.media.provider
 			metaData.width = _cam.width;
 			metaData.height = _cam.height;
 			stream && stream.send("@setDataFrame","onMetaData",metaData);
+			
+			clearInterval(_id);
+			_id = setInterval(function():void
+			{
+				if(stream)
+				{
+					stream.send("@setDataFrame","onPublishData",{"lag":latency});
+				}
+			},10000);
 		}
 		
 		public function publish(cam:*, mic:*):void
@@ -155,6 +174,12 @@ package com.vhall.framework.media.provider
 					}
 				}
 			}
+		}
+		
+		override protected function gc():void
+		{
+			super.gc();
+			clearInterval(_id);
 		}
 		
 		override public function start():void

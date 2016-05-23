@@ -18,7 +18,11 @@ package com.vhall.framework.media.provider
 	import org.mangui.hls.event.HLSEvent;
 	import org.mangui.hls.event.HLSLoadMetrics;
 	import org.mangui.hls.event.HLSPlayMetrics;
-	import org.mangui.hls.utils.Log;
+	
+	CONFIG::LOGGING
+	{
+		import org.mangui.hls.utils.Log;
+	}
 
 	/** HLS视频播放代理*/
 	public class HLSProxy extends AbstractProxy
@@ -57,7 +61,6 @@ package com.vhall.framework.media.provider
 			
 			_hls.addEventListener(HLSEvent.FRAGMENT_SKIPPED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.TAGS_LOADED,onHLSHandler);
-			_hls.addEventListener(HLSEvent.FRAGMENT_LOADED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.LEVEL_LOADED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.AUDIO_LEVEL_LOADED,onHLSHandler);
@@ -164,6 +167,9 @@ package com.vhall.framework.media.provider
 					loadMetrics = e.loadMetrics;
 					break;
 				case HLSEvent.SEEK_STATE:
+					CONFIG::LOGGING{
+						Log.warn(e.state);
+					}
 					break;
 				case HLSEvent.WARNING:
 					CONFIG::LOGGING{
@@ -194,7 +200,6 @@ package com.vhall.framework.media.provider
 				
 				_hls.removeEventListener(HLSEvent.FRAGMENT_SKIPPED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.TAGS_LOADED,onHLSHandler);
-				_hls.removeEventListener(HLSEvent.FRAGMENT_LOADED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.LEVEL_LOADED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.AUDIO_LEVEL_LOADED,onHLSHandler);
@@ -247,6 +252,7 @@ package com.vhall.framework.media.provider
 		 */		
 		private function set playMetrics(value:HLSPlayMetrics):void
 		{
+			if(!_playMetrics) excute(MediaProxyStates.STREAM_START);
 			_playMetrics = value;
 			//trace("视频宽高：",_playMetrics.duration,_playMetrics.video_width,_playMetrics.video_height);
 		}

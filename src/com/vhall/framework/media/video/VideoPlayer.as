@@ -99,6 +99,7 @@ package com.vhall.framework.media.video
 							attachView(_proxy.stream);
 						}
 						volume = _videoOption.volume;
+						
 						break;
 					case MediaProxyStates.STREAM_FULL:
 					case MediaProxyStates.STREAM_SIZE_NOTIFY:
@@ -313,8 +314,6 @@ package com.vhall.framework.media.video
 				{
 					_proxy.time = value;
 				}
-			}else{
-				_videoOption.time = value;
 			}
 		}
 		
@@ -341,6 +340,16 @@ package com.vhall.framework.media.video
 		public function get loaded():Number
 		{
 			if(_proxy.type == MediaProxyType.HTTP) return (_proxy as IProgress).loaded();
+			return 0;
+		}
+		
+		/**
+		 * 视频总时长
+		 * @return 
+		 */		
+		public function get duration():Number
+		{
+			if(_proxy) return _proxy.duration;
 			return 0;
 		}
 		
@@ -413,7 +422,6 @@ package com.vhall.framework.media.video
 class VideoOptions
 {
 	public var volume:Number = 0.68;
-	public var time:Number = 0;
 	
 	private static var _instance:VideoOptions;
 	

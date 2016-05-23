@@ -23,8 +23,6 @@ package com.vhall.framework.media.provider
 	import flash.net.NetStream;
 	import flash.net.NetStreamPlayOptions;
 	import flash.net.NetStreamPlayTransitions;
-	import flash.net.Responder;
-	import flash.utils.setInterval;
 	
 	CONFIG::LOGGING {
 		import org.mangui.hls.utils.Log;
@@ -228,7 +226,18 @@ package com.vhall.framework.media.provider
 		 */		
 		protected function get client():Object
 		{
-			return {"onBWCheck":onBWCheck,"onBWDone":onBWDone,"onCuePoint":onCurePoint,"onImageData":onImageData,"onMetaData":onMetaData,"onPlayStatus":onPlayStatus,"onSeekPoint":onSeekPoint,"onTextData":onTextData};
+			return {"onPublishData":onPublishData,"onBWCheck":onBWCheck,"onBWDone":onBWDone,
+				"onCuePoint":onCurePoint,"onImageData":onImageData,"onMetaData":onMetaData,
+				"onPlayStatus":onPlayStatus,"onSeekPoint":onSeekPoint,"onTextData":onTextData};
+		}
+		
+		/**
+		 * 推流端发送过来的网络状态信息
+		 * @param value
+		 */		
+		protected function onPublishData(value:*):void
+		{
+			//value.lag为当前flash推流端延迟比较量
 		}
 		protected function onBWCheck(...value):Number
 		{
