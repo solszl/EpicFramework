@@ -369,7 +369,7 @@ package com.vhall.framework.media.provider
 		
 		override public function toString():String
 		{
-			return _type.toLocaleUpperCase() + "拉流：" + bytesPerSecond.toFixed(2) +" k/s";
+			return _type.toLocaleUpperCase() + "拉流：" + Number(bytesPerSecond/1024).toFixed(2) +" k/s";
 		}
 	}
 }

@@ -239,10 +239,7 @@ package com.vhall.framework.media.provider
 		 */		
 		private function set loadMetrics(value:HLSLoadMetrics):void
 		{
-			if(value&&!_loadMetrics)
-			{
-				_loadMetrics = value;
-			}
+			_loadMetrics = value;
 		}
 		
 		/**
@@ -250,11 +247,8 @@ package com.vhall.framework.media.provider
 		 */		
 		private function set playMetrics(value:HLSPlayMetrics):void
 		{
-			if(value&&!_playMetrics)
-			{
-				_playMetrics = value;
-				//trace("视频宽高：",_playMetrics.duration,_playMetrics.video_width,_playMetrics.video_height);
-			}
+			_playMetrics = value;
+			//trace("视频宽高：",_playMetrics.duration,_playMetrics.video_width,_playMetrics.video_height);
 		}
 		
 		override public function set volume(value:Number):void
@@ -271,6 +265,17 @@ package com.vhall.framework.media.provider
 		{
 			if(!_hls) return null;
 			return _hls.stream;
+		}
+		
+		public function get loaded():Number
+		{
+			if(stream) return _hls.position + stream.bufferLength / duration;
+			return 0;
+		}
+		
+		override public function toString():String
+		{
+			return _type.toLocaleUpperCase() + " 拉流：" + Number(_loadMetrics.bandwidth/8000).toFixed(2) + " k/s";
 		}
 	}
 }

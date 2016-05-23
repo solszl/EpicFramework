@@ -100,11 +100,12 @@ package com.vhall.framework.media.video
 						}
 						volume = _videoOption.volume;
 						break;
+					case MediaProxyStates.STREAM_FULL:
 					case MediaProxyStates.STREAM_SIZE_NOTIFY:
 						updateVideo();
 						break;
 					case MediaProxyStates.PUBLISH_NOTIFY:
-						_video.attachCamera((_proxy as IPublish).usedCam);
+						attachView((_proxy as IPublish).usedCam);
 						break;
 				}
 				
@@ -156,20 +157,25 @@ package com.vhall.framework.media.video
 		private function updateVideo():void
 		{
 			drawBackground();
-			
+			var size:Object = {width:0,height:0};
 			if(_cameraView)
 			{
-				_video.width = _viewPort.width;
-				_video.height = _viewPort.height;
-				_video.x = _viewPort.left + (_viewPort.width - _video.width >> 1);
-				_video.y = _viewPort.top + (_viewPort.height - _video.height >> 1);
-				return;
+				if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
+				{
+					var iPub:IPublish = _proxy as IPublish;
+					if(iPub.usedCam)
+					{
+						size.width = iPub.usedCam.width;
+						size.height = iPub.usedCam.height;
+					}
+				}
+			}else{
+				size.width = _video.videoWidth;
+				size.height = _video.videoHeight;
 			}
-			var ratio:Number = Math.min(_viewPort.width/_video.videoWidth,_viewPort.height/_video.videoHeight);
-			
-			_video.width = _video.videoWidth*ratio;
-			_video.height = _video.videoHeight*ratio;
-			
+			var ratio:Number = Math.min(_viewPort.width/size.width,_viewPort.height/size.height);
+			_video.width = size.width * ratio;
+			_video.height = size.height * ratio;
 			_video.x = _viewPort.left + (_viewPort.width - _video.width >> 1);
 			_video.y = _viewPort.top + (_viewPort.height - _video.height >> 1);
 		}
