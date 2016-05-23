@@ -20,6 +20,13 @@ package com.vhall.framework.media.provider
 	import flash.media.scanHardware;
 	import flash.system.Security;
 	import flash.system.SecurityPanel;
+	import flash.utils.clearInterval;
+	import flash.utils.setInterval;
+	
+	CONFIG::LOGGING
+	{
+		import org.mangui.hls.utils.Log;
+	}
 	
 	/**
 	 * 推流代理
@@ -28,6 +35,11 @@ package com.vhall.framework.media.provider
 	{
 		private var _cam:Camera;
 		private var _mic:Microphone;
+		
+		/**
+		 * 推流信息广播定时id 
+		 */		
+		private var _id:int;
 		
 		public function PublishProxy()
 		{
@@ -47,6 +59,7 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetStream_Play_PublishNotify:
 					break;
 				case InfoCode.NetStream_Publish_Start:
+					sendMetadata();
 					excute(MediaProxyStates.PUBLISH_NOTIFY);
 					break;
 				case InfoCode.NetStream_Publish_BadName:
@@ -59,6 +72,26 @@ package com.vhall.framework.media.provider
 					excute(MediaProxyStates.UN_PUBLISH_NOTIFY);
 					break;
 			}
+		}
+		
+		private function sendMetadata():void
+		{
+			var metaData:Object = {};
+			metaData.server = "http://www.vhall.com";
+			metaData.camera = _cam.name;
+			metaData.microphone = _mic.name;
+			metaData.width = _cam.width;
+			metaData.height = _cam.height;
+			stream && stream.send("@setDataFrame","onMetaData",metaData);
+			
+			clearInterval(_id);
+			_id = setInterval(function():void
+			{
+				if(stream)
+				{
+					stream.send("@setDataFrame","onPublishData",{"lag":latency});
+				}
+			},10000);
 		}
 		
 		public function publish(cam:*, mic:*):void
@@ -117,9 +150,36 @@ package com.vhall.framework.media.provider
 		
 		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
 		{
-			super.changeVideoUrl(uri, streamUrl, autoPlay);
+			var oldUri:String = this._uri;
+			var oldStreamUrl:String = this._streamUrl;
 			
-			_ns && _ns.publish(_streamUrl);
+			_autoPlay = autoPlay;
+			_uri = uri;
+			_streamUrl = streamUrl;
+			
+			valid();
+			
+			if(oldUri == uri && oldStreamUrl != streamUrl)
+			{
+				_ns && _ns.publish(_streamUrl);
+			}else{
+				//清除监听
+				clearNsListeners();
+				//重新链接
+				try{
+					_conn.connect(uri);
+				}catch(e:Error){
+					CONFIG::LOGGING{
+						Log.error("netConnection 切换链接失败:"+_uri);
+					}
+				}
+			}
+		}
+		
+		override protected function gc():void
+		{
+			super.gc();
+			clearInterval(_id);
 		}
 		
 		override public function start():void
@@ -169,6 +229,8 @@ package com.vhall.framework.media.provider
 				cam.setQuality(0,75);
 				cam.setKeyFrameInterval(15);
 				cam.setMotionLevel(50);
+				//本地显示回放是否使用压缩后的视频流，设置为true显示画面和用户更像是
+				//cam.setLoopback(true);
 				
 				return cam;
 			}
@@ -188,12 +250,15 @@ package com.vhall.framework.media.provider
 
 				mic.codec = SoundCodec.SPEEX;
 				mic.setSilenceLevel(0);
+				mic.setUseEchoSuppression(true);//是否使用回音抑制功能
+				mic.setLoopBack(false);//麦克声音不在本地回放
 				mic.encodeQuality = 8;
 				mic.noiseSuppressionLevel = -30;
 				var micEnopt:MicrophoneEnhancedOptions = new MicrophoneEnhancedOptions();
 				micEnopt.autoGain = false;
 				micEnopt.nonLinearProcessing = false;
 				mic.enhancedOptions = micEnopt;
+				mic.rate = 22;
 				
 				volume = _volume;
 				
@@ -229,6 +294,21 @@ package com.vhall.framework.media.provider
 				//gain 0--100
 				_mic.gain = value * 100;
 			}
+		}
+		
+		/**
+		 * 推流延时，数字越大推流端网速越差，数值具体不代表任何其它意义
+		 * @return 
+		 */		
+		private function get latency():Number
+		{
+			if(stream) return Number((stream.info.videoBufferByteLength + stream.info.audioBufferByteLength) / stream.info.maxBytesPerSecond);
+			return 0;
+		}
+		
+		override public function toString():String
+		{
+			return _type.toLocaleUpperCase() + " 推流LAG：" + latency.toFixed(2) + "s";
 		}
 	}
 }

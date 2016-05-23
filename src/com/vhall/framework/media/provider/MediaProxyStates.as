@@ -51,7 +51,7 @@ package com.vhall.framework.media.provider
 		/** 视频填充缓冲区通知*/
 		public static const STREAM_LOADING:String = "streamLoading";
 		
-		/** 开始播放通知*/
+		/** 开始播放通知,之后可以seek*/
 		public static const STREAM_START:String = "streamStart";
 		
 		/** 播放结束通知*/

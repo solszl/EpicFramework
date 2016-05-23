@@ -12,6 +12,7 @@ package com.vhall.framework.media.provider
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.NetDataEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.media.H264Level;
@@ -81,13 +82,15 @@ package com.vhall.framework.media.provider
 			_ns.addEventListener(NetStatusEvent.NET_STATUS,statusHandler);
 			_ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 			_ns.addEventListener(IOErrorEvent.IO_ERROR,errorHandler);
-			//_ns.addEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
+			_ns.addEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
 			
 			volume = _volume;
 			
 			excute(MediaProxyStates.CONNECT_NOTIFY);
 			
 			_autoPlay&&start();
+			
+			_conn.call("checkBandwidth",null);
 		}
 		
 		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
@@ -169,9 +172,9 @@ package com.vhall.framework.media.provider
 		
 		protected function statusHandler(e:NetStatusEvent):void
 		{
-			CONFIG::LOGGING{
+			/*CONFIG::LOGGING{
 				Log.info("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : ""));
-			}
+			}*/
 			switch(e.info.code)
 			{
 				case InfoCode.NetConnection_Connect_Success:
@@ -223,7 +226,32 @@ package com.vhall.framework.media.provider
 		 */		
 		protected function get client():Object
 		{
-			return {"onCuePoint":onCurePoint,"onImageData":onImageData,"onMetaData":onMetaData,"onPlayStatus":onPlayStatus,"onSeekPoint":onSeekPoint,"onTextData":onTextData};
+			return {"onPublishData":onPublishData,"onBWCheck":onBWCheck,"onBWDone":onBWDone,
+				"onCuePoint":onCurePoint,"onImageData":onImageData,"onMetaData":onMetaData,
+				"onPlayStatus":onPlayStatus,"onSeekPoint":onSeekPoint,"onTextData":onTextData};
+		}
+		
+		/**
+		 * 推流端发送过来的网络状态信息
+		 * @param value
+		 */		
+		protected function onPublishData(value:*):void
+		{
+			//value.lag为当前flash推流端延迟比较量
+		}
+		protected function onBWCheck(...value):Number
+		{
+			/*CONFIG::LOGGING{
+				Log.info("onBWCheck:"+JSON.stringify(value));
+			}*/
+			//网速检测，返回0告诉服务器已经收到数据
+			return 0;
+		}
+		protected function onBWDone(...value):void
+		{
+			/*CONFIG::LOGGING{
+				Log.info("网速："+Number(value[0]/1024).toFixed(2)+" k/s"+" 延迟："+value[3]+" ms");
+			}*/
 		}
 		protected function onCurePoint(...value):void
 		{
@@ -264,6 +292,16 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		protected function mediaHandler(e:NetDataEvent):void
+		{
+			if(!this.client.hasOwnProperty(e.info["handler"]))
+			{
+				CONFIG::LOGGING{
+					Log.info("本地回调未处理:"+JSON.stringify(e.info["handler"]));
+				}
+			}
+		}
+		
 		//清除netstream的监听
 		protected function clearNsListeners():void
 		{
@@ -272,7 +310,7 @@ package com.vhall.framework.media.provider
 				_ns.removeEventListener(NetStatusEvent.NET_STATUS,statusHandler);
 				_ns.removeEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 				_ns.removeEventListener(IOErrorEvent.IO_ERROR,errorHandler);
-				//_ns.removeEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
+				_ns.removeEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
 				_ns.dispose();
 				_ns = null;
 			}
@@ -330,6 +368,17 @@ package com.vhall.framework.media.provider
 				st.volume = _volume;
 				_ns.soundTransform = st;
 			}
+		}
+		
+		private function get bytesPerSecond():Number
+		{
+			if(stream) return stream.info.dataBytesPerSecond/1024;
+			return 0;
+		}
+		
+		override public function toString():String
+		{
+			return _type.toLocaleUpperCase() + "拉流：" + Number(bytesPerSecond/1024).toFixed(2) +" k/s";
 		}
 	}
 }

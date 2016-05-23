@@ -13,6 +13,7 @@ package com.vhall.framework.media.provider
 	
 	import flash.net.NetStreamPlayOptions;
 	import flash.net.NetStreamPlayTransitions;
+	import flash.utils.getTimer;
 	
 	CONFIG::LOGGING{
 		import org.mangui.hls.utils.Log;
@@ -23,6 +24,8 @@ package com.vhall.framework.media.provider
 	 */		
 	public class HttpProxy extends RtmpProxy implements IProgress
 	{
+		private var _startTime:uint = 0;
+		
 		public function HttpProxy()
 		{
 			super();
@@ -45,6 +48,8 @@ package com.vhall.framework.media.provider
 					Log.error("netConnection 建立链接失败:"+_uri);
 				}
 			}
+			
+			_startTime = getTimer();
 		}
 		
 		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
@@ -66,6 +71,7 @@ package com.vhall.framework.media.provider
 				npo.transition = NetStreamPlayTransitions.SWITCH;
 				_autoPlay&&(_ns && _ns.play2(npo));
 			}
+			_startTime = getTimer();
 		}
 		
 		override protected function createStream():void
@@ -83,7 +89,7 @@ package com.vhall.framework.media.provider
 		
 		public function get bytesLoaded():int
 		{
-			if(_ns) _ns.bytesLoaded;
+			if(_ns) return _ns.bytesLoaded;
 			return 0;
 		}
 		
@@ -100,7 +106,7 @@ package com.vhall.framework.media.provider
 		
 		public function get bytesTotal():int
 		{
-			if(_ns) _ns.bytesTotal;
+			if(_ns) return _ns.bytesTotal;
 			return 0;
 		}
 		
@@ -108,6 +114,12 @@ package com.vhall.framework.media.provider
 		{
 			if(!_ns) return 0;
 			return bytesLoaded / bytesTotal;
+		}
+		
+		override public function toString():String
+		{
+			var speed:uint = (bytesLoaded/1024)/((getTimer() - _startTime)/1000);
+			return _type.toLocaleUpperCase() + "播放平均网速：" + speed.toFixed(2) +" k/s";
 		}
 	}
 }
