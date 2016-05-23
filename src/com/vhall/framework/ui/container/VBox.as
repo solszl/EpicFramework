@@ -37,8 +37,7 @@ package com.vhall.framework.ui.container
 
 		override protected function layoutChildren():void
 		{
-			super.layoutChildren();
-
+//			super.layoutChildren();
 			var numChild:int = this.numChildren;
 			var child:DisplayObject;
 			var ypos:Number = marginTop;
@@ -49,7 +48,6 @@ package com.vhall.framework.ui.container
 				ypos += child.height;
 				ypos += gap;
 
-				//取出来最高的，以便纵向布局使用
 				maxWidth = child.width > maxWidth ? child.width : maxWidth;
 			}
 

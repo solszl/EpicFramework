@@ -4,6 +4,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.load.ResourceItems;
 	import com.vhall.framework.load.ResourceLibrary;
 	import com.vhall.framework.load.ResourceLoader;
+	import com.vhall.framework.ui.utils.ComponentUtils;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -35,6 +36,8 @@ package com.vhall.framework.ui.controls
 		
 		private var _w:Number;
 		private var _h:Number;
+		
+		public var setBitmapDataCallBK:Function = null;
 
 		public function Image(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
@@ -128,6 +131,11 @@ package com.vhall.framework.ui.controls
 				//直接将该数据复制
 				fillByBitmapdata(value as BitmapData);
 			}
+			else if(value is DisplayObject)
+			{
+				fillByBitmapdata(ComponentUtils.getDisplayBmd(value as DisplayObject));
+				
+			}
 			else
 			{
 				// WTF?
@@ -142,7 +150,7 @@ package com.vhall.framework.ui.controls
 		{
 			if (value.indexOf("assets/") == 0)
 			{
-				bitmap.bitmapData = ResourceLibrary.getBitmapData(String(value));
+				setBitmapData(ResourceLibrary.getBitmapData(String(value)));
 				if (bitmap.bitmapData == null)
 				{
 					failed(null, "");
@@ -153,7 +161,7 @@ package com.vhall.framework.ui.controls
 			{
 				if (ResourceItems.hasLoaded(value))
 				{
-					bitmap.bitmapData = ResourceItems.getResource(value).bitmapData;
+					setBitmapData(ResourceItems.getResource(value).bitmapData);
 					
 					if (bitmap.bitmapData == null)
 					{
@@ -198,7 +206,7 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 
-			bitmap.bitmapData = (content as Bitmap).bitmapData;
+			setBitmapData((content as Bitmap).bitmapData);
 			
 			resizeIfNeed();
 			ResourceItems.addToCache(item.url, content as DisplayObject);
@@ -210,7 +218,6 @@ package com.vhall.framework.ui.controls
 			graphics.beginFill(0x00DEFF, 0.3);
 			graphics.drawRect(0, 0, 5, 5);
 			graphics.endFill();
-
 			trace(msg);
 		}
 		
@@ -237,6 +244,17 @@ package com.vhall.framework.ui.controls
 			}
 		}
 
+		private function setBitmapData(bmd:BitmapData):void
+		{
+			bitmap.bitmapData = bmd;
+			if(setBitmapDataCallBK == null)
+			{
+				return;
+			}
+			
+			setBitmapDataCallBK();
+		}
+		
 		override protected function invalidate():void
 		{
 			super.invalidate();

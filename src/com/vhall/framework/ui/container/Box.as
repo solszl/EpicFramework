@@ -2,7 +2,7 @@ package com.vhall.framework.ui.container
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.ui.controls.UIComponent;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
@@ -109,9 +109,9 @@ package com.vhall.framework.ui.container
 
 		override protected function invalidate():void
 		{
-			super.invalidate();
-
 			layoutChildren();
+			
+			super.invalidate();
 		}
 
 		public function removeAllChild():void
@@ -133,7 +133,37 @@ package com.vhall.framework.ui.container
 		 */
 		protected function layoutChildren():void
 		{
-
+			var child:DisplayObject;
+			var num:int = numChildren;
+			var comp:UIComponent;
+			// 先算一个 预估的宽高
+			
+			// 根据预估的宽高进行布局
+			for (var i:int = 0; i < num; i++) 
+			{
+				child = this.getChildAt(i);
+				if((child is UIComponent) == false)
+				{
+					continue;
+				}
+				
+				comp = child as UIComponent;
+				// 如果上下左右有不为空的，则进行布局
+				if(comp.left != null || comp.right != null || comp.top != null || comp.bottom != null)
+				{
+					
+				}
+				
+				if(!isNaN(comp.horizontalCenter))
+				{
+					
+				}
+				
+				if(!isNaN(comp.verticalCenter))
+				{
+					
+				}
+			}
 		}
 	}
 }

@@ -31,17 +31,11 @@ package com.vhall.framework.app.manager
 			StageManager.stage.scaleMode = StageScaleMode.NO_SCALE;
 			StageManager.stage.align = StageAlign.TOP_LEFT;
 			StageManager.stage.quality = StageQuality.HIGH;
-			StageManager.stage.addEventListener(Event.RESIZE, onStageResize);
 			
 			if(ApplicationDomain.currentDomain.hasDefinition("flash.evnets.UncaughtErrorEvent"))
 			{
 				StageManager.stage.loaderInfo["uncaughtErrorEvents"].addEventListener(ApplicationDomain.currentDomain.hasDefinition("flash.evnets.UncaughtErrorEvent")["UNCAUGHT_ERROR"], onUncaughtErrorHandler);
 			}
-		}
-		
-		protected static function onStageResize(event:Event=null):void
-		{
-			
 		}
 		
 		/**
