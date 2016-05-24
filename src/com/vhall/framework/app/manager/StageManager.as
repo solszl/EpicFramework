@@ -43,7 +43,7 @@ package com.vhall.framework.app.manager
 		 * @return 
 		 * 
 		 */		
-		public static function getStageWidth():Number
+		public static function get stageWidth():Number
 		{
 			if(stage)
 				return stage.stageWidth;
@@ -56,7 +56,7 @@ package com.vhall.framework.app.manager
 		 * @return 
 		 * 
 		 */		
-		public static function getStageHeight():Number
+		public static function get stageHeight():Number
 		{
 			if(stage)
 				return stage.stageHeight;
