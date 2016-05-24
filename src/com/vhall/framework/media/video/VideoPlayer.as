@@ -59,6 +59,7 @@ package com.vhall.framework.media.video
 			this.mouseChildren = false;
 			
 			_video = new Video();
+			_video.smoothing = true;
 			addChild(_video);
 			
 			_viewPort = _video.getBounds(this);
@@ -86,6 +87,9 @@ package com.vhall.framework.media.video
 		public function connect(type:String,uri:String,stream:String = null,handler:Function = null,autoPlay:Boolean = true):void
 		{
 			_proxy = MediaProxyFactory.create(type);
+			
+			//推流之外的播放器，启用图像增强
+			filters = _proxy.type != MediaProxyType.PUBLISH ? [new SharpenFilter(0.1)] : [];
 			
 			_proxy.connect(uri,stream,function(states:String,...value):void
 			{
@@ -246,6 +250,28 @@ package com.vhall.framework.media.video
 				//_video.clear();
 				//_video.attachCamera(this.isPlaying?((_proxy as IPublish).usedCam):null);
 			}
+		}
+		
+		/**
+		 * 推流时候获取麦克风当前的活动量
+		 * @return 
+		 */		
+		public function get micActivityLevel():Number
+		{
+			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
+				return (_proxy as IPublish).micActivityLevel;
+			return 0;
+		}
+		
+		/**
+		 * 推流时候获取摄像头当前的活动量
+		 * @return 
+		 */	
+		public function get camActivityLevel():Number
+		{
+			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
+				return (_proxy as IPublish).camActivityLevel;
+			return 0;
 		}
 		
 		/**
@@ -418,6 +444,7 @@ package com.vhall.framework.media.video
 		}
 	}
 }
+import flash.filters.ConvolutionFilter;
 
 class VideoOptions
 {
@@ -429,4 +456,39 @@ class VideoOptions
 	{
 		return _instance ||= new VideoOptions();
 	}
+}
+
+class SharpenFilter extends ConvolutionFilter {
+	// Protected Properties:
+	protected var _amount:Number;
+	
+	// Initialization:
+	/**
+	 * Constructs a new SharpenFilter instance.
+	 **/
+	public function SharpenFilter(amount:Number) {
+		super(3,3,[0,0,0,0,1,0,0,0,0],1);
+		this.amount = amount;
+	}
+	
+	// Public getter / setters:
+	/**
+	 * A number between 0 and 1 indicating the amount of sharpening to apply.
+	 **/
+	public function set amount(amount:Number):void {
+		_amount = amount;
+		var a:Number = amount/-1;
+		var b:Number = amount/-2;
+		var c:Number = a*-4+b*-4+1;
+		matrix = [b,a,b,
+			a,c,a,
+			b,a,b];
+		
+		//滤波值：-4，-8
+		/*matrix = [0,1,0,
+			1,-4,1,
+			0,1,0];*/
+	}
+	public function get amount():Number { return _amount; }
+	
 }

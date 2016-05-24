@@ -33,6 +33,18 @@ package com.vhall.framework.media.interfaces
 		function get usedMic():Microphone;
 		
 		/**
+		 * 当前麦克风的活动状态量
+		 * @return 
+		 */		
+		function get micActivityLevel():Number;
+		
+		/**
+		 * 当前摄像头的活动状态量
+		 * @return 
+		 */		
+		function get camActivityLevel():Number;
+		
+		/**
 		 * 关闭摄像头采集
 		 * @param bool
 		 */		
