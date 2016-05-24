@@ -1,6 +1,9 @@
 package com.vhall.framework.app
 {
 	import com.vhall.framework.app.manager.StageManager;
+	import com.vhall.framework.keyboard.KeyboardMapper;
+	import com.vhall.framework.log.Logger;
+	import com.vhall.framework.log.LoggerClip;
 	
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -8,6 +11,7 @@ package com.vhall.framework.app
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
+	import flash.ui.Keyboard;
 	
 	/**
 	 *	整个应用程序的基类 
@@ -35,6 +39,8 @@ package com.vhall.framework.app
 		{
 			removeEventListener(Event.ENTER_FRAME,onEnter);
 			StageManager.init(this);
+			initLog();
+			initKeyboard();
 			//加载loading皮肤
 			loadLoadingSkin();
 		}
@@ -66,6 +72,24 @@ package com.vhall.framework.app
 			l.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoadComplete);
 			l.unload();
 			l = null;
+		}
+		
+		private function initLog():void
+		{
+			var clip:LoggerClip = new LoggerClip(this);
+			Logger.mcOutputClip = clip;
+			Logger.getLogger().info("Log inited");
+		}
+		
+		private function initKeyboard():void
+		{
+			var km:KeyboardMapper = new KeyboardMapper(StageManager.stage);
+			km.mapListener(showHideLog,Keyboard.CONTROL,Keyboard.ALTERNATE,Keyboard.SHIFT,Keyboard.L);
+		}
+		
+		private function showHideLog():void
+		{
+			Logger.getLogger().toggle();
 		}
 	}
 }
