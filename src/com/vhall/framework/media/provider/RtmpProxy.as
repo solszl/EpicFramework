@@ -237,6 +237,7 @@ package com.vhall.framework.media.provider
 		 */		
 		protected function onPublishData(value:*):void
 		{
+			//trace(JSON.stringify(value))
 			//value.lag为当前flash推流端延迟比较量
 		}
 		protected function onBWCheck(...value):Number
@@ -271,6 +272,11 @@ package com.vhall.framework.media.provider
 			{
 				_duration = value["duration"];
 				excute(MediaProxyStates.DURATION_NOTIFY,_duration);
+			}
+			
+			CONFIG::LOGGING
+			{
+				Log.info("onMetaData:"+JSON.stringify(value));	
 			}
 		}
 		protected function onPlayStatus(...value):void

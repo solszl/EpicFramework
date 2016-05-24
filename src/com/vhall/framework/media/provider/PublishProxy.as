@@ -74,22 +74,33 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		/**
+		 * 向流中发送统计数据
+		 */		
 		private function sendMetadata():void
 		{
+			//发送头信息
 			var metaData:Object = {};
 			metaData.server = "http://www.vhall.com";
-			metaData.camera = _cam.name;
-			metaData.microphone = _mic.name;
-			metaData.width = _cam.width;
-			metaData.height = _cam.height;
+			metaData.camera = _cam?_cam.name:"未找到";
+			metaData.microphone = _mic?_mic.name:"未找到";
+			if(_cam)
+			{
+				metaData.width = _cam.width;
+				metaData.height = _cam.height;
+			}
 			stream && stream.send("@setDataFrame","onMetaData",metaData);
 			
+			//定时器发送推流统计信息
 			clearInterval(_id);
 			_id = setInterval(function():void
 			{
 				if(stream)
 				{
-					stream.send("@setDataFrame","onPublishData",{"lag":latency});
+					stream.send("@setDataFrame","onPublishData",{
+						"lag":latency,"micActivityLevel":micActivityLevel,"camActivityLevel":camActivityLevel,
+						"camMute":_cam?_cam.muted:false,"micMute":_mic?_mic.muted:false,"volume":_volume
+					});
 				}
 			},10000);
 		}
@@ -113,21 +124,29 @@ package com.vhall.framework.media.provider
 			if(_cam.muted||_mic.muted)
 			{
 				flash.system.Security.showSettings(flash.system.SecurityPanel.PRIVACY);
-				_cam.addEventListener(StatusEvent.STATUS,function(e:StatusEvent):void
-				{
-					if(e.code == "Camera.Unmuted")
-					{
-						_ns.attachCamera(_cam);
-						_ns.attachAudio(_mic);
-						_ns.publish(_streamUrl);
-					}
-				});
-				
+				_cam.addEventListener(StatusEvent.STATUS,hardwareHandler);
 			}else{
-				_ns.attachCamera(_cam);
-				_ns.attachAudio(_mic);
-				_ns.publish(_streamUrl);
+				attach();
 			}
+		}
+		
+		private function hardwareHandler(e:StatusEvent):void
+		{
+			if(e.code == "Camera.Unmuted")
+				attach();
+		}
+		
+		/**
+		 * 获取硬件音视频源
+		 */		
+		private function attach():void
+		{
+			!_cam && excute(MediaProxyStates.NO_HARD_WARE,"Camera is not Found");
+			!_mic && excute(MediaProxyStates.NO_HARD_WARE,"Microphone is not Found");
+			
+			_cam && _ns.attachCamera(_cam);
+			_mic && _ns.attachAudio(_mic);
+			_ns.publish(_streamUrl);
 		}
 		
 		public function set cameraMuted(bool:Boolean):void
@@ -180,6 +199,12 @@ package com.vhall.framework.media.provider
 		{
 			super.gc();
 			clearInterval(_id);
+			if(_cam && _cam.hasEventListener(StatusEvent.STATUS))
+			{
+				_cam.removeEventListener(StatusEvent.STATUS,hardwareHandler);
+			}
+			_cam = null;
+			_mic = null;
 		}
 		
 		override public function start():void
@@ -280,6 +305,18 @@ package com.vhall.framework.media.provider
 		override public function get isPlaying():Boolean
 		{
 			return _playing;
+		}
+		
+		public function get micActivityLevel():Number
+		{
+			if(_cam) return _cam.activityLevel;
+			return 0;
+		}
+		
+		public function get camActivityLevel():Number
+		{
+			if(_mic) return _mic.activityLevel;
+			return 0;
 		}
 		
 		/**

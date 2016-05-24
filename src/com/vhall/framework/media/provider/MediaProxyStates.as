@@ -60,5 +60,8 @@ package com.vhall.framework.media.provider
 		/** 未找到指定名称的流文件*/
 		public static const STREAM_NOT_FOUND:String = "streamNotFound";
 		
+		/** 未找到硬件设备,参数为字符串说明 */		
+		public static const NO_HARD_WARE:String = "noHardWare";
+		
 	}
 }
