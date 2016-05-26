@@ -1,6 +1,7 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
+	import com.vhall.framework.ui.manager.TooltipManager;
 	import com.vhall.framework.utils.StringUtil;
 	
 	import flash.display.DisplayObjectContainer;
@@ -165,6 +166,21 @@ package com.vhall.framework.ui.controls
 		private var _bottom:Object;
 		private var _horizontalCenter:Number;
 		private var _verticalCenter:Number;
+		private var _callOut:String = "none";
+		
+		/**
+		 *	tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
+		 */		
+		[Inspectable(category = "General", enumeration = "top,left,right,bottom,none", defaultValue = "none")]
+		public function get callOut():String
+		{
+			return _callOut;
+		}
+		
+		public function set callOut(value:String):void
+		{
+			_callOut = value;
+		}
 		
 		public function get tooltip():Object
 		{
@@ -173,7 +189,13 @@ package com.vhall.framework.ui.controls
 
 		public function set tooltip(value:Object):void
 		{
+			if(_tooltip == value)
+			{
+				return;
+			}
+			
 			_tooltip = value;
+			TooltipManager.getInstance().registTooltip(this,value);
 		}
 
 		public function get left():Object
