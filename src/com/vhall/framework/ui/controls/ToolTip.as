@@ -1,7 +1,7 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.utils.StringUtil;
-	
+
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.text.TextField;
@@ -20,13 +20,14 @@ package com.vhall.framework.ui.controls
 		private var tf:TextField;
 
 		private static const PADDING:Number = 6;
-		
+
 		private static const MSG:String = "<font color='#FF0000'>{0}</font>";
-		
+
 		private static const MAX_WIDTH:Number = 200;
-		
+
 		private var _w:Number = 0;
 		private var _h:Number = 0;
+
 		public function ToolTip()
 		{
 			super();
@@ -35,57 +36,58 @@ package com.vhall.framework.ui.controls
 		}
 
 		private var _content:String;
+
 		public function setContent(value:String):void
 		{
 			if(_content == value)
 			{
 				return;
 			}
-			
+
 			_content = value;
 			initTextField();
-			
+
 			tf.wordWrap = false;
 			tf.multiline = false;
-			tf.htmlText = StringUtil.substitute(MSG,_content);
+			tf.htmlText = StringUtil.substitute(MSG, _content);
 			tf.width = 0;
 			tf.height = 20;
-			
+
 			var fmt:TextFormat = tf.defaultTextFormat;
 			fmt.leading = 2;
 			tf.defaultTextFormat = fmt;
-			
-			if (tf.textWidth > MAX_WIDTH)
+
+			if(tf.textWidth > MAX_WIDTH)
 			{
-				tf.wordWrap=true;
-				tf.multiline=true;
-				tf.width=MAX_WIDTH;
+				tf.wordWrap = true;
+				tf.multiline = true;
+				tf.width = MAX_WIDTH;
 			}
 			else
 			{
-				tf.width=tf.textWidth + 6;
+				tf.width = tf.textWidth + 6;
 			}
-			
-			tf.height=tf.textHeight + 6;
-			
-			_w=tf.textWidth + 6 + PADDING * 2;
-			_h=tf.textHeight + 6 + PADDING * 2;
-			
+
+			tf.height = tf.textHeight + 6;
+
+			_w = tf.textWidth + 6 + PADDING * 2;
+			_h = tf.textHeight + 6 + PADDING * 2;
+
 			drawBackground();
 		}
 
 
 		/**
-		 *	@private 初始化文本 
-		 * 
-		 */		
+		 *	@private 初始化文本
+		 *
+		 */
 		private function initTextField():void
 		{
-			if (tf != null)
+			if(tf != null)
 			{
 				return;
 			}
-			
+
 			tf = new TextField();
 			tf.selectable = false;
 			tf.textColor = 0xFFFFFF;
@@ -93,14 +95,14 @@ package com.vhall.framework.ui.controls
 			tf.y = PADDING;
 			addChild(tf);
 		}
-		
+
 		/**
-		 * @private 画背景 
-		 * 
-		 */		
+		 * @private 画背景
+		 *
+		 */
 		private function drawBackground():void
 		{
-			with (bg)
+			with(bg)
 			{
 				graphics.clear();
 				//边框颜色

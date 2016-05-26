@@ -10,7 +10,7 @@ package com.vhall.framework.ui.controls
 	{
 
 		function set selected(value:Boolean):void;
-		
+
 		/**
 		 *	返回当前选中状态
 		 * @return

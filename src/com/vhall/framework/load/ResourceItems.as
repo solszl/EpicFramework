@@ -20,7 +20,7 @@ package com.vhall.framework.load
 		 */
 		public static function getResource(key:String):Object
 		{
-			if (key in loadedItems)
+			if(key in loadedItems)
 			{
 				return loadedItems[key];
 			}
@@ -29,11 +29,11 @@ package com.vhall.framework.load
 		}
 
 		/**
-		 * 检测加载库中是否包含某路径的资源 
+		 * 检测加载库中是否包含某路径的资源
 		 * @param key
-		 * @return 
-		 * 
-		 */		
+		 * @return
+		 *
+		 */
 		public static function hasLoaded(key:String):Boolean
 		{
 			return key in loadedItems;
@@ -43,16 +43,16 @@ package com.vhall.framework.load
 		 * 添加文件到缓存中
 		 * @param key 通常为路径
 		 * @param content 图片为bitmap，动画为movieclip
-		 * 
-		 */		
+		 *
+		 */
 		public static function addToCache(key:String, content:DisplayObject):void
 		{
-			if (key in loadedItems)
+			if(key in loadedItems)
 			{
 				return;
 			}
 
-			if (content == null)
+			if(content == null)
 			{
 				return;
 			}

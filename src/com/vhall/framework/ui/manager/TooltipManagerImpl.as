@@ -2,7 +2,7 @@ package com.vhall.framework.ui.manager
 {
 	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.controls.ToolTip;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -22,7 +22,7 @@ package com.vhall.framework.ui.manager
 
 		// 所有含有tips的对象的字典
 		private static var targetMap:Dictionary;
-		
+
 		private var stage:Stage;
 		// 承载tips的容器
 		private var holder:Sprite;
@@ -59,10 +59,10 @@ package com.vhall.framework.ui.manager
 		private var previousTarget:DisplayObject;
 
 		/**
-		 *	注册tooltip 
+		 *	注册tooltip
 		 * @param target 接收鼠标事件的可显示对象
 		 * @param tooltip	tips
-		 */		
+		 */
 		public function registTooltip(target:DisplayObject, tooltip:Object):void
 		{
 			// 新旧tooltip一样的时候。 返回
@@ -70,7 +70,7 @@ package com.vhall.framework.ui.manager
 			{
 				return;
 			}
-			
+
 			// 将tooltip缓存到 tooltip对象池中
 			targetMap[target] = tooltip;
 
@@ -118,7 +118,7 @@ package com.vhall.framework.ui.manager
 			{
 				delete targetMap[target]
 			}
-			
+
 			if (checkIfOver(target))
 			{
 				showHideTip();
@@ -152,14 +152,14 @@ package com.vhall.framework.ui.manager
 		}
 
 		/**
-		 *	显隐tooltip， 当target对象不为空的时候， 则是显示tip 否则隐藏tip 
+		 *	显隐tooltip， 当target对象不为空的时候， 则是显示tip 否则隐藏tip
 		 * @param target
-		 * 
-		 */		
+		 *
+		 */
 		private function showHideTip(target:DisplayObject = null):void
 		{
 			this.currentTarget = target;
-			if(target == null)
+			if (target == null)
 			{
 				stage.removeEventListener(MouseEvent.MOUSE_MOVE, onStageMoveHandler);
 				previousTarget = null;
@@ -167,13 +167,13 @@ package com.vhall.framework.ui.manager
 				holder.visible = false;
 				return;
 			}
-			
-			if(target.stage == null || target.visible == false)
+
+			if (target.stage == null || target.visible == false)
 			{
 				return;
 			}
-			
-			if(previousTarget != target)
+
+			if (previousTarget != target)
 			{
 				previousTarget = target;
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, onStageMoveHandler);
@@ -182,57 +182,57 @@ package com.vhall.framework.ui.manager
 				holder.visible = true;
 			}
 		}
-		
-		
+
+
 		private function onMouseOverHandler(e:MouseEvent):void
 		{
 			showHideTip(DisplayObject(e.currentTarget));
 		}
-		
+
 		private function onMouseOutHandler(e:MouseEvent):void
 		{
 			showHideTip();
 		}
-		
+
 		private function onStageMoveHandler(e:MouseEvent):void
 		{
 			// update tooltip position
 			updatePosition();
 		}
-		
+
 		private function targetChanged():void
 		{
 			// 把tips容器放到舞台的最上方，或者修改为跟target.parent 一个层级
-			if(holder.parent == null)
+			if (holder.parent == null)
 			{
 				holder.mouseChildren = holder.mouseEnabled = false;
 				stage.addChild(holder);
 			}
-			
+
 			// holder 处在父容器层的最上方
-			holder.parent.setChildIndex(holder,holder.parent.numChildren - 1); 
+			holder.parent.setChildIndex(holder, holder.parent.numChildren - 1);
 			var content:Object = targetMap[currentTarget];
-			
-			while(holder.numChildren)
+
+			while (holder.numChildren)
 			{
 				tipsPool.push(holder.removeChildAt(0));
 			}
-			
+
 			var tip:ToolTip = tipsPool.length > 0 ? tipsPool.pop() : new ToolTip;
 			tip.setContent(targetMap[currentTarget].toString());
 			holder.addChild(tip);
 			updatePosition();
 		}
-		
+
 		private function updatePosition():void
 		{
-			if(!currentTarget.hasOwnProperty("callOut"))
+			if (!currentTarget.hasOwnProperty("callOut"))
 			{
 				showHideTip();
 				return;
 			}
-			
-			switch(currentTarget["callOut"])
+
+			switch (currentTarget["callOut"])
 			{
 				case "left":
 					holder.x = currentTarget.x - holder.width - 2;
@@ -255,26 +255,26 @@ package com.vhall.framework.ui.manager
 					break;
 			}
 		}
-		
+
 		private function useStageMousePosition():void
 		{
-			var target:DisplayObject=currentTarget as DisplayObject
-			var x:int=stage.mouseX + 20; //point.x;
-			var y:int=stage.mouseY + 20; //point.y;
+			var target:DisplayObject = currentTarget as DisplayObject
+			var x:int = stage.mouseX + 20; //point.x;
+			var y:int = stage.mouseY + 20; //point.y;
 			//边界检测
 			if (x + holder.width > stage.stageWidth)
 			{
-				x=stage.mouseX - holder.width;
+				x = stage.mouseX - holder.width;
 			}
 			if (y + holder.height > stage.stageHeight)
 			{
-				y=stage.mouseY - holder.height;
+				y = stage.mouseY - holder.height;
 			}
-			
-			holder.x=x;
-			holder.y=y;
+
+			holder.x = x;
+			holder.y = y;
 		}
-		
+
 		private var tipsPool:Array;
 	}
 }

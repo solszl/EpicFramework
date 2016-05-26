@@ -28,7 +28,7 @@ package com.vhall.framework.load
 
 		override public function load(item:Object, onComplete:Function = null, onProgress:Function = null, onFailed:Function = null):void
 		{
-			if (loader == null)
+			if(loader == null)
 			{
 				initLoader();
 			}
@@ -48,7 +48,7 @@ package com.vhall.framework.load
 		/**	初始化加载器*/
 		override protected function initLoader():void
 		{
-			if (loader != null)
+			if(loader != null)
 			{
 				return;
 			}
@@ -65,19 +65,19 @@ package com.vhall.framework.load
 
 		override protected function onCompleteHandler(event:Event):void
 		{
-			if (this.complete == null)
+			if(this.complete == null)
 			{
 				return;
 			}
 
 			var content:* = loader.content;
 			this.complete(currentItem, content, loader.contentLoaderInfo.applicationDomain);
-			
+
 			if(cache)
 			{
 				//将加载进来的数据进行缓存
 			}
-			
+
 			deinitLoader();
 		}
 

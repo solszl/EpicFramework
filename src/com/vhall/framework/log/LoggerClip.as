@@ -24,7 +24,7 @@ package com.vhall.framework.log
 		public function LoggerClip(root:Sprite, stage:Stage = null):void
 		{
 			this._root = root;
-			if (!_stage)
+			if(!_stage)
 			{
 				_stage = root.stage;
 			}
@@ -41,9 +41,9 @@ package com.vhall.framework.log
 			closeBtn.htmlText = "<a href='event:link'>关闭</a>";
 			closeBtn.mouseEnabled = true;
 			var _styleSheet:StyleSheet = new StyleSheet();
-			_styleSheet.setStyle("a:hover", {color: "#FFFFFF", textDecoration: "none"});
-			_styleSheet.setStyle("a:link", {color: "#ffff00", textDecoration: "none"});
-			_styleSheet.setStyle("a:active", {color: "#FF0000", textDecoration: "none"});
+			_styleSheet.setStyle("a:hover", {color:"#FFFFFF", textDecoration:"none"});
+			_styleSheet.setStyle("a:link", {color:"#ffff00", textDecoration:"none"});
+			_styleSheet.setStyle("a:active", {color:"#FF0000", textDecoration:"none"});
 			closeBtn.styleSheet = _styleSheet;
 			addChild(closeBtn);
 			closeBtn.addEventListener(TextEvent.LINK, onClose);
@@ -64,7 +64,7 @@ package com.vhall.framework.log
 
 		public function toggle():void
 		{
-			if (this.parent)
+			if(this.parent)
 			{
 				parent.removeChild(this);
 				_stage.removeEventListener(Event.RESIZE, onStageResize);
@@ -79,7 +79,7 @@ package com.vhall.framework.log
 
 		public function output(msg:String):void
 		{
-			if (this.curLines > MAX_LINES)
+			if(this.curLines > MAX_LINES)
 			{
 				clearOutput();
 			}

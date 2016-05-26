@@ -32,7 +32,7 @@ package com.vhall.framework.load
 		public function load(item:Object, onComplete:Function = null, onProgress:Function = null, onFailed:Function = null, useCache:Boolean = true):void
 		{
 			// 如果当前加载器正在加载，则不继续进行加载
-			if (context.isLoading)
+			if(context.isLoading)
 			{
 				return;
 			}
@@ -46,7 +46,7 @@ package com.vhall.framework.load
 			context.completeBK = onComplete;
 			context.progressBK = onProgress;
 			context.failedBK = onFailed;
-			switch (item.type)
+			switch(item.type)
 			{
 				case 1:
 					context.strategy = new LoaderStrategy();

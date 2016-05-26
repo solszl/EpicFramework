@@ -64,7 +64,7 @@ package com.vhall.framework.ui.controls
 		{
 			super.createChildren();
 			var _w:Number, _h:Number;
-			if (direction == HORIZONTAL)
+			if(direction == HORIZONTAL)
 			{
 				_w = 100;
 				_h = 12;
@@ -109,7 +109,7 @@ package com.vhall.framework.ui.controls
 		 */
 		protected function onDragStart(e:MouseEvent = null):void
 		{
-			if (stage)
+			if(stage)
 			{
 				// 添加这个move的作用是，如果鼠标移出dragbar 确保仍然相应拖拽，鼠标抬起的时候，移除
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseHandler);
@@ -126,7 +126,7 @@ package com.vhall.framework.ui.controls
 		 */
 		protected function onDragDrop(e:MouseEvent = null):void
 		{
-			if (stage)
+			if(stage)
 			{
 				stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseHandler);
 				stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseHandler);
@@ -147,7 +147,7 @@ package com.vhall.framework.ui.controls
 		 */
 		protected function fireEvent(e:MouseEvent, type:String):void
 		{
-			if (!this.hasEventListener(type))
+			if(!this.hasEventListener(type))
 			{
 				return;
 			}
@@ -249,7 +249,7 @@ package com.vhall.framework.ui.controls
 		 */
 		public function set value(value:Number):void
 		{
-			if (_value == value)
+			if(_value == value)
 			{
 				return;
 			}

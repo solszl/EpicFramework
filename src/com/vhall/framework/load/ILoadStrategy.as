@@ -15,29 +15,29 @@ package com.vhall.framework.load
 		 * @param onProgress
 		 * @param onFailed
 		 *
-		 */		
+		 */
 		function load(item:Object, onComplete:Function = null, onProgress:Function = null, onFailed:Function = null):void;
-		
+
 		/**
-		 * 析构 
-		 * 
-		 */		
+		 * 析构
+		 *
+		 */
 		function deinitLoader():void;
-		
+
 		/**
-		 *	是否正在加载 
-		 * @return 
-		 * 
-		 */		
+		 *	是否正在加载
+		 * @return
+		 *
+		 */
 		function get isLoading():Boolean;
-		
+
 		/**
-		 *	是否将加载进来的数据进行缓存 
-		 * @return 
-		 * 
-		 */		
+		 *	是否将加载进来的数据进行缓存
+		 * @return
+		 *
+		 */
 		function get cache():Boolean;
-		
+
 		function set cache(value:Boolean):void;
 	}
 }

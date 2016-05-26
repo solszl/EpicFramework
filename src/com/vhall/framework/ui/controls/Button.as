@@ -1,7 +1,7 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
-	
+
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
@@ -22,11 +22,11 @@ package com.vhall.framework.ui.controls
 		private var _skin:Object;
 		private var _label:String;
 		private var _labelColor:Object;
-		
+
 		private var _labelChanged:Boolean = false;
-		
+
 		private var _labelColorChanged:Boolean = false;
-		
+
 		public function Button(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
 			super(parent, xpos, ypos);
@@ -54,14 +54,14 @@ package com.vhall.framework.ui.controls
 			addEventListener(MouseEvent.CLICK, onMouse);
 		}
 
-		protected var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mouseDown": 2, "mouseUp": 1, "selected": 2};
+		protected var stateMap:Object = {"rollOver":1, "rollOut":0, "mouseDown":2, "mouseUp":1, "selected":2};
 		private var _state:int = -1;
 		private var _stateChanged:Boolean = false;
 		private var lastState:int = -1;
 
 		public function set state(value:int):void
 		{
-			if (_state == value)
+			if(_state == value)
 			{
 				return;
 			}
@@ -78,7 +78,7 @@ package com.vhall.framework.ui.controls
 
 		protected function onMouse(e:MouseEvent):void
 		{
-			if (e.type == MouseEvent.CLICK)
+			if(e.type == MouseEvent.CLICK)
 			{
 				return;
 			}
@@ -90,9 +90,9 @@ package com.vhall.framework.ui.controls
 		{
 			// 如果和上一个状态相同，return
 			super.invalidate();
-			if (_stateChanged)
+			if(_stateChanged)
 			{
-				if (lastState == state)
+				if(lastState == state)
 				{
 					return
 				}
@@ -104,13 +104,13 @@ package com.vhall.framework.ui.controls
 				lastState = state;
 				_stateChanged = false;
 			}
-			
+
 			if(_labelChanged)
 			{
 				btnLabel.text = getProperty("label", state).toString();
 				_labelChanged = false;
 			}
-			
+
 			if(_labelColorChanged)
 			{
 				btnLabel.color = getProperty("labelColor", state);
@@ -127,7 +127,7 @@ package com.vhall.framework.ui.controls
 
 		public function set skin(value:Object):void
 		{
-			if (_skin == value)
+			if(_skin == value)
 			{
 				return;
 			}
@@ -143,7 +143,7 @@ package com.vhall.framework.ui.controls
 
 		public function set label(value:String):void
 		{
-			if (_label == value)
+			if(_label == value)
 			{
 				return;
 			}
@@ -161,7 +161,7 @@ package com.vhall.framework.ui.controls
 
 		public function set labelColor(value:Object):void
 		{
-			if (_labelColor == value)
+			if(_labelColor == value)
 			{
 				return;
 			}
@@ -194,7 +194,7 @@ package com.vhall.framework.ui.controls
 		 */
 		private function getProperty(name:String, index:int):Object
 		{
-			if (propertiesDic[name][index] == null)
+			if(propertiesDic[name][index] == null)
 			{
 				propertiesDic[name][index] = propertiesDic[name][0];
 			}

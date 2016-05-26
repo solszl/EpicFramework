@@ -41,7 +41,7 @@ package com.vhall.framework.ui.container
 			var numChild:int = this.numChildren;
 			var child:DisplayObject;
 			var ypos:Number = marginTop;
-			for (var i:int = 0; i < numChild; i++)
+			for(var i:int = 0; i < numChild; i++)
 			{
 				child = getChildAt(i);
 				child.y = ypos;
@@ -58,10 +58,10 @@ package com.vhall.framework.ui.container
 		{
 			var numChild:int = this.numChildren;
 			var child:DisplayObject;
-			for (var i:int = 0; i < numChild; i++)
+			for(var i:int = 0; i < numChild; i++)
 			{
 				child = getChildAt(i);
-				switch (horizontalAlign)
+				switch(horizontalAlign)
 				{
 					case "left":
 						child.x = 0;

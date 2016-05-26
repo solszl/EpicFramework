@@ -2,7 +2,7 @@ package com.vhall.framework.ui.container
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.ui.controls.UIComponent;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
@@ -36,7 +36,7 @@ package com.vhall.framework.ui.container
 
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
 		{
-			if (index > children.length)
+			if(index > children.length)
 			{
 				index = children.length;
 			}
@@ -49,7 +49,7 @@ package com.vhall.framework.ui.container
 		override public function removeChild(child:DisplayObject):DisplayObject
 		{
 			var chIndex:int = children.indexOf(child)
-			if (chIndex > -1)
+			if(chIndex > -1)
 			{
 				children.splice(chIndex, 1);
 			}
@@ -61,7 +61,7 @@ package com.vhall.framework.ui.container
 
 		override public function removeChildAt(index:int):DisplayObject
 		{
-			if (index > children.length || index < 0 || children.length == 0)
+			if(index > children.length || index < 0 || children.length == 0)
 			{
 				return null;
 			}
@@ -80,12 +80,12 @@ package com.vhall.framework.ui.container
 		 */
 		override public function removeChildren(beginIndex:int = 0, endIndex:int = int.MAX_VALUE):void
 		{
-			if (beginIndex > children.length || beginIndex < 0)
+			if(beginIndex > children.length || beginIndex < 0)
 			{
 				return;
 			}
 
-			if (endIndex < beginIndex || endIndex < 0)
+			if(endIndex < beginIndex || endIndex < 0)
 			{
 				return;
 			}
@@ -116,7 +116,7 @@ package com.vhall.framework.ui.container
 
 		public function removeAllChild():void
 		{
-			while (numChildren)
+			while(numChildren)
 			{
 				removeChildAt(0);
 			}
@@ -138,10 +138,10 @@ package com.vhall.framework.ui.container
 			var comp:UIComponent;
 			var calcW:Number = 0;
 			var calcH:Number = 0;
-			
+
 			var i:int = 0;
 			//计算预估关高
-			for (i = 0; i < num; i++)
+			for(i = 0; i < num; i++)
 			{
 				child = this.getChildAt(i);
 				var w:Number = child.width + child.x;
@@ -156,37 +156,37 @@ package com.vhall.framework.ui.container
 			// 先算一个 预估的宽高
 
 			// 根据预估的宽高进行布局
-			for (i = 0; i < num; i++)
+			for(i = 0; i < num; i++)
 			{
 				child = this.getChildAt(i);
-				if ((child is UIComponent) == false)
+				if((child is UIComponent) == false)
 				{
 					continue;
 				}
 
 				comp = child as UIComponent;
 				// 如果上下左右有不为空的，则进行布局
-				if (comp.left != null || comp.right != null || comp.top != null || comp.bottom != null)
+				if(comp.left != null || comp.right != null || comp.top != null || comp.bottom != null)
 				{
 					// 左右都有，重新计算宽
 					if(comp.left != null && comp.right != null)
 					{
 						comp.width = explicitw - Number(comp.left) - Number(comp.right);
-						comp.x =  Number(comp.left);
+						comp.x = Number(comp.left);
 					}
 					else
 					{
 						if(comp.left != null)
 						{
-							comp.x =  Number(comp.left);
+							comp.x = Number(comp.left);
 						}
-						
+
 						if(comp.right != null)
 						{
 							comp.x = explicitw - Number(comp.width) - Number(comp.right);
 						}
 					}
-					
+
 					//上下都有， 重新计算高度
 					if(comp.top != null && comp.bottom != null)
 					{
@@ -206,17 +206,17 @@ package com.vhall.framework.ui.container
 					}
 				}
 
-				if (!isNaN(comp.horizontalCenter))
+				if(!isNaN(comp.horizontalCenter))
 				{
 					UIComponent(comp).x = (explicitw - comp.width >> 1) + UIComponent(comp).horizontalCenter;
 				}
 
-				if (!isNaN(comp.verticalCenter))
+				if(!isNaN(comp.verticalCenter))
 				{
 					UIComponent(comp).y = (explicith - comp.height >> 1) + UIComponent(comp).verticalCenter;
 				}
 			}
-			
+
 			this._width = explicitw;
 			this._height = explicith;
 		}

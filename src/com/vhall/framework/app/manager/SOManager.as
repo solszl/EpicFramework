@@ -1,7 +1,7 @@
 package com.vhall.framework.app.manager
 {
 	import com.vhall.framework.log.Logger;
-	
+
 	import flash.errors.IllegalOperationError;
 	import flash.net.SharedObject;
 
@@ -25,7 +25,7 @@ package com.vhall.framework.app.manager
 		public static function getInstance(name:String = "setting"):SOManager
 		{
 			_name = name;
-			if (_instance == null)
+			if(_instance == null)
 			{
 				_instance = new SOManager();
 			}
@@ -35,7 +35,7 @@ package com.vhall.framework.app.manager
 		public function SOManager()
 		{
 
-			if (_instance)
+			if(_instance)
 			{
 				throw new IllegalOperationError("SOManager is singlton");
 			}
@@ -71,7 +71,7 @@ package com.vhall.framework.app.manager
 		 */
 		public function isEmpty():Boolean
 		{
-			if (so == null)
+			if(so == null)
 			{
 				return true;
 			}
@@ -81,7 +81,7 @@ package com.vhall.framework.app.manager
 
 		private function invalidData():void
 		{
-			if (invalid == false)
+			if(invalid == false)
 			{
 				return;
 			}
