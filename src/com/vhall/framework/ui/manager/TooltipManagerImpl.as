@@ -229,6 +229,7 @@ package com.vhall.framework.ui.manager
 			if(!currentTarget.hasOwnProperty("callOut"))
 			{
 				showHideTip();
+				return;
 			}
 			
 			switch(currentTarget["callOut"])
