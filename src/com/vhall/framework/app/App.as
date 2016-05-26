@@ -12,6 +12,7 @@ package com.vhall.framework.app
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.ui.Keyboard;
+	import flash.utils.getTimer;
 	
 	/**
 	 *	整个应用程序的基类 
@@ -64,7 +65,7 @@ package com.vhall.framework.app
 		}
 		
 		/**
-		 *	loader 销毁 
+		 *	@private loader 销毁 
 		 * 
 		 */		
 		private function deinitLoader():void
@@ -74,19 +75,31 @@ package com.vhall.framework.app
 			l = null;
 		}
 		
+		/**
+		 *	@private 初始化日志 
+		 * 
+		 */		
 		private function initLog():void
 		{
 			var clip:LoggerClip = new LoggerClip(this);
 			Logger.mcOutputClip = clip;
-			Logger.getLogger().info("Log inited");
+			Logger.getLogger().info("Logger inited since start:" + getTimer() + "ms");
 		}
 		
+		/**
+		 *	@private 初始化键盘管理器 
+		 * 
+		 */		
 		private function initKeyboard():void
 		{
 			var km:KeyboardMapper = new KeyboardMapper(StageManager.stage);
 			km.mapListener(showHideLog,Keyboard.CONTROL,Keyboard.ALTERNATE,Keyboard.SHIFT,Keyboard.L);
 		}
 		
+		/**
+		 *	@private 显隐日志 
+		 * 
+		 */		
 		private function showHideLog():void
 		{
 			Logger.getLogger().toggle();

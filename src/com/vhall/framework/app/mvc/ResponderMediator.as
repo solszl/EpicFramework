@@ -11,6 +11,11 @@ package com.vhall.framework.app.mvc
 	{
 		private var _self:Object;
 
+		/**
+		 *	要想接收消息，都要在内类创建该对象以实现MVC 
+		 * @param self
+		 * 
+		 */		
 		public function ResponderMediator(self:Object)
 		{
 			this._self = self;
