@@ -8,7 +8,9 @@ package com.vhall.framework.ui.controls
 	 */
 	internal interface IToolTip
 	{
-		function set toolTip(value:Object):void
-		function get toolTip():Object
+		function set tooltip(value:Object):void;
+		function get tooltip():Object;
+		function set callOut(value:String):void;
+		function get callOut():String;
 	}
 }

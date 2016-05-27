@@ -3,7 +3,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.ui.manager.TooltipManager;
 	import com.vhall.framework.utils.StringUtil;
-
+	
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
@@ -13,7 +13,7 @@ package com.vhall.framework.ui.controls
 	 * @author Sol
 	 *
 	 */
-	public class UIComponent extends Sprite
+	public class UIComponent extends Sprite implements IToolTip,IRelative
 	{
 		/**
 		 *	构建基类
