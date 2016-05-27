@@ -3,7 +3,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.event.DragEvent;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
@@ -34,7 +34,7 @@ package com.vhall.framework.ui.controls
 			super.updateDisplay();
 
 			//重新布局
-			if (_quadChanged)
+			if(_quadChanged)
 			{
 				quad.y = height - quad.height >> 1;
 				_quadChanged = false;
@@ -50,14 +50,14 @@ package com.vhall.framework.ui.controls
 			quad.startDrag(false, new Rectangle(0, 0, width - quad.width, 0));
 			draging = true;
 		}
-		
+
 		override protected function onMouseHandler(e:MouseEvent):void
 		{
 			switch(e.type)
 			{
 				case MouseEvent.CLICK:
 					percent = e.localX / width;
-					fireEvent(e,DragEvent.CLICK);
+					fireEvent(e, DragEvent.CLICK);
 					break;
 				case MouseEvent.MOUSE_DOWN:
 					if(e.target != quad)
@@ -70,7 +70,7 @@ package com.vhall.framework.ui.controls
 					onDragDrop(e);
 					break;
 				case MouseEvent.MOUSE_MOVE:
-					fireEvent(e,DragEvent.HOVER);
+					fireEvent(e, DragEvent.HOVER);
 					finished.width = quad.x + quad.width / 2;
 					break;
 			}

@@ -3,14 +3,19 @@ package com.vhall.framework.app.mvc
 	import appkit.responders.NResponder;
 
 	/**
-	 *	消息响应中介器 
+	 *	消息响应中介器
 	 * @author Sol
 	 * @date 2016-05-24
-	 */	
+	 */
 	public class ResponderMediator
 	{
 		private var _self:Object;
 
+		/**
+		 *	要想接收消息，都要在内类创建该对象以实现MVC
+		 * @param self
+		 *
+		 */
 		public function ResponderMediator(self:Object)
 		{
 			this._self = self;
@@ -18,40 +23,40 @@ package com.vhall.framework.app.mvc
 		}
 
 		/**
-		 *	收集关心的事件 
-		 * 
-		 */		
+		 *	收集关心的事件
+		 *
+		 */
 		private function collectCares():void
 		{
 			var msgs:Array = (this._self as IResponder).careList();
-			for each (var msg:String in msgs)
+			for each(var msg:String in msgs)
 			{
 				NResponder.add(msg, handleCare);
 			}
 		}
 
 		/**
-		 *	 
+		 *
 		 * @param args
-		 * 
-		 */		
+		 *
+		 */
 		private function handleCare(... args):void
 		{
 			var res:NResponder = NResponder.currentNResponder;
 			args.unshift(res.action);
-			(this._self as IResponder).handleCare.apply(null,args);
+			(this._self as IResponder).handleCare.apply(null, args);
 		}
-		
+
 		/**
-		 * 清理该界面关心的事件 
-		 * 
-		 */		
+		 * 清理该界面关心的事件
+		 *
+		 */
 		public function clean():void
 		{
 			var msgs:Array = (this._self as IResponder).careList();
-			for each (var msg:String in msgs) 
+			for each(var msg:String in msgs)
 			{
-				NResponder.remove(msg,handleCare);
+				NResponder.remove(msg, handleCare);
 			}
 		}
 	}

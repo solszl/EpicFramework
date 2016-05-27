@@ -33,7 +33,7 @@ package com.vhall.framework.keyboard
 
 		private function onKeyDown(e:KeyboardEvent):void
 		{
-			if (_combination.indexOf(e.keyCode) == -1)
+			if(_combination.indexOf(e.keyCode) == -1)
 			{
 				_combination.push(e.keyCode);
 				_combination = _combination.sort(compareInt);
@@ -42,9 +42,9 @@ package com.vhall.framework.keyboard
 
 		private function compareInt(first:int, second:int):Number
 		{
-			if (first < second)
+			if(first < second)
 				return -1;
-			else if (second < first)
+			else if(second < first)
 				return 1;
 			else
 				return 0;
@@ -54,7 +54,7 @@ package com.vhall.framework.keyboard
 		{
 
 			var hits:Vector.<KeyMap> = _listeners.filter(onFilter);
-			for each (var map:KeyMap in hits)
+			for each(var map:KeyMap in hits)
 			{
 				map.execute();
 			}
@@ -62,7 +62,7 @@ package com.vhall.framework.keyboard
 
 		private function onFilter(item:KeyMap, index:int, vector:Vector.<KeyMap>):Boolean
 		{
-			if (_combination.join() == item.toString())
+			if(_combination.join() == item.toString())
 			{
 				return true;
 			}
@@ -80,7 +80,7 @@ package com.vhall.framework.keyboard
 		public function mapListener(listener:Function, ... toKeys):void
 		{
 			var keys:Vector.<int> = new Vector.<int>(toKeys.length);
-			for (var i:int = 0; i < keys.length; i++)
+			for(var i:int = 0; i < keys.length; i++)
 			{
 				keys[i] = toKeys[i];
 			}

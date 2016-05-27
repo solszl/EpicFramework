@@ -16,7 +16,7 @@ package com.vhall.framework.utils
 		 */
 		public static function isNullOrEmpty(value:String):Boolean
 		{
-			if (value == null)
+			if(value == null)
 				return true;
 			return value.replace(/\s/g, "") == "";
 		}
@@ -37,26 +37,26 @@ package com.vhall.framework.utils
 		 */
 		public static function substitute(str:String, ... rest):String
 		{
-			if (str == null)
+			if(str == null)
 				return '';
 
 			// Replace all of the parameters in the msg string.
-			var len:uint=rest.length;
+			var len:uint = rest.length;
 			var args:Array;
 
-			if (len == 1 && rest[0] is Array)
+			if(len == 1 && rest[0] is Array)
 			{
-				args=rest[0] as Array;
-				len=args.length;
+				args = rest[0] as Array;
+				len = args.length;
 			}
 			else
 			{
-				args=rest;
+				args = rest;
 			}
 
-			for (var i:int=0; i < len; i++)
+			for(var i:int = 0; i < len; i++)
 			{
-				str=str.replace(new RegExp("\\{" + i + "\\}", "g"), args[i]);
+				str = str.replace(new RegExp("\\{" + i + "\\}", "g"), args[i]);
 			}
 
 			return str;
@@ -81,10 +81,10 @@ package com.vhall.framework.utils
 		 */
 		public static function ltrim(input:String):String
 		{
-			var size:Number=input.length;
-			for (var i:Number=0; i < size; i++)
+			var size:Number = input.length;
+			for(var i:Number = 0; i < size; i++)
 			{
-				if (input.charCodeAt(i) > 32)
+				if(input.charCodeAt(i) > 32)
 				{
 					return input.substring(i);
 				}
@@ -100,10 +100,10 @@ package com.vhall.framework.utils
 		 */
 		public static function rtrim(input:String):String
 		{
-			var size:Number=input.length;
-			for (var i:Number=size; i > 0; i--)
+			var size:Number = input.length;
+			for(var i:Number = size; i > 0; i--)
 			{
-				if (input.charCodeAt(i - 1) > 32)
+				if(input.charCodeAt(i - 1) > 32)
 				{
 					return input.substring(0, i);
 				}

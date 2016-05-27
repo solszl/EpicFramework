@@ -13,10 +13,10 @@ package com.vhall.framework.log
 			var logger:Logger
 			category = category.toLowerCase();
 			var length:Number = Logger.loggers.length;
-			for (var i:Number = 0; i < length; i++)
+			for(var i:Number = 0; i < length; i++)
 			{
 				logger = Logger.loggers[i];
-				if (logger.category == category)
+				if(logger.category == category)
 				{
 					return logger;
 				}
@@ -51,7 +51,7 @@ package com.vhall.framework.log
 
 		private function output(message:String):void
 		{
-			if (mcOutputClip != null)
+			if(mcOutputClip != null)
 			{
 				mcOutputClip.output(message);
 			}

@@ -1,10 +1,11 @@
 package com.vhall.framework.ui.controls
 {
+
 	/**
-	 * 相对布局接口 
+	 * 相对布局接口
 	 * @author Sol
-	 * 
-	 */	
+	 *
+	 */
 	public interface IRelative
 	{
 		/** 左*/

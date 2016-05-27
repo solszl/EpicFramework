@@ -3,25 +3,25 @@ package com.vhall.framework.app.net
 	import flash.utils.Dictionary;
 
 	/**
-	 * 抽象消息接收器 
+	 * 抽象消息接收器
 	 * @author Sol
-	 * 
-	 */	
+	 *
+	 */
 	public class AbsMsgReceiver
 	{
 		private var hasCollected:Boolean = false;
-		
+
 		private var _dic:Dictionary = new Dictionary();
-		
+
 		public function AbsMsgReceiver()
 		{
 		}
-		
+
 		protected function collectionObservers():void
 		{
 			throw new Error("implement by subclass");
 		}
-		
+
 		public function getObservers():Dictionary
 		{
 			if(!hasCollected)
@@ -29,22 +29,22 @@ package com.vhall.framework.app.net
 				collectionObservers();
 				hasCollected = true;
 			}
-			
+
 			return _dic;
 		}
-		
-		protected function register(cmd:String,excuter:Function):void
+
+		protected function register(cmd:String, excuter:Function):void
 		{
 			if(cmd in _dic)
 			{
 				trace("[warning]" + cmd + "has already been registed");
 			}
-			
+
 			if(excuter == null)
 			{
 				throw new Error("message excuter is null");
 			}
-			
+
 			_dic[cmd] = excuter;
 		}
 	}

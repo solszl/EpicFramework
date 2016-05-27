@@ -31,7 +31,7 @@ package com.vhall.framework.load
 
 		override public function load(item:Object, onComplete:Function = null, onProgress:Function = null, onFailed:Function = null):void
 		{
-			if (urlLoader == null)
+			if(urlLoader == null)
 			{
 				initLoader();
 			}
@@ -50,7 +50,7 @@ package com.vhall.framework.load
 		/**	初始化加载器*/
 		override protected function initLoader():void
 		{
-			if (urlLoader != null)
+			if(urlLoader != null)
 			{
 				return;
 			}
@@ -70,13 +70,13 @@ package com.vhall.framework.load
 		override protected function onCompleteHandler(event:Event):void
 		{
 			_isLoading = false;
-			if (this.complete == null)
+			if(this.complete == null)
 			{
 				return;
 			}
 
 			var content:* = null;
-			switch (currentItem.type)
+			switch(currentItem.type)
 			{
 				case 2:
 					// 图片
@@ -127,7 +127,7 @@ package com.vhall.framework.load
 		private function judgeFormmat(type:int):String
 		{
 			// 3为 txt/xml 文件格式
-			switch (type)
+			switch(type)
 			{
 				case 3:
 					return URLLoaderDataFormat.TEXT;
@@ -135,7 +135,7 @@ package com.vhall.framework.load
 					return URLLoaderDataFormat.BINARY;
 			}
 		}
-		
+
 		private function followWork(content:*):void
 		{
 			this.complete(currentItem, content, null);
@@ -165,7 +165,7 @@ package com.vhall.framework.load
 		{
 			var bm:Bitmap = Bitmap(innerLoader.content);
 			destoryInnerLoader();
-			if (this.complete == null)
+			if(this.complete == null)
 			{
 				return;
 			}
