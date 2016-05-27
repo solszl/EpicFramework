@@ -41,6 +41,8 @@ package com.vhall.framework.media.provider
 		 */		
 		private var _id:int;
 		
+		private var _useStrategy:Boolean = false;
+		
 		public function PublishProxy()
 		{
 			super();
@@ -99,7 +101,8 @@ package com.vhall.framework.media.provider
 				{
 					stream.send("@setDataFrame","onPublishData",{
 						"lag":latency,"micActivityLevel":micActivityLevel,"camActivityLevel":camActivityLevel,
-						"camMute":_cam?_cam.muted:false,"micMute":_mic?_mic.muted:false,"volume":_volume
+						"camMute":_cam?_cam.muted:false,"micMute":_mic?_mic.muted:false,"volume":_volume,"micRate":_mic?_mic.rate:0,
+						"camQuality":_cam?_cam.quality:0
 					});
 				}
 			},10000);
@@ -146,7 +149,11 @@ package com.vhall.framework.media.provider
 			
 			_cam && _ns.attachCamera(_cam);
 			_mic && _ns.attachAudio(_mic);
+			
 			_ns.publish(_streamUrl);
+			
+			//应用质量平衡策略
+			_useStrategy && Strategy.get().blance(_ns,_cam,_mic);
 		}
 		
 		public function set cameraMuted(bool:Boolean):void
@@ -193,6 +200,21 @@ package com.vhall.framework.media.provider
 					}
 				}
 			}
+		}
+		
+		public function set useStrategy(bool:Boolean):void
+		{
+			_useStrategy = bool;
+			if(bool)
+				Strategy.get().blance(_ns,_cam,_mic);
+			else
+				Strategy.get().unBlance();
+		}
+		
+		override protected function clearNsListeners():void
+		{
+			super.clearNsListeners();
+			_useStrategy && Strategy.get().unBlance();
 		}
 		
 		override protected function gc():void

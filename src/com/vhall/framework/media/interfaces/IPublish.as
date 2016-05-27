@@ -55,5 +55,11 @@ package com.vhall.framework.media.interfaces
 		 * @param bool
 		 */		
 		function set microphoneMuted(bool:Boolean):void;
+		
+		/**
+		 * 设置推流端是否使用动态视频质量策略，默认关闭
+		 * @param bool
+		 */		
+		function set useStrategy(bool:Boolean):void;
 	}
 }

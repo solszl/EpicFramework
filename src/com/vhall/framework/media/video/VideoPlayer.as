@@ -86,6 +86,13 @@ package com.vhall.framework.media.video
 		 */		
 		public function connect(type:String,uri:String,stream:String = null,handler:Function = null,autoPlay:Boolean = true):void
 		{
+			if(_proxy) 
+			{
+				CONFIG::LOGGING{
+					Log.error("重复调用connect，改变流地址使用changeVideoUrl方法");
+				}
+				return;
+			}
 			_proxy = MediaProxyFactory.create(type);
 			
 			//推流之外的播放器，启用图像增强
@@ -99,6 +106,7 @@ package com.vhall.framework.media.video
 						if(_proxy.type == MediaProxyType.PUBLISH){
 							var iPub:IPublish = _proxy as IPublish;
 							iPub.publish(_cam,_mic);
+							useStrategy = _videoOption.useStrategy;
 						}else{
 							attachView(_proxy.stream);
 						}
@@ -272,6 +280,19 @@ package com.vhall.framework.media.video
 			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
 				return (_proxy as IPublish).camActivityLevel;
 			return 0;
+		}
+		
+		/**
+		 * 设置推流端是否使用动态视频质量策略，默认关闭
+		 * @param bool
+		 */
+		public function set useStrategy(bool:Boolean):void
+		{
+			_videoOption.useStrategy = bool;
+			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
+			{
+				(_proxy as IPublish).useStrategy = bool;
+			}
 		}
 		
 		/**
@@ -449,6 +470,8 @@ import flash.filters.ConvolutionFilter;
 class VideoOptions
 {
 	public var volume:Number = 0.68;
+	
+	public var useStrategy:Boolean = false;
 	
 	private static var _instance:VideoOptions;
 	
