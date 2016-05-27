@@ -20,6 +20,7 @@ package com.vhall.framework.media.video
 	import flash.geom.Rectangle;
 	import flash.media.Camera;
 	import flash.media.Video;
+	import flash.net.NetStream;
 	
 	CONFIG::LOGGING
 	{
@@ -342,6 +343,17 @@ package com.vhall.framework.media.video
 		{
 			_viewPort.copyFrom(port);
 			updateVideo();
+		}
+		
+		/**
+		 * 推流时候公开netstream，方便发送独立数据
+		 * @return 
+		 */		
+		public function get stream():NetStream
+		{
+			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
+				return _proxy.stream;
+			return null;
 		}
 		
 		public function get time():Number
