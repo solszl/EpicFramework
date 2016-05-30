@@ -99,7 +99,7 @@ package com.vhall.framework.media.provider
 			{
 				if(stream)
 				{
-					stream.send("@setDataFrame","onPublishData",{
+					stream.send("onPublishData",{
 						"lag":latency,"micActivityLevel":micActivityLevel,"camActivityLevel":camActivityLevel,
 						"camMute":_cam?_cam.muted:false,"micMute":_mic?_mic.muted:false,"volume":_volume,"micRate":_mic?_mic.rate:0,
 						"camQuality":_cam?_cam.quality:0
