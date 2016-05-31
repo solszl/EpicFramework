@@ -35,5 +35,61 @@ package com.vhall.framework.app.net
 				ExternalInterface.call(handler, result);
 			}catch(e:Error){};
 		}
+		
+		
+		/**
+		 *发送命令给js 
+		 * @param body 数据
+		 * 
+		 */		
+		public function sendCMDMsg(body:Object):void{
+			if(!ExternalInterface.available)
+			{
+				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
+				return;
+			}
+			var s:String = com.adobe.serialization.json.JSON.encode(body);
+			var result:String = Base64.encode(s);
+			try{
+				Logger.getLogger("MSG").info("sendCmdMsg",result);
+				ExternalInterface.call("sendCmdMsg", result);
+			}catch(e:Error){};
+		}
+		
+		/**
+		 * 只会在bufflength(这个比较特殊，就这个一个用，之后跟js协商解决)
+		 * @param type 信息类型
+		 * @param body 数据
+		 * 
+		 */		
+		public function sendBufferMsgToJs(type:String,body:Object):void{
+			if(!ExternalInterface.available)
+			{
+				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
+				return;
+			}
+			try{
+				Logger.getLogger("MSG").info("sendMsgToFlash",type);
+				ExternalInterface.call("sendMsgToFlash", type, body);
+			}catch(e:Error){};
+		}
+		
+		/**
+		 * 将事件消息发起JS进行处理
+		 * @param body 信息
+		 * 
+		 */		
+		public function sendEventMsg(body:Object):void{
+			if(!ExternalInterface.available)
+			{
+				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
+				return;
+			}
+			var s:String = com.adobe.serialization.json.JSON.encode(body);
+			try{
+				Logger.getLogger("MSG").info("sendSocketMsg",s);
+				ExternalInterface.call("sendSocketMsg", "flashMsg", s);
+			}catch(e:Error){};
+		}
 	}
 }
