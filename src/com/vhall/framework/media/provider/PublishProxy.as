@@ -124,7 +124,7 @@ package com.vhall.framework.media.provider
 				_mic = getMicrophoneByName(mic);
 			}
 			
-			if(_cam.muted||_mic.muted)
+			if(_cam&&_cam.muted||_mic&&_mic.muted)
 			{
 				flash.system.Security.showSettings(flash.system.SecurityPanel.PRIVACY);
 				_cam.addEventListener(StatusEvent.STATUS,hardwareHandler);

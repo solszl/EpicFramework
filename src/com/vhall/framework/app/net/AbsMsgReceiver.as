@@ -1,6 +1,8 @@
 package com.vhall.framework.app.net
 {
 	import flash.utils.Dictionary;
+	
+	import appkit.responders.NResponder;
 
 	/**
 	 * 抽象消息接收器
@@ -46,6 +48,11 @@ package com.vhall.framework.app.net
 			}
 
 			_dic[cmd] = excuter;
+		}
+		
+		protected function dispatch(action:String = null, params:Array = null, toTarget:Object = null):void
+		{
+			NResponder.dispatch(action,params,toTarget)
 		}
 	}
 }
