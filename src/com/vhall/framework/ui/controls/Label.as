@@ -2,7 +2,7 @@ package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.utils.StringUtil;
-
+	
 	import flash.display.DisplayObjectContainer;
 	import flash.system.Capabilities;
 	import flash.text.TextField;
@@ -56,6 +56,7 @@ package com.vhall.framework.ui.controls
 				_text = "";
 			}
 			this._tf.text = text;
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -115,6 +116,7 @@ package com.vhall.framework.ui.controls
 				_formmat.font = value;
 			}
 			_textformmatChanged = true;
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -139,6 +141,7 @@ package com.vhall.framework.ui.controls
 			this._formmat.size = value;
 
 			_textformmatChanged = true;
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 

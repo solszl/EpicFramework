@@ -2,7 +2,7 @@ package com.vhall.framework.ui.container
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.ui.controls.UIComponent;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
@@ -30,6 +30,7 @@ package com.vhall.framework.ui.container
 		{
 			children.push(child);
 			var obj:DisplayObject = super.addChild(child);
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
 		}
@@ -42,6 +43,7 @@ package com.vhall.framework.ui.container
 			}
 			children.splice(index, 0, child);
 			var obj:DisplayObject = super.addChildAt(child, index);
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
 		}
@@ -55,6 +57,7 @@ package com.vhall.framework.ui.container
 			}
 
 			var obj:DisplayObject = super.removeChild(child);
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
 		}
@@ -68,6 +71,7 @@ package com.vhall.framework.ui.container
 
 			children.splice(index, 1);
 			var obj:DisplayObject = super.removeChildAt(index);
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
 		}
@@ -94,6 +98,7 @@ package com.vhall.framework.ui.container
 
 			children.splice(beginIndex, endIndex - beginIndex + 1);
 			super.removeChildren(beginIndex, endIndex);
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -141,20 +146,21 @@ package com.vhall.framework.ui.container
 
 			var i:int = 0;
 			//计算预估关高
-			for(i = 0; i < num; i++)
-			{
-				child = this.getChildAt(i);
-				var w:Number = child.width + child.x;
-				var h:Number = child.height + child.y;
-				calcW = w > calcW ? w : calcW;
-				calcH = h > calcH ? h : calcH;
-			}
+//			for(i = 0; i < num; i++)
+//			{
+//				child = this.getChildAt(i);
+//				var w:Number = child.width + child.x;
+//				var h:Number = child.height + child.y;
+//				calcW = w > calcW ? w : calcW;
+//				calcH = h > calcH ? h : calcH;
+//			}
 
-			var explicitw:Number = width > calcW ? width : calcW;
-			var explicith:Number = height > calcH ? height : calcH;
-
-			// 先算一个 预估的宽高
-
+//			var explicitw:Number = _width > calcW ? _width : calcW;
+//			var explicith:Number = _height > calcH ? _height : calcH;
+			
+			var explicitw:Number = _width;
+			var explicith:Number = _height;
+			
 			// 根据预估的宽高进行布局
 			for(i = 0; i < num; i++)
 			{

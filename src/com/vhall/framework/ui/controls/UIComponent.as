@@ -56,6 +56,11 @@ package com.vhall.framework.ui.controls
 		{
 
 		}
+		
+		protected function sizeChanged():void
+		{
+			
+		}
 
 		protected function destory():void
 		{
@@ -77,6 +82,7 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 			_width = value;
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -94,6 +100,7 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 			_height = value;
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -112,6 +119,7 @@ package com.vhall.framework.ui.controls
 		{
 			this.x = Math.round(xpos);
 			this.y = Math.round(ypos);
+			RenderManager.getInstance().invalidate(sizeChanged);
 		}
 
 		/**

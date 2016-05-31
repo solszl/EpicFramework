@@ -1,6 +1,7 @@
 package com.vhall.framework.app.net
 {
 	import com.adobe.serialization.json.JSON;
+	import com.hurlant.util.Base64;
 	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -38,9 +39,13 @@ package com.vhall.framework.app.net
 
 		protected function progressHandler(e:ProgressEvent):void
 		{
+			// 重置bytearray
 			receBytes.length = 0;
+			// 读取二进制数据
 			socket.readBytes(receBytes);
+			// 将所读的二进制数据转换为字符串
 			var s:String = receBytes.readMultiByte(receBytes.length, "");
+			// 反序列化字符串拿到消息体
 			var o:Object = com.adobe.serialization.json.JSON.decode(s);
 			handleMap[o.type](o);
 		}
@@ -63,7 +68,7 @@ package com.vhall.framework.app.net
 				body = body || {};
 				body.type = msg;
 				var s:String = com.adobe.serialization.json.JSON.encode(body);
-
+				s = useBase64 ? Base64.encode(s) : s;
 				bodyBytes.length = 0;
 				bodyBytes.writeUTFBytes(s);
 				socket.writeBytes(bodyBytes);

@@ -79,6 +79,7 @@ package com.vhall.framework.ui.controls
 			super.width = value;
 			_w = value;
 			_sizeChanged = true;
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -87,13 +88,15 @@ package com.vhall.framework.ui.controls
 			super.height = value;
 			_h = value;
 			_sizeChanged = true;
+			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override public function setSize(w:Number, h:Number):void
 		{
-			width = w;
-			height = h;
+			_w = w;
+			_h = h;
+			RenderManager.getInstance().invalidate(sizeChanged);
 		}
 
 		/**	图像源*/
