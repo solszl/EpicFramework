@@ -61,7 +61,7 @@ package com.vhall.framework.app.net
 		 */
 		public function registMessage(msg:AbsMsgReceiver, bridgeType:String = "WEB"):void
 		{
-			getBridge(bridgeType).registMsgReceiver(msg);
+			(getBridge(bridgeType) as AbsBridge).registMsgReceiver(msg);
 		}
 
 		/**
@@ -72,7 +72,7 @@ package com.vhall.framework.app.net
 		 */
 		public function unregistMessage(msg:AbsMsgReceiver, bridgeType:String = "WEB"):void
 		{
-			getBridge(bridgeType).unregistMsgReceiver(msg);
+			(getBridge(bridgeType) as AbsBridge).unregistMsgReceiver(msg);
 		}
 
 		/**

@@ -1,7 +1,7 @@
 package com.vhall.framework.app.net
 {
 	import com.adobe.serialization.json.JSON;
-
+	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -23,7 +23,8 @@ package com.vhall.framework.app.net
 		/**	端口号*/
 		private var port:int;
 
-		private var bytes:ByteArray;
+		private var bodyBytes:ByteArray = new ByteArray();
+		private var receBytes:ByteArray = new ByteArray();
 
 		public function SocketBridge(ip:String, port:int)
 		{
@@ -37,7 +38,11 @@ package com.vhall.framework.app.net
 
 		protected function progressHandler(e:ProgressEvent):void
 		{
-			handleMap[e.type](e);
+			receBytes.length = 0;
+			socket.readBytes(receBytes);
+			var s:String = receBytes.readMultiByte(receBytes.length, "");
+			var o:Object = com.adobe.serialization.json.JSON.decode(s);
+			handleMap[o.type](o);
 		}
 
 		protected function socketHandler(e:Event):void
@@ -55,13 +60,13 @@ package com.vhall.framework.app.net
 		{
 			if(socket && socket.connected)
 			{
-				body || {};
+				body = body || {};
 				body.type = msg;
 				var s:String = com.adobe.serialization.json.JSON.encode(body);
 
-				bytes = new ByteArray();
-				bytes.writeUTFBytes(s);
-				socket.writeBytes(bytes);
+				bodyBytes.length = 0;
+				bodyBytes.writeUTFBytes(s);
+				socket.writeBytes(bodyBytes);
 				socket.flush();
 			}
 		}
