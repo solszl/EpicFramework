@@ -72,7 +72,7 @@ package com.vhall.framework.load
 			var data:ByteArray = urlLoader.data;
 			if(data.length > 0)
 			{
-				loader.loadBytes(data, currentItem.isCode ? _swfContext : null);
+				loader.loadBytes(data, _swfContext);
 			}
 		}
 
