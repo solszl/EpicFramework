@@ -3,7 +3,7 @@ package com.vhall.framework.app.net
 	import com.adobe.serialization.json.JSON;
 	import com.hurlant.util.Base64;
 	import com.vhall.framework.log.Logger;
-
+	
 	import flash.external.ExternalInterface;
 
 	/**
@@ -17,17 +17,23 @@ package com.vhall.framework.app.net
 		{
 		}
 
-		override public function sendMsg(msg:*, body:Object = null):void
+		/**
+		 * 派发消息
+		 * @param handler
+		 * @param body
+		 */
+		public function sendMsg(handler:String,body:Object = null, useBase64:Boolean = false):void
 		{
 			if(!ExternalInterface.available)
 			{
 				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
 				return;
 			}
-
 			var s:String = com.adobe.serialization.json.JSON.encode(body);
-			var result:String = Base64.encode(s)
-			ExternalInterface.call(msg, result);
+			var result:String = useBase64?Base64.encode(s):s;
+			try{
+				ExternalInterface.call(handler, result);
+			}catch(e:Error){};
 		}
 	}
 }
