@@ -1,7 +1,7 @@
 package com.vhall.framework.app.net
 {
 	import com.vhall.framework.log.Logger;
-
+	
 	import flash.utils.Dictionary;
 
 	/**
@@ -77,16 +77,6 @@ package com.vhall.framework.app.net
 				}
 			}
 		}
-
-		/**
-		 * 派发消息
-		 * @param msg
-		 * @param body
-		 *
-		 */
-		public function sendMsg(msg:*, body:Object = null):void
-		{
-
-		}
+		
 	}
 }

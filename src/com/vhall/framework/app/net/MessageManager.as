@@ -48,7 +48,7 @@ package com.vhall.framework.app.net
 		 * @return
 		 *
 		 */
-		public function getBridge(type:String = "WEB"):AbsBridge
+		public function getBridge(type:String = "WEB"):*
 		{
 			return type == "WEB" ? wb : sb;
 		}

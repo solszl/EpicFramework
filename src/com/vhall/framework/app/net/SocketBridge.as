@@ -45,7 +45,13 @@ package com.vhall.framework.app.net
 			handleMap[e.type](e);
 		}
 
-		override public function sendMsg(msg:*, body:Object = null):void
+		/**
+		 * 派发消息
+		 * @param msg
+		 * @param body
+		 *
+		 */
+		public function sendMsg(msg:*, body:Object = null,useBase64:Boolean = false):void
 		{
 			if(socket && socket.connected)
 			{
