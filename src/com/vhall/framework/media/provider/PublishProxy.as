@@ -191,14 +191,9 @@ package com.vhall.framework.media.provider
 			}else{
 				//清除监听
 				clearNsListeners();
+				clearCnListeners();
 				//重新链接
-				try{
-					_conn.connect(uri);
-				}catch(e:Error){
-					CONFIG::LOGGING{
-						Log.error("netConnection 切换链接失败:"+_uri);
-					}
-				}
+				connect(uri,streamUrl,_handler,autoPlay);
 			}
 		}
 		

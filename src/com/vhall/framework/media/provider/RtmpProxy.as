@@ -47,16 +47,14 @@ package com.vhall.framework.media.provider
 		{
 			_conn ||= new NetConnection();
 			_conn.client = client;
-			_conn.addEventListener(NetStatusEvent.NET_STATUS,statusHandler);
-			_conn.addEventListener(IOErrorEvent.IO_ERROR,errorHandler);
-			_conn.addEventListener(SecurityErrorEvent.SECURITY_ERROR,errorHandler);
-			_conn.addEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 		}
 		
 		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true):void
 		{
 			super.connect(uri,streamUrl,handler,autoPlay);
 
+			addListeners();
+			
 			try{
 				_conn.connect(this._uri);
 			}catch(e:Error){
@@ -65,6 +63,18 @@ package com.vhall.framework.media.provider
 				}
 			}
 		}
+		
+		protected function addListeners():void
+		{
+			if(!_conn.hasEventListener(NetStatusEvent.NET_STATUS))
+			{
+				_conn.addEventListener(NetStatusEvent.NET_STATUS,statusHandler);
+				_conn.addEventListener(IOErrorEvent.IO_ERROR,errorHandler);
+				_conn.addEventListener(SecurityErrorEvent.SECURITY_ERROR,errorHandler);
+				_conn.addEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
+			}
+		}		
+		
 		
 		/** 通道连接建立成功，创建流对象*/
 		override protected function createStream():void
@@ -110,6 +120,7 @@ package com.vhall.framework.media.provider
 			}else{
 				//清除监听
 				clearNsListeners();
+				clearCnListeners();
 				//重新链接
 				try{
 					_conn.connect(uri);
@@ -172,9 +183,9 @@ package com.vhall.framework.media.provider
 		
 		protected function statusHandler(e:NetStatusEvent):void
 		{
-			/*CONFIG::LOGGING{
+			CONFIG::LOGGING{
 				Log.info("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : ""));
-			}*/
+			}
 			switch(e.info.code)
 			{
 				case InfoCode.NetConnection_Connect_Success:

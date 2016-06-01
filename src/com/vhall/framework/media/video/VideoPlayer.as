@@ -132,7 +132,7 @@ package com.vhall.framework.media.video
 					break;
 				case MediaProxyStates.UN_PUBLISH_NOTIFY:
 				case MediaProxyStates.UN_PUBLISH_SUCCESS:
-					stop();
+					if(_type==MediaProxyType.PUBLISH) stop();
 					break;
 			}
 			
@@ -176,6 +176,7 @@ package com.vhall.framework.media.video
 				changeVideoUrl(uri,stream,autoPlay);
 			}else{
 				if(_proxy) stop();
+				_proxy = null;
 				if(type == MediaProxyType.PUBLISH)
 				{
 					//重回放转到推流

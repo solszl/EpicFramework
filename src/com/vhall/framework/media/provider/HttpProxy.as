@@ -11,6 +11,7 @@ package com.vhall.framework.media.provider
 {
 	import com.vhall.framework.media.interfaces.IProgress;
 	
+	import flash.events.NetStatusEvent;
 	import flash.net.NetStreamPlayOptions;
 	import flash.net.NetStreamPlayTransitions;
 	import flash.utils.getTimer;
@@ -40,6 +41,8 @@ package com.vhall.framework.media.provider
 			_handler = handler;
 			
 			valid();
+			
+			addListeners();
 			
 			try{
 				_conn.connect(null);
