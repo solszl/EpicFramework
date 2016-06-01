@@ -38,6 +38,7 @@ package com.vhall.framework.ui.controls
 		 */		
 		public function setSelected(value:Boolean):void
 		{
+			this._selected = value;
 			state = value ? stateMap["mouseDown"] : stateMap["rollOut"];
 		}
 
