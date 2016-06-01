@@ -17,13 +17,8 @@ package com.vhall.framework.ui.container
 
 		public function Box(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
-			super(parent, xpos, ypos);
-		}
-
-		override protected function createChildren():void
-		{
-			super.createChildren();
 			children = new Vector.<DisplayObject>();
+			super(parent, xpos, ypos);
 		}
 
 		override public function addChild(child:DisplayObject):DisplayObject

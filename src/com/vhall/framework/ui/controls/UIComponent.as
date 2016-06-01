@@ -132,6 +132,8 @@ package com.vhall.framework.ui.controls
 		{
 			this._width = Math.round(w);
 			this._height = Math.round(h);
+			RenderManager.getInstance().invalidate(sizeChanged);
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		/**

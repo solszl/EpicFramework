@@ -23,6 +23,8 @@ package com.vhall.framework.ui.controls
 		private var _text:String;
 		/**	文本格式发生变化的变量*/
 		private var _textformmatChanged:Boolean = false;
+		
+		public var html:Boolean = false;
 
 		public function Label(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
@@ -55,7 +57,16 @@ package com.vhall.framework.ui.controls
 			{
 				_text = "";
 			}
-			this._tf.text = text;
+			
+			if(html)
+			{
+				this._tf.htmlText = text;
+			}
+			else
+			{
+				this._tf.text = text;
+			}
+			
 			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
@@ -69,7 +80,7 @@ package com.vhall.framework.ui.controls
 		{
 			return _text;
 		}
-
+		
 		/**
 		 *	获取textfield
 		 * @return
@@ -156,7 +167,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**	@private*/
-		public function set algin(value:String):void
+		public function set align(value:String):void
 		{
 			if(align == value)
 				return;
@@ -303,6 +314,18 @@ package com.vhall.framework.ui.controls
 
 			_tf.height = Math.max(_tf.textHeight + 4, 20);
 			_tf.width = _tf.textWidth + 4 + _formmat.indent;
+			
+			switch(align)
+			{
+				case "center":
+					_tf.x = _width - _tf.width >> 1;
+					break;
+				case "right":
+					_tf.x = _width - _tf.width;
+					break;
+				default:
+					break;
+			}
 		}
 	}
 }
