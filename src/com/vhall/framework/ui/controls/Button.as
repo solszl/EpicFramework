@@ -1,7 +1,7 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
-	
+
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
@@ -102,8 +102,8 @@ package com.vhall.framework.ui.controls
 
 				bg.source = getProperty("skin", state);
 				bg.setBitmapDataCallBK = updateDisplay;
-				btnLabel.text = getProperty("label", state).toString();
-				btnLabel.color = getProperty("labelColor", state);
+				btnLabel.text = getProperty("label", state) == null ? "" : getProperty("label", state).toString();
+				btnLabel.color = getProperty("labelColor", state) == null ? Style.Button_Label_Color : getProperty("labelColor", state);
 				lastState = state;
 				_stateChanged = false;
 			}
@@ -139,41 +139,43 @@ package com.vhall.framework.ui.controls
 			propertiesDic["skin"][0] = value;
 			state = stateMap["rollOut"];
 		}
-		
+
 		private var _overSkin:Object;
+
 		public function set overSkin(value:Object):void
 		{
 			if(_overSkin == value)
 			{
 				return;
 			}
-			
+
 			_overSkin = value;
 			propertiesDic["skin"][1] = value;
 		}
-		
+
 		public function get overSkin():Object
 		{
 			return _overSkin;
 		}
-		
+
 		private var _downSkin:Object;
+
 		public function set downSkin(value:Object):void
 		{
 			if(_downSkin == value)
 			{
 				return;
 			}
-			
+
 			_downSkin = value;
 			propertiesDic["skin"][2] = value;
 		}
-		
+
 		public function get downSkin():Object
 		{
 			return _downSkin;
 		}
-			
+
 
 		public function get label():String
 		{

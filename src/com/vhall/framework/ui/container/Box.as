@@ -158,8 +158,8 @@ package com.vhall.framework.ui.container
 //			var explicitw:Number = _width > calcW ? _width : calcW;
 //			var explicith:Number = _height > calcH ? _height : calcH;
 			
-			var explicitw:Number = _width;
-			var explicith:Number = _height;
+			var explicitw:Number = width;
+			var explicith:Number = height;
 			
 			// 根据预估的宽高进行布局
 			for(i = 0; i < num; i++)
