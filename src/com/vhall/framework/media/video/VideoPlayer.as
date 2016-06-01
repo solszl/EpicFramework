@@ -53,6 +53,8 @@ package com.vhall.framework.media.video
 		
 		private var _videoOption:VideoOptions;
 		
+		private var _handler:Function;
+		
 		/**
 		 * 默认显示大小320X240
 		 */		
@@ -96,51 +98,55 @@ package com.vhall.framework.media.video
 				return;
 			}
 			_proxy = MediaProxyFactory.create(type);
+			_handler = handler;		
+			_type = type;
 			
 			//推流之外的播放器，启用图像增强
 			filters = _proxy.type != MediaProxyType.PUBLISH ? [new SharpenFilter(0.1)] : [];
 			
-			_proxy.connect(uri,stream,function(states:String,...value):void
+			_proxy.connect(uri,stream,proxyHandler,autoPlay);
+			
+		}
+		
+		private function proxyHandler(states:String,...value):void
+		{
+			switch(states)
 			{
-				switch(states)
-				{
-					case MediaProxyStates.CONNECT_NOTIFY:
-						if(_proxy.type == MediaProxyType.PUBLISH){
-							var iPub:IPublish = _proxy as IPublish;
-							iPub.publish(_cam,_mic);
-							useStrategy = _videoOption.useStrategy;
-						}else{
-							attachView(_proxy.stream);
-						}
-						volume = _videoOption.volume;
-						
-						break;
-					case MediaProxyStates.STREAM_FULL:
-					case MediaProxyStates.STREAM_SIZE_NOTIFY:
-						updateVideo();
-						break;
-					case MediaProxyStates.PUBLISH_NOTIFY:
-						attachView((_proxy as IPublish).usedCam);
-						break;
-					case MediaProxyStates.UN_PUBLISH_NOTIFY:
-					case MediaProxyStates.UN_PUBLISH_SUCCESS:
-						stop();
-						break;
-				}
-				
-				//处理外部回调业务
-				if(handler != null){
-					var args:Array = value.length != 0 ? [states].concat(value):[states];
-					try{
-						handler&&handler.apply(null,args);
-					}catch(e:Error){
-						CONFIG::LOGGING{
-							Log.warn("处理播放器外部回调" + states + "业务出错：" + e.message);
-						}
+				case MediaProxyStates.CONNECT_NOTIFY:
+					if(_proxy.type == MediaProxyType.PUBLISH){
+						var iPub:IPublish = _proxy as IPublish;
+						iPub.publish(_cam,_mic);
+						useStrategy = _videoOption.useStrategy;
+					}else{
+						attachView(_proxy.stream);
+					}
+					volume = _videoOption.volume;
+					
+					break;
+				case MediaProxyStates.STREAM_FULL:
+				case MediaProxyStates.STREAM_SIZE_NOTIFY:
+					updateVideo();
+					break;
+				case MediaProxyStates.PUBLISH_NOTIFY:
+					attachView((_proxy as IPublish).usedCam);
+					break;
+				case MediaProxyStates.UN_PUBLISH_NOTIFY:
+				case MediaProxyStates.UN_PUBLISH_SUCCESS:
+					if(_type==MediaProxyType.PUBLISH) stop();
+					break;
+			}
+			
+			//处理外部回调业务
+			if(_handler != null){
+				var args:Array = value.length != 0 ? [states].concat(value):[states];
+				try{
+					_handler&&_handler.apply(null,args);
+				}catch(e:Error){
+					CONFIG::LOGGING{
+						Log.warn("处理播放器外部回调" + states + "业务出错：" + e.message);
 					}
 				}
-			},autoPlay);
-			
+			}
 		}
 		
 		/**
@@ -152,6 +158,33 @@ package com.vhall.framework.media.video
 		public function changeVideoUrl(uri:String,stream:String = null,autoPlay:Boolean = true):void
 		{
 			_proxy && (_proxy.changeVideoUrl(uri, stream, autoPlay));
+		}
+		
+		/**
+		 * 将播放器切换到别的类型
+		 * @param type 新的播放器类型
+		 * @param uri 新的服务器地址，非rtmp为文件路径
+		 * @param stream 新的流名称或者文件名，非rtmp为null
+		 * @param autoPlay 是否自动播放，默认为自动播放，rtmp时设置无效
+		 * @param cam 推流时候使用的cam名称或者实例，默认取系统默认摄像头
+		 * @param mic 推流时候使用的mic名称或实例，默认取系统默认麦克风
+		 */		
+		public function attachType(type:String,uri:String,stream:String = null,autoPlay:Boolean = true,cam:* = null,mic:* = null):void
+		{
+			if(_type == type)
+			{
+				changeVideoUrl(uri,stream,autoPlay);
+			}else{
+				if(_proxy) stop();
+				_proxy = null;
+				if(type == MediaProxyType.PUBLISH)
+				{
+					//重回放转到推流
+					publish(cam,mic,uri,stream,_handler);
+					return;
+				}
+				connect(type,uri,stream,_handler,autoPlay);
+			}
 		}
 		
 		/**
@@ -228,6 +261,9 @@ package com.vhall.framework.media.video
 			}
 		}
 		
+		/**
+		 * 停止视频播放
+		 */		
 		public function stop():void
 		{
 			if(_cameraView)
@@ -236,6 +272,7 @@ package com.vhall.framework.media.video
 			}else{
 				_video.attachNetStream(null);
 			}
+			if(_proxy) _proxy.stop();
 		}
 		
 		/**
@@ -310,7 +347,11 @@ package com.vhall.framework.media.video
 				(_proxy as IPublish).useStrategy = bool;
 			}
 		}
-		
+
+		/**
+		 * 获取推流摄像头，非推流状态返回null
+		 * @return 
+		 */		
 		public function get usedCam():Camera
 		{
 			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
@@ -318,6 +359,10 @@ package com.vhall.framework.media.video
 			return null;
 		}
 		
+		/**
+		 * 获取推流麦克风，非推流状态返回null
+		 * @return 
+		 */		
 		public function get usedMic():Microphone
 		{
 			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
@@ -431,6 +476,10 @@ package com.vhall.framework.media.video
 			return 0;
 		}
 		
+		/**
+		 * 获取当前播放的bufferLength 
+		 * @return 
+		 */		
 		public function get bufferLength():Number
 		{
 			if(stream) return stream.bufferLength;

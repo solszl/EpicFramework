@@ -92,6 +92,7 @@ package com.vhall.framework.media.provider
 		{
 			super.stop();
 			stream && stream.dispose();
+			gc();
 		}
 		
 		override public function pause():void
