@@ -145,6 +145,13 @@ package com.vhall.framework.ui.controls
 				this.parent.removeChild(this);
 			}
 		}
+		
+		public function validateNow():void
+		{
+			invalidate();
+			sizeChanged();
+			updateDisplay();
+		}
 
 		/**显示边框*/
 		public function showBorder(color:uint = 0xff0000):void

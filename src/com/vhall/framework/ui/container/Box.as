@@ -119,6 +119,18 @@ package com.vhall.framework.ui.container
 			super.invalidate();
 		}
 
+		public function addChildAbove(target:DisplayObject, child:DisplayObject):void
+		{
+			var idx:int = getChildIndex(target);
+			addChildAt(child, idx + 1);
+		}
+
+		public function addChildBelow(target:DisplayObject, child:DisplayObject):void
+		{
+			var idx:int = getChildIndex(target);
+			addChildAt(child, Math.max(0, idx));
+		}
+
 		public function removeAllChild():void
 		{
 			while(numChildren)
@@ -157,10 +169,10 @@ package com.vhall.framework.ui.container
 
 //			var explicitw:Number = _width > calcW ? _width : calcW;
 //			var explicith:Number = _height > calcH ? _height : calcH;
-			
+
 			var explicitw:Number = width;
 			var explicith:Number = height;
-			
+
 			// 根据预估的宽高进行布局
 			for(i = 0; i < num; i++)
 			{

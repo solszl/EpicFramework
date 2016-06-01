@@ -1,5 +1,7 @@
 package com.vhall.framework.ui.container
 {
+	import com.vhall.framework.ui.controls.UIComponent;
+	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
@@ -44,6 +46,12 @@ package com.vhall.framework.ui.container
 			for(var i:int = 0; i < numChild; i++)
 			{
 				child = getChildAt(i);
+				
+				if(child is UIComponent && (child as UIComponent).visible == false)
+				{
+					continue;
+				}
+				
 				child.x = xpos;
 				xpos += child.width;
 				xpos += gap;
@@ -52,6 +60,7 @@ package com.vhall.framework.ui.container
 				maxHeight = child.height > maxHeight ? child.height : maxHeight;
 			}
 
+			maxHeight = maxHeight > _height ? maxHeight : _height;
 			width += marginRight;
 		}
 

@@ -4,11 +4,12 @@ package com.vhall.framework.app.manager
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.display.StageAlign;
+	import flash.display.StageDisplayState;
 	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
 	import flash.events.ErrorEvent;
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.MouseEvent;
 	import flash.system.ApplicationDomain;
 
 	/**
@@ -90,6 +91,11 @@ package com.vhall.framework.app.manager
 
 			var content:String = "【Error】:\n It's probably a bug, please contact Sol::<a herf ='mailto:zhenliang.sun@vhall.com'</a>" + msg;
 			trace(content);
+		}
+		
+		public static function toggleFullscreen(e:MouseEvent = null):void
+		{
+			stage.displayState = stage.displayState == StageDisplayState.NORMAL ? StageDisplayState.FULL_SCREEN :StageDisplayState.NORMAL;
 		}
 	}
 }

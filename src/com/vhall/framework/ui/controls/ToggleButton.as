@@ -23,11 +23,22 @@ package com.vhall.framework.ui.controls
 		public function set selected(value:Boolean):void
 		{
 			_selected = value;
+			dispatchEvent(new MouseEvent(MouseEvent.ROLL_OUT));
 		}
 
 		public function get selected():Boolean
 		{
 			return _selected;
+		}
+		
+		/**
+		 * 不派发选中事件的选择 
+		 * @param value
+		 * 
+		 */		
+		public function setSelected(value:Boolean):void
+		{
+			state = value ? stateMap["mouseDown"] : stateMap["rollOut"];
 		}
 
 		override protected function onMouse(e:MouseEvent):void

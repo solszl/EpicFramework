@@ -2,13 +2,14 @@ package com.vhall.framework.ui.manager
 {
 	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.controls.ToolTip;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.utils.Dictionary;
 
 	/**
@@ -232,23 +233,25 @@ package com.vhall.framework.ui.manager
 				return;
 			}
 
+			// stage point
+			var sp:Point = currentTarget.localToGlobal(new Point());
 			switch (currentTarget["callOut"])
 			{
 				case "left":
-					holder.x = currentTarget.x - holder.width - 2;
-					holder.y = currentTarget.y + (currentTarget.height - holder.height >> 1);
+					holder.x = sp.x - holder.width - 2;
+					holder.y = sp.y + (currentTarget.height - holder.height >> 1);
 					break;
 				case "right":
-					holder.x = currentTarget.x + currentTarget.width + 2;
-					holder.y = currentTarget.y + (currentTarget.height - holder.height >> 1);
+					holder.x = sp.x + currentTarget.width + 2;
+					holder.y = sp.y + (currentTarget.height - holder.height >> 1);
 					break;
 				case "top":
-					holder.x = currentTarget.x + (currentTarget.width - holder.width >> 1);
-					holder.y = currentTarget.y - holder.height;
+					holder.x = sp.x + (currentTarget.width - holder.width >> 1);
+					holder.y = sp.y - holder.height;
 					break;
 				case "bottom":
-					holder.x = currentTarget.x + (currentTarget.width - holder.width >> 1);
-					holder.y = currentTarget.y + currentTarget.height + 2;
+					holder.x = sp.x + (currentTarget.width - holder.width >> 1);
+					holder.y = sp.y + currentTarget.height + 2;
 					break;
 				default:
 					useStageMousePosition();
