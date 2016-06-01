@@ -19,6 +19,7 @@ package com.vhall.framework.media.video
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.media.Camera;
+	import flash.media.Microphone;
 	import flash.media.Video;
 	import flash.net.NetStream;
 	
@@ -120,6 +121,10 @@ package com.vhall.framework.media.video
 						break;
 					case MediaProxyStates.PUBLISH_NOTIFY:
 						attachView((_proxy as IPublish).usedCam);
+						break;
+					case MediaProxyStates.UN_PUBLISH_NOTIFY:
+					case MediaProxyStates.UN_PUBLISH_SUCCESS:
+						stop();
 						break;
 				}
 				
@@ -223,6 +228,16 @@ package com.vhall.framework.media.video
 			}
 		}
 		
+		public function stop():void
+		{
+			if(_cameraView)
+			{
+				_video.attachCamera(null);
+			}else{
+				_video.attachNetStream(null);
+			}
+		}
+		
 		/**
 		 * 非自动播放视频，在MediaProxyStates.CONNECT_NOTIFY后播放视频
 		 */		
@@ -294,6 +309,20 @@ package com.vhall.framework.media.video
 			{
 				(_proxy as IPublish).useStrategy = bool;
 			}
+		}
+		
+		public function get usedCam():Camera
+		{
+			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
+				return (_proxy as IPublish).usedCam;
+			return null;
+		}
+		
+		public function get usedMic():Microphone
+		{
+			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
+				return (_proxy as IPublish).usedMic;
+			return null;
 		}
 		
 		/**
@@ -399,6 +428,12 @@ package com.vhall.framework.media.video
 		public function get loaded():Number
 		{
 			if(_proxy.type == MediaProxyType.HTTP) return (_proxy as IProgress).loaded();
+			return 0;
+		}
+		
+		public function get bufferLength():Number
+		{
+			if(stream) return stream.bufferLength;
 			return 0;
 		}
 		
