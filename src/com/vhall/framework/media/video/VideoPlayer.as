@@ -272,6 +272,8 @@ package com.vhall.framework.media.video
 			}else{
 				_video.attachNetStream(null);
 			}
+			//清楚视频最后一帧
+			_video.clear();
 			if(_proxy) _proxy.stop();
 		}
 		
