@@ -501,6 +501,11 @@ package com.vhall.framework.media.video
 			return _videoOption.volume;
 		}
 		
+		public function get type():String
+		{
+			return _type;
+		}
+		
 		/**
 		 * 视频音量
 		 * @param value
