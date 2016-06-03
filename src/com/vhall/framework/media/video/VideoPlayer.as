@@ -132,7 +132,7 @@ package com.vhall.framework.media.video
 					break;
 				case MediaProxyStates.UN_PUBLISH_NOTIFY:
 				case MediaProxyStates.UN_PUBLISH_SUCCESS:
-					if(_type==MediaProxyType.PUBLISH) stop();
+					//if(_type==MediaProxyType.PUBLISH) stop();
 					break;
 			}
 			
@@ -272,9 +272,19 @@ package com.vhall.framework.media.video
 			}else{
 				_video.attachNetStream(null);
 			}
+			if(_proxy) _proxy.stop();
+		}
+		
+		/**
+		 * 销毁播放器和代理的关系，清楚最后一帧
+		 */		
+		public function dispose():void
+		{
+			stop();
 			//清楚视频最后一帧
 			_video.clear();
-			if(_proxy) _proxy.stop();
+			_proxy = null;
+			_cameraView = false;
 		}
 		
 		/**
