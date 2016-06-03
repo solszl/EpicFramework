@@ -61,8 +61,12 @@ package com.vhall.framework.ui.container
 				return null;
 			}
 
-			children.splice(index, 1);
-			var obj:DisplayObject = super.removeChildAt(index);
+//			children.splice(index, 1);
+//			var obj:DisplayObject = super.removeChildAt(index);
+//			RenderManager.getInstance().invalidate(invalidate);
+//			return obj;
+			
+			var obj:DisplayObject = removeChild(getChildAt(index));
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
 		}
