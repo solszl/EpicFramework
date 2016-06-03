@@ -183,9 +183,9 @@ package com.vhall.framework.media.provider
 		
 		protected function statusHandler(e:NetStatusEvent):void
 		{
-			CONFIG::LOGGING{
+			/*CONFIG::LOGGING{
 				Log.info("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : ""));
-			}
+			}*/
 			switch(e.info.code)
 			{
 				case InfoCode.NetConnection_Connect_Success:
@@ -225,6 +225,12 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetStream_Video_DimensionChange:
 					//视频源尺寸改变
 					excute(MediaProxyStates.STREAM_SIZE_NOTIFY);
+					break;
+				case InfoCode.NetStream_Pause_Notify:
+					excute(MediaProxyStates.STREAM_PAUSE);
+					break;
+				case InfoCode.NetStream_Unpause_Notify:
+					excute(MediaProxyStates.STREAM_UNPAUSE);
 					break;
 				default:
 					break;

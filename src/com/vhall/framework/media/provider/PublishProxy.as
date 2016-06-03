@@ -158,7 +158,7 @@ package com.vhall.framework.media.provider
 		
 		public function set cameraMuted(bool:Boolean):void
 		{
-			if(_ns)
+			if(_ns && _cam)
 			{
 				var catchCam:Camera = bool ? null: _cam;
 				_ns.attachCamera(catchCam);
@@ -167,7 +167,7 @@ package com.vhall.framework.media.provider
 		
 		public function set microphoneMuted(bool:Boolean):void
 		{
-			if(_ns)
+			if(_ns && _mic)
 			{
 				var catchMic:Microphone = bool ? null: _mic;
 				_ns.attachAudio(catchMic);
@@ -214,7 +214,10 @@ package com.vhall.framework.media.provider
 		
 		override protected function gc():void
 		{
+			cameraMuted = microphoneMuted = true;
+			
 			super.gc();
+			
 			clearInterval(_id);
 			if(_cam && _cam.hasEventListener(StatusEvent.STATUS))
 			{
@@ -228,31 +231,30 @@ package com.vhall.framework.media.provider
 		{
 			//推流取消播放功能
 			_playing = true;
-			cameraMuted = microphoneMuted = true;
+			cameraMuted = microphoneMuted = !_playing;
 		}
 		
 		override public function stop():void
 		{
 			_playing = false;
-			cameraMuted = microphoneMuted = false;
+			cameraMuted = microphoneMuted = !_playing;
 		}
 		
 		override public function pause():void
 		{
 			_playing = false;
-			cameraMuted = microphoneMuted = false;
+			cameraMuted = microphoneMuted = !_playing;
 		}
 		
 		override public function resume():void
 		{
 			_playing = true;
-			cameraMuted = microphoneMuted = true;
+			cameraMuted = microphoneMuted = !_playing;
 		}
 		
 		override public function toggle():void
 		{
 			_playing = !_playing;
-			
 			cameraMuted = microphoneMuted = !_playing;
 		}
 		

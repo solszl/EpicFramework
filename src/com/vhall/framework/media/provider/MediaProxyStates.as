@@ -57,6 +57,12 @@ package com.vhall.framework.media.provider
 		/** 播放结束通知*/
 		public static const STREAM_STOP:String = "streamStop";
 		
+		/** 视频流暂停通知*/
+		public static const STREAM_PAUSE:String = "streamPause";
+		
+		/** 视频流暂停恢复*/
+		public static const STREAM_UNPAUSE:String = "streamUnpause";
+		
 		/** 未找到指定名称的流文件*/
 		public static const STREAM_NOT_FOUND:String = "streamNotFound";
 		
