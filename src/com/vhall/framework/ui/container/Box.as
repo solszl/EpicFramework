@@ -51,6 +51,12 @@ package com.vhall.framework.ui.container
 
 			var obj:DisplayObject = super.removeChild(child);
 			RenderManager.getInstance().invalidate(invalidate);
+			
+			if(obj is UIComponent)
+			{
+				UIComponent(obj).destory();
+			}
+			
 			return obj;
 		}
 
@@ -109,6 +115,15 @@ package com.vhall.framework.ui.container
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
+			
+			for each (var child:DisplayObject in children) 
+			{
+				if(child is UIComponent)
+				{
+					UIComponent(child).validateNow();
+				}
+			}
+			
 			layoutChildren();
 		}
 

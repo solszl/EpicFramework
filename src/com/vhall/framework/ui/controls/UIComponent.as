@@ -65,11 +65,6 @@ package com.vhall.framework.ui.controls
 			
 		}
 
-		protected function destory():void
-		{
-
-		}
-		
 		protected function parentInvalidate():void
 		{
 			if(parent && parent is UIComponent)
@@ -142,6 +137,11 @@ package com.vhall.framework.ui.controls
 			this._width = Math.round(w);
 			this._height = Math.round(h);
 			RenderManager.getInstance().invalidate(invalidate);
+		}
+		
+		public function destory():void
+		{
+			
 		}
 
 		/**
