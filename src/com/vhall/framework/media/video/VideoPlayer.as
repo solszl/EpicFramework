@@ -31,7 +31,7 @@ package com.vhall.framework.media.video
 	/**
 	 * 封装视频播放video
 	 */	
-	public class VideoPlayer extends Sprite
+	public class VideoPlayer extends Sprite implements IVideoPlayer
 	{
 		private var _video:Video;
 		
@@ -506,6 +506,18 @@ package com.vhall.framework.media.video
 		public function get type():String
 		{
 			return _type;
+		}
+		
+		public function get uri():String
+		{
+			if(!_proxy) return "";
+			return _proxy.uri;
+		}
+		
+		public function get streamUrl():String
+		{
+			if(!_proxy) return "";
+			return _proxy.streamUrl;
 		}
 		
 		/**

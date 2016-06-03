@@ -91,7 +91,7 @@ package com.vhall.framework.media.provider
 		override public function stop():void
 		{
 			super.stop();
-			stream && stream.dispose();
+			stream && stream.close();
 			gc();
 		}
 		
@@ -187,6 +187,7 @@ package com.vhall.framework.media.provider
 		
 		override protected function gc():void
 		{
+			super.gc();
 			if(_hls)
 			{
 				_hls.removeEventListener(HLSEvent.MANIFEST_LOADED,onHLSHandler);

@@ -228,13 +228,13 @@ package com.vhall.framework.media.provider
 		{
 			//推流取消播放功能
 			_playing = true;
+			cameraMuted = microphoneMuted = true;
 		}
 		
 		override public function stop():void
 		{
 			_playing = false;
 			cameraMuted = microphoneMuted = false;
-			super.stop();
 		}
 		
 		override public function pause():void

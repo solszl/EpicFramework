@@ -97,5 +97,8 @@ package com.vhall.framework.media.interfaces
 		
 		/** 切换暂停恢复状态*/
 		function toggle():void;
+		
+		/** 销毁播放代理,不可再用*/
+		function dispose():void;
 	}
 }
