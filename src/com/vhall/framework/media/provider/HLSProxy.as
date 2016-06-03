@@ -98,20 +98,22 @@ package com.vhall.framework.media.provider
 		override public function pause():void
 		{
 			super.pause();
-			
 			stream && stream.pause();
+			excute(MediaProxyStates.STREAM_PAUSE);
 		}
 		
 		override public function resume():void
 		{
 			super.resume();
 			stream && stream.resume();
+			excute(MediaProxyStates.STREAM_UNPAUSE);
 		}
 		
 		override public function toggle():void
 		{
 			super.toggle();
 			stream && stream.togglePause();
+			_playing?excute(MediaProxyStates.STREAM_UNPAUSE):excute(MediaProxyStates.STREAM_PAUSE);;
 		}
 		
 		protected function onHLSHandler(e:HLSEvent):void
@@ -138,8 +140,10 @@ package com.vhall.framework.media.provider
 					switch(e.state)
 					{
 						case HLSPlayStates.PAUSED:
+							//excute(MediaProxyStates.STREAM_PAUSE);
 							break;
 						case HLSPlayStates.PLAYING:
+							//excute(MediaProxyStates.STREAM_UNPAUSE);
 							break;
 					}
 					break;
