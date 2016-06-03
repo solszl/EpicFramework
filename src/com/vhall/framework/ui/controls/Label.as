@@ -15,12 +15,12 @@ package com.vhall.framework.ui.controls
 	 */
 	public class Label extends UIComponent
 	{
+		/**	文本内容*/
+		protected var _text:String;
 		/**	默认承载文本的容器*/
 		private var _tf:TextField;
 		/**	文本格式化*/
 		private var _formmat:TextFormat;
-		/**	文本内容*/
-		private var _text:String;
 		/**	文本格式发生变化的变量*/
 		private var _textformmatChanged:Boolean = false;
 		
@@ -99,6 +99,7 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 
+			this._tf.textColor = uint(value);
 			this._formmat.color = value;
 			_textformmatChanged = true;
 			RenderManager.getInstance().invalidate(invalidate);
@@ -302,18 +303,23 @@ package com.vhall.framework.ui.controls
 			return this._tf.selectable;
 		}
 
-		override protected function invalidate():void
+		override protected function sizeChanged():void
 		{
-			super.invalidate();
-
+			super.sizeChanged();
+			
 			if(_textformmatChanged)
 			{
 				this._tf.setTextFormat(this._formmat);
 				_textformmatChanged = false;
 			}
-
+			
 			_tf.height = Math.max(_tf.textHeight + 4, 20);
 			_tf.width = _tf.textWidth + 4 + _formmat.indent;
+		}
+		
+		override protected function updateDisplay():void
+		{
+			super.updateDisplay();
 			
 			switch(align)
 			{

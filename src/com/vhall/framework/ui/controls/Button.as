@@ -91,36 +91,14 @@ package com.vhall.framework.ui.controls
 
 		override protected function invalidate():void
 		{
-			// 如果和上一个状态相同，return
-			super.invalidate();
-			if(_stateChanged)
-			{
-				if(lastState == state)
-				{
-					return
-				}
-
-				bg.source = getProperty("skin", state);
-				bg.setBitmapDataCallBK = updateDisplay;
-				btnLabel.text = getProperty("label", state) == null ? "" : getProperty("label", state).toString();
-				btnLabel.color = getProperty("labelColor", state) == null ? Style.Button_Label_Color : getProperty("labelColor", state);
-				lastState = state;
-				_stateChanged = false;
-			}
-
-			if(_labelChanged)
-			{
-				btnLabel.text = getProperty("label", state).toString();
-				_labelChanged = false;
-			}
-
 			if(_labelColorChanged)
 			{
 				btnLabel.color = getProperty("labelColor", state);
 				_labelColorChanged = false;
 			}
 
-			updateDisplay();
+			super.invalidate();
+//			updateDisplay();
 		}
 
 		public function get skin():Object
@@ -241,6 +219,36 @@ package com.vhall.framework.ui.controls
 			}
 
 			return propertiesDic[name][index];
+		}
+		
+		override protected function sizeChanged():void
+		{
+			super.sizeChanged();
+			
+			// 如果和上一个状态相同，return
+			if(_stateChanged)
+			{
+				if(lastState == state)
+				{
+					return
+				}
+				
+				bg.source = getProperty("skin", state);
+				bg.setBitmapDataCallBK = updateDisplay;
+				btnLabel.text = getProperty("label", state) == null ? "" : getProperty("label", state).toString();
+				btnLabel.color = getProperty("labelColor", state) == null ? Style.Button_Label_Color : getProperty("labelColor", state);
+				lastState = state;
+				_stateChanged = false;
+			}
+			
+			if(_labelChanged)
+			{
+				btnLabel.text = getProperty("label", state).toString();
+				_labelChanged = false;
+			}
+			
+			width = bg.width;
+			height = bg.height;
 		}
 
 		override protected function updateDisplay():void

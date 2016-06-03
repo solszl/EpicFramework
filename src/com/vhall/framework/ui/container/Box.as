@@ -25,7 +25,6 @@ package com.vhall.framework.ui.container
 		{
 			children.push(child);
 			var obj:DisplayObject = super.addChild(child);
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
 		}
@@ -38,7 +37,6 @@ package com.vhall.framework.ui.container
 			}
 			children.splice(index, 0, child);
 			var obj:DisplayObject = super.addChildAt(child, index);
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
 		}
@@ -52,7 +50,6 @@ package com.vhall.framework.ui.container
 			}
 
 			var obj:DisplayObject = super.removeChild(child);
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
 		}
@@ -66,7 +63,6 @@ package com.vhall.framework.ui.container
 
 			children.splice(index, 1);
 			var obj:DisplayObject = super.removeChildAt(index);
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
 		}
@@ -93,7 +89,6 @@ package com.vhall.framework.ui.container
 
 			children.splice(beginIndex, endIndex - beginIndex + 1);
 			super.removeChildren(beginIndex, endIndex);
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -106,12 +101,11 @@ package com.vhall.framework.ui.container
 		{
 			return children[index];
 		}
-
-		override protected function invalidate():void
+		
+		override protected function updateDisplay():void
 		{
+			super.updateDisplay();
 			layoutChildren();
-
-			super.invalidate();
 		}
 
 		public function addChildAbove(target:DisplayObject, child:DisplayObject):void

@@ -32,10 +32,9 @@ package com.vhall.framework.ui.container
 			gap = 5;
 		}
 		
-		override protected function invalidate():void
+		override protected function updateDisplay():void
 		{
-			super.invalidate();
-
+			super.updateDisplay();
 			// 纵向布局
 			layoutVertical();
 			// 横向布局，左中右

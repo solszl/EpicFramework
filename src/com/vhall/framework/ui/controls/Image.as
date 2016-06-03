@@ -5,7 +5,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.load.ResourceLibrary;
 	import com.vhall.framework.load.ResourceLoader;
 	import com.vhall.framework.ui.utils.ComponentUtils;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -79,7 +79,6 @@ package com.vhall.framework.ui.controls
 			super.width = value;
 			_w = value;
 			_sizeChanged = true;
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -88,7 +87,6 @@ package com.vhall.framework.ui.controls
 			super.height = value;
 			_h = value;
 			_sizeChanged = true;
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -96,7 +94,7 @@ package com.vhall.framework.ui.controls
 		{
 			_w = w;
 			_h = h;
-			RenderManager.getInstance().invalidate(sizeChanged);
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		/**	图像源*/
@@ -250,6 +248,7 @@ package com.vhall.framework.ui.controls
 		private function setBitmapData(bmd:BitmapData):void
 		{
 			bitmap.bitmapData = bmd;
+			RenderManager.getInstance().invalidate(invalidate);
 			if(setBitmapDataCallBK == null)
 			{
 				return;
@@ -258,15 +257,14 @@ package com.vhall.framework.ui.controls
 			setBitmapDataCallBK();
 		}
 
-		override protected function invalidate():void
+		override protected function sizeChanged():void
 		{
-			super.invalidate();
-
+			super.sizeChanged();
 			if(!_sizeChanged)
 			{
 				return;
 			}
-
+			
 			if(_useScale9Rect)
 			{
 				resizeBitmap(_w, _h);
@@ -276,9 +274,9 @@ package com.vhall.framework.ui.controls
 				bitmap.width = _w;
 				bitmap.height = _h;
 			}
-
-			super.width = bitmap.width;
-			super.height = bitmap.height;
+			
+			width = bitmap.width;
+			height = bitmap.height;
 			_sizeChanged = false;
 		}
 
