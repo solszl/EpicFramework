@@ -5,6 +5,7 @@ package com.vhall.framework.ui.controls
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
+	import com.vhall.framework.ui.interfaces.IState;
 
 	/**
 	 * 按钮类

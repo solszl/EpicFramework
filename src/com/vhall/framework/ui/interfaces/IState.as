@@ -1,4 +1,4 @@
-package com.vhall.framework.ui.controls
+package com.vhall.framework.ui.interfaces
 {
 
 	/**
@@ -8,7 +8,7 @@ package com.vhall.framework.ui.controls
 	 */
 	public interface IState
 	{
-		function set state(vallue:int):void;
+		function set state(value:int):void;
 		/**
 		 *	获取当前状态
 		 * @return

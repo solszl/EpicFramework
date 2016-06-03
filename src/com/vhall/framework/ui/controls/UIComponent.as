@@ -1,6 +1,8 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
+	import com.vhall.framework.ui.interfaces.IRelative;
+	import com.vhall.framework.ui.interfaces.IToolTip;
 	import com.vhall.framework.ui.manager.TooltipManager;
 	import com.vhall.framework.utils.StringUtil;
 	

@@ -1,4 +1,4 @@
-package com.vhall.framework.ui.controls
+package com.vhall.framework.ui.interfaces
 {
 
 	/**
@@ -6,7 +6,7 @@ package com.vhall.framework.ui.controls
 	 * @author Sol
 	 * @date 2016-05-19
 	 */
-	internal interface IToolTip
+	public interface IToolTip
 	{
 		function set tooltip(value:Object):void;
 		function get tooltip():Object;

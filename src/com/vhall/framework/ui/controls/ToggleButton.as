@@ -4,6 +4,7 @@ package com.vhall.framework.ui.controls
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import com.vhall.framework.ui.interfaces.ISelectable;
 
 	/**
 	 * 开关按钮
