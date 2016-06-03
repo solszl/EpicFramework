@@ -216,6 +216,11 @@ package com.vhall.framework.media.provider
 			_playing = !_playing;
 		}
 		
+		public function dispose():void
+		{
+			gc();
+		}
+		
 		public function toString():String
 		{
 			return "";
