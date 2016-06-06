@@ -37,7 +37,7 @@ package com.vhall.framework.ui.controls
 			}
 
 			quad.x = width * percent - quad.width / 2;
-			finished.width = width * percent;
+			finished.width = Math.max(width * percent,1);
 		}
 
 		override protected function onDragStart(e:MouseEvent = null):void
@@ -64,10 +64,11 @@ package com.vhall.framework.ui.controls
 					break;
 				case MouseEvent.MOUSE_UP:
 					onDragDrop(e);
+					percent = finished.width / width;
 					break;
 				case MouseEvent.MOUSE_MOVE:
 					fireEvent(e, DragEvent.HOVER);
-					finished.width = quad.x + quad.width / 2;
+					finished.width = Math.max(quad.x + quad.width / 2, 1);
 					break;
 			}
 		}

@@ -32,8 +32,6 @@ package com.vhall.framework.ui.controls
 
 		private var bitmap:Bitmap;
 
-		private var _sizeChanged:Boolean = false;
-
 		private var _w:Number;
 		private var _h:Number;
 
@@ -78,23 +76,19 @@ package com.vhall.framework.ui.controls
 		{
 			super.width = value;
 			_w = value;
-			_sizeChanged = true;
-			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override public function set height(value:Number):void
 		{
 			super.height = value;
 			_h = value;
-			_sizeChanged = true;
-			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override public function setSize(w:Number, h:Number):void
 		{
+			super.setSize(w,h);
 			_w = w;
 			_h = h;
-			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		/**	图像源*/
@@ -155,6 +149,7 @@ package com.vhall.framework.ui.controls
 				if(bitmap.bitmapData == null)
 				{
 					failed(null, "");
+					return;
 				}
 				resizeIfNeed();
 			}
@@ -167,6 +162,7 @@ package com.vhall.framework.ui.controls
 					if(bitmap.bitmapData == null)
 					{
 						failed(null, "");
+						return;
 					}
 					resizeIfNeed();
 				}
@@ -228,22 +224,21 @@ package com.vhall.framework.ui.controls
 		 */
 		private function resizeIfNeed():void
 		{
-			var canChange:Boolean = false;
+			var sizeChange:Boolean = false;
 			if(isNaN(_w))
 			{
 				_w = bitmap.bitmapData.width;
-				canChange = true;
+				sizeChange = true;
 			}
 
 			if(isNaN(_h))
 			{
 				_h = bitmap.bitmapData.height;
-				canChange = true;
+				sizeChange = true;
 			}
 
-			if(canChange || _w != bitmap.bitmapData.width || _h != bitmap.bitmapData.height)
+			if(sizeChange && (!isNaN(_w) && !isNaN(_h)))
 			{
-				_sizeChanged = true;
 				RenderManager.getInstance().invalidate(invalidate);
 			}
 		}
@@ -263,7 +258,8 @@ package com.vhall.framework.ui.controls
 		override protected function sizeChanged():void
 		{
 			super.sizeChanged();
-			if(!_sizeChanged)
+			
+			if(_w == 0 || _h == 0)
 			{
 				return;
 			}
@@ -280,7 +276,6 @@ package com.vhall.framework.ui.controls
 			
 			width = bitmap.width;
 			height = bitmap.height;
-			_sizeChanged = false;
 		}
 
 		/**
