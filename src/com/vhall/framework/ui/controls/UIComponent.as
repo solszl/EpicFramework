@@ -195,6 +195,9 @@ package com.vhall.framework.ui.controls
 		private var _verticalCenter:Number;
 		private var _callOut:String = "none";
 
+		/**	用户自定义数据，该数据外部维护*/
+		private var _userData:Object;
+		
 		/**
 		 *	tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
 		 */
@@ -283,6 +286,16 @@ package com.vhall.framework.ui.controls
 		public function set verticalCenter(value:Number):void
 		{
 			_verticalCenter = value;
+		}
+		
+		public function set userData(value:Object):void
+		{
+			_userData = value;
+		}
+		
+		public function get userData():Object
+		{
+			return _userData ||= {};
 		}
 	}
 }

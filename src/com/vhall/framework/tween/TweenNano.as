@@ -169,7 +169,7 @@ package com.vhall.framework.tween
 	 *
 	 * @author Jack Doyle, jack@greensock.com
 	 */
-	public class TweenNano
+	internal class TweenNano
 	{
 		/** @private **/
 		protected static var _time:Number;
