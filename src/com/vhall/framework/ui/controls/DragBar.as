@@ -1,14 +1,12 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
-	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.container.Box;
 	import com.vhall.framework.ui.event.DragEvent;
 	import com.vhall.framework.ui.utils.ComponentUtils;
+	import com.vhall.framework.utils.MathUtil;
 
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
@@ -62,12 +60,13 @@ package com.vhall.framework.ui.controls
 
 		protected var _w:Number;
 		protected var _h:Number;
+
 		override protected function createChildren():void
 		{
 			super.createChildren();
 			initSize();
 			bg = new Image(this);
-		
+
 			// alpha 设置为0 先隐藏
 			buffer = new Image(this);
 			buffer.mouseChildren = buffer.mouseEnabled = false;
@@ -76,14 +75,15 @@ package com.vhall.framework.ui.controls
 			//滑块
 			quad = new Image(this);
 			quad.mouseChildren = quad.mouseEnabled = false;
-			
+
 			initSkin();
 
 			addEventListener(MouseEvent.MOUSE_MOVE, onMouseHandler);
 			addEventListener(MouseEvent.MOUSE_DOWN, onMouseHandler);
 		}
-		
-		protected function initSize():void{
+
+		protected function initSize():void
+		{
 			if(direction == HORIZONTAL)
 			{
 				_w = 100;
@@ -95,7 +95,7 @@ package com.vhall.framework.ui.controls
 				_h = 100;
 			}
 		}
-		
+
 		protected function initSkin():void
 		{
 			bg.source = ComponentUtils.genInteractiveRect(_w, _h, null, 0, 0, Style.DragBar_Background_Color);
@@ -163,8 +163,12 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 
+			// 获取当前组件 所在点
+			var p:Point = this.localToGlobal(new Point());
+			// 根据e.stageX 判断是否在组件横向区域内，并减去组件横坐标，计算出偏移
+			var temp:Number = MathUtil.limitIn(e.stageX, p.x, p.x + width) - p.x;
 			var evt:DragEvent = new DragEvent(type);
-			evt.percent = getRoundPercent(e.localX / width);
+			evt.percent = getRoundPercent(temp / width);
 			dispatchEvent(evt);
 		}
 
@@ -176,7 +180,8 @@ package com.vhall.framework.ui.controls
 		private function getRoundPercent(value:Number):Number
 		{
 			var temp:Number = Number(value.toFixed(6));
-			return temp > 1 ? 1 : temp;
+//			return temp > 1 ? 1 : temp < 0 ? temp : 0;
+			return MathUtil.limitIn(temp, 0, 1);
 		}
 
 		/**
