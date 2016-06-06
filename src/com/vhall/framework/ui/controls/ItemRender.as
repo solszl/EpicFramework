@@ -26,6 +26,8 @@ package com.vhall.framework.ui.controls
 		public function ItemRender(parent:DisplayObjectContainer=null, xpos:Number=0, ypos:Number=0)
 		{
 			super(parent, xpos, ypos);
+			useHandCursor = true;
+			buttonMode = true;
 		}
 		
 		override public function destory():void
