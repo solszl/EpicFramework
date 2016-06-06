@@ -132,6 +132,7 @@ package com.vhall.framework.ui.controls
 						break;
 					case MouseEvent.CLICK:
 						ItemRender(e.target).onMouseClick();
+						selectItem = e.target as ItemRender;
 						break;
 					default:
 						break;
