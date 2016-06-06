@@ -18,8 +18,10 @@ package com.vhall.framework.media.interfaces
 		 * 从cam和mic指定的硬件获取视频和音频 
 		 * @param cam 摄像头名称或者摄像头实例，null或者“”时为默认摄像头
 		 * @param mic 麦克风名称或者麦克风实例，null或者“”时为默认麦克
+		 * @param camWidth 采集视频宽度
+		 * @param camHeight 采集视频高度
 		 */	
-		function publish(cam:*,mic:*):void;
+		function publish(cam:*,mic:*, camWidth:uint = 320, camHeight:uint = 280):void;
 		
 		/**
 		 * 返回推流使用的Camera

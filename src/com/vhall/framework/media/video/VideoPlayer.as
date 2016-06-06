@@ -50,6 +50,8 @@ package com.vhall.framework.media.video
 		 */		
 		private var _cam:*;
 		private var _mic:*;
+		private var _camWidth:uint = 320;
+		private var _camHeight:uint = 280;
 		
 		private var _videoOption:VideoOptions;
 		
@@ -115,7 +117,7 @@ package com.vhall.framework.media.video
 				case MediaProxyStates.CONNECT_NOTIFY:
 					if(_proxy.type == MediaProxyType.PUBLISH){
 						var iPub:IPublish = _proxy as IPublish;
-						iPub.publish(_cam,_mic);
+						iPub.publish(_cam,_mic,_camWidth,_camHeight);
 						useStrategy = _videoOption.useStrategy;
 					}else{
 						attachView(_proxy.stream);
@@ -168,8 +170,10 @@ package com.vhall.framework.media.video
 		 * @param autoPlay 是否自动播放，默认为自动播放，rtmp时设置无效
 		 * @param cam 推流时候使用的cam名称或者实例，默认取系统默认摄像头
 		 * @param mic 推流时候使用的mic名称或实例，默认取系统默认麦克风
+		 * @param camWidth 采集视频宽度
+		 * @param camHeight 采集视频高度
 		 */		
-		public function attachType(type:String,uri:String,stream:String = null,autoPlay:Boolean = true,cam:* = null,mic:* = null):void
+		public function attachType(type:String,uri:String,stream:String = null,autoPlay:Boolean = true,cam:* = null,mic:* = null, camWidth:uint = 320, camHeight:uint = 280):void
 		{
 			if(_type == type)
 			{
@@ -180,7 +184,7 @@ package com.vhall.framework.media.video
 				if(type == MediaProxyType.PUBLISH)
 				{
 					//重回放转到推流
-					publish(cam,mic,uri,stream,_handler);
+					publish(cam,mic,uri,stream,_handler,camWidth,camHeight);
 					return;
 				}
 				connect(type,uri,stream,_handler,autoPlay);
@@ -194,12 +198,25 @@ package com.vhall.framework.media.video
 		 * @param uri 推流服务器地址
 		 * @param stream 推流流名称
 		 * @param handler 处理回调函数
+		 * @param camWidth 采集视频宽度
+		 * @param camHeight 采集视频高度
 		 */		
-		public function publish(cam:*, mic:*, uri:String, stream:String,handler:Function = null):void
+		public function publish(cam:*, mic:*, uri:String, stream:String, handler:Function = null, camWidth:uint = 320, camHeight:uint = 280):void
 		{
 			_cam = cam;
 			_mic = mic;
 			_cameraView = true;
+			_camWidth = camWidth;
+			_camHeight = camHeight;
+			
+			CONFIG::LOGGING
+			{
+				Log.info("摄像头："+_cam +
+					"\n麦克风："+_mic +
+					"\n尺寸:"+_camWidth+"X"+_camHeight +
+					"\n地址：" + uri +
+					"\n流名称:" + stream);	
+			}
 			connect(MediaProxyType.PUBLISH, uri, stream, handler)
 		}
 		

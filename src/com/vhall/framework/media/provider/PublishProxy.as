@@ -108,13 +108,13 @@ package com.vhall.framework.media.provider
 			},10000);
 		}
 		
-		public function publish(cam:*, mic:*):void
+		public function publish(cam:*, mic:*, camWidth:uint = 320, camHeight:uint = 280):void
 		{
 			if(cam is Camera)
 			{
 				_cam = cam as Camera;
 			}else{
-				_cam = getCameraByName(cam);
+				_cam = getCameraByName(cam,camWidth,camHeight);
 			}
 			
 			if(mic is Microphone)
@@ -261,15 +261,17 @@ package com.vhall.framework.media.provider
 		/**
 		 * 获取可以使用的Camera
 		 * @param name Camera名称，null或者空为获取默认Camera
+		 * @param camWidth 采集视频宽度
+		 * @param camHeight 采集视频高度
 		 * @return 
 		 */		
-		private function getCameraByName(name:String):Camera
+		private function getCameraByName(name:String, camWidth:uint = 320, camHeight:uint = 280):Camera
 		{
 			if(Camera.isSupported)
 			{
 				var cam:Camera = Camera.getCamera(name==""||name==null?null:Camera.names.indexOf(name).toString());
 
-				cam.setMode(854,480,15);
+				cam.setMode(camWidth,camHeight,15);
 				cam.setQuality(0,75);
 				cam.setKeyFrameInterval(15);
 				cam.setMotionLevel(50);
