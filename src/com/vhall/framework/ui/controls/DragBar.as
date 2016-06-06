@@ -98,16 +98,15 @@ package com.vhall.framework.ui.controls
 		
 		protected function initSkin():void
 		{
-			bg.source = ComponentUtils.genInteractiveRect(_w, _h, this, 0, 0, Style.DragBar_Background_Color);
-			buffer.source = ComponentUtils.genInteractiveRect(1, _h, this, 0, 0, Style.DragBar_Buffer_Color);
-			finished.source = ComponentUtils.genInteractiveRect(1, _h, this, 0, 0, Style.DragBar_Played_Color);
+			bg.source = ComponentUtils.genInteractiveRect(_w, _h, null, 0, 0, Style.DragBar_Background_Color);
+			buffer.source = ComponentUtils.genInteractiveRect(1, _h, null, 0, 0, Style.DragBar_Buffer_Color);
+			finished.source = ComponentUtils.genInteractiveRect(1, _h, null, 0, 0, Style.DragBar_Played_Color);
 		}
 
 		override protected function invalidate():void
 		{
 			quad.source == null ? quadSkin = ComponentUtils.genInteractiveCircle(6, null, 0, 0, 0xFF0000) : quad.source;
 			super.invalidate();
-			updateDisplay();
 		}
 
 		protected function onMouseHandler(e:MouseEvent):void

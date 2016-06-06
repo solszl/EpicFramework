@@ -21,8 +21,8 @@ package com.vhall.framework.ui.controls
 
 		override public function set width(value:Number):void
 		{
+			super.width = value;
 			bg.width = value;
-			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override protected function updateDisplay():void
@@ -43,7 +43,7 @@ package com.vhall.framework.ui.controls
 		override protected function onDragStart(e:MouseEvent = null):void
 		{
 			super.onDragStart();
-			quad.startDrag(false, new Rectangle(0, quad.y, width - quad.width, 0));
+			quad.startDrag(false, new Rectangle(-quad.width/2, quad.y, width - quad.width/2, 0));
 			draging = true;
 		}
 
