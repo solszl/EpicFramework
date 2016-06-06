@@ -36,7 +36,7 @@ package com.vhall.framework.ui.controls
 			super.createChildren();
 
 			_tf = new TextField();
-			_tf.defaultTextFormat = new TextFormat("SimSun", 14);
+			_tf.defaultTextFormat = new TextFormat("Microsoft YaHei", 12);
 			_tf.selectable = false;
 			_tf.autoSize = "left";
 			_formmat = _tf.defaultTextFormat;
