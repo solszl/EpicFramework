@@ -228,17 +228,20 @@ package com.vhall.framework.ui.controls
 		 */
 		private function resizeIfNeed():void
 		{
+			var canChange:Boolean = false;
 			if(isNaN(_w))
 			{
 				_w = bitmap.bitmapData.width;
+				canChange = true;
 			}
 
 			if(isNaN(_h))
 			{
 				_h = bitmap.bitmapData.height;
+				canChange = true;
 			}
 
-			if(_w != bitmap.bitmapData.width || _h != bitmap.bitmapData.height)
+			if(canChange || _w != bitmap.bitmapData.width || _h != bitmap.bitmapData.height)
 			{
 				_sizeChanged = true;
 				RenderManager.getInstance().invalidate(invalidate);

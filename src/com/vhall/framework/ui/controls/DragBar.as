@@ -45,7 +45,7 @@ package com.vhall.framework.ui.controls
 		// 是否使用动画
 		protected var useTween:Boolean;
 
-		private var _percent:Number;
+		private var _percent:Number = 0;
 		private var _min:Number = 0;
 		private var _max:Number = int.MAX_VALUE;
 		private var _value:Number;
@@ -60,10 +60,30 @@ package com.vhall.framework.ui.controls
 			buttonMode = true;
 		}
 
+		protected var _w:Number;
+		protected var _h:Number;
 		override protected function createChildren():void
 		{
 			super.createChildren();
-			var _w:Number, _h:Number;
+			initSize();
+			bg = new Image(this);
+		
+			// alpha 设置为0 先隐藏
+			buffer = new Image(this);
+			buffer.mouseChildren = buffer.mouseEnabled = false;
+			finished = new Image(this);
+			finished.mouseChildren = finished.mouseEnabled = false;
+			//滑块
+			quad = new Image(this);
+			quad.mouseChildren = quad.mouseEnabled = false;
+			
+			initSkin();
+
+			addEventListener(MouseEvent.MOUSE_MOVE, onMouseHandler);
+			addEventListener(MouseEvent.MOUSE_DOWN, onMouseHandler);
+		}
+		
+		protected function initSize():void{
 			if(direction == HORIZONTAL)
 			{
 				_w = 100;
@@ -74,21 +94,13 @@ package com.vhall.framework.ui.controls
 				_w = 12;
 				_h = 100;
 			}
-			bg = new Image(this);
+		}
+		
+		protected function initSkin():void
+		{
 			bg.source = ComponentUtils.genInteractiveRect(_w, _h, this, 0, 0, Style.DragBar_Background_Color);
-			// alpha 设置为0 先隐藏
-			buffer = new Image(this);
-			buffer.mouseChildren = buffer.mouseEnabled = false;
 			buffer.source = ComponentUtils.genInteractiveRect(1, _h, this, 0, 0, Style.DragBar_Buffer_Color);
-			finished = new Image(this);
 			finished.source = ComponentUtils.genInteractiveRect(1, _h, this, 0, 0, Style.DragBar_Played_Color);
-			finished.mouseChildren = finished.mouseEnabled = false;
-			//滑块
-			quad = new Image(this);
-			quad.mouseChildren = quad.mouseEnabled = false;
-
-			addEventListener(MouseEvent.MOUSE_MOVE, onMouseHandler);
-			addEventListener(MouseEvent.MOUSE_DOWN, onMouseHandler);
 		}
 
 		override protected function invalidate():void

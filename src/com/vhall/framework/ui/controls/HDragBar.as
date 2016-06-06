@@ -1,14 +1,10 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
-	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.event.DragEvent;
-
-	import flash.display.DisplayObject;
+	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
-	import flash.filters.DisplacementMapFilter;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	/**
@@ -36,7 +32,7 @@ package com.vhall.framework.ui.controls
 			//重新布局
 			if(_quadChanged)
 			{
-				quad.y = height - quad.height >> 1;
+				quad.y = (height - quad.height) >> 1;
 				_quadChanged = false;
 			}
 
@@ -47,7 +43,7 @@ package com.vhall.framework.ui.controls
 		override protected function onDragStart(e:MouseEvent = null):void
 		{
 			super.onDragStart();
-			quad.startDrag(false, new Rectangle(0, 0, width - quad.width, 0));
+			quad.startDrag(false, new Rectangle(0, quad.y, width - quad.width, 0));
 			draging = true;
 		}
 
