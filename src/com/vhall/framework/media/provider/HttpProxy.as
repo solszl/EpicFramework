@@ -33,12 +33,13 @@ package com.vhall.framework.media.provider
 			_type = MediaProxyType.HTTP;
 		}
 		
-		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true):void
+		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true, startPostion:Number = 0):void
 		{
 			_autoPlay = autoPlay;
 			_uri = uri;
 			_streamUrl = streamUrl;
 			_handler = handler;
+			_startPostion = startPostion;
 			
 			valid();
 			
@@ -55,7 +56,7 @@ package com.vhall.framework.media.provider
 			_startTime = getTimer();
 		}
 		
-		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true, startPostion:Number = 0):void
 		{
 			var oldUri:String = this._uri;
 			var oldStreamUrl:String = this._streamUrl;
@@ -63,6 +64,7 @@ package com.vhall.framework.media.provider
 			_autoPlay = autoPlay;
 			_uri = uri;
 			_streamUrl = streamUrl;
+			_startPostion = startPostion;
 			
 			valid();
 			
@@ -71,8 +73,12 @@ package com.vhall.framework.media.provider
 				var npo:NetStreamPlayOptions = new NetStreamPlayOptions();
 				npo.oldStreamName = oldUri;
 				npo.streamName = uri;
+				npo.offset = startPostion;
 				npo.transition = NetStreamPlayTransitions.SWITCH;
-				_autoPlay&&(_ns && _ns.play2(npo));
+				if(_autoPlay&&_ns)
+				{
+					_ns.play2(npo);
+				}
 			}
 			_startTime = getTimer();
 		}
@@ -87,7 +93,11 @@ package com.vhall.framework.media.provider
 		override public function start():void
 		{
 			_playing = true;
-			_ns&&_ns.play(_uri);
+			if(_ns)
+			{
+				_ns.seek(_startPostion);
+				_ns.play(_uri);
+			}
 		}
 		
 		public function get bytesLoaded():int

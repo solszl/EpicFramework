@@ -58,20 +58,15 @@ package com.vhall.framework.media.provider
 			
 			switch(e.info.code)
 			{
-				case InfoCode.NetStream_Play_PublishNotify:
-					break;
 				case InfoCode.NetStream_Publish_Start:
 					sendMetadata();
-					excute(MediaProxyStates.PUBLISH_NOTIFY);
+					excute(MediaProxyStates.PUBLISH_START);
 					break;
 				case InfoCode.NetStream_Publish_BadName:
 					excute(MediaProxyStates.PUBLISH_BAD_NAME,_streamUrl);
 					break;
 				case InfoCode.NetStream_Unpublish_Success:
 					excute(MediaProxyStates.UN_PUBLISH_SUCCESS);
-					break;
-				case InfoCode.NetStream_Play_UnpublishNotify:
-					excute(MediaProxyStates.UN_PUBLISH_NOTIFY);
 					break;
 			}
 		}
@@ -174,7 +169,7 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
-		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true, startPostion:Number = 0):void
 		{
 			var oldUri:String = this._uri;
 			var oldStreamUrl:String = this._streamUrl;
@@ -182,6 +177,7 @@ package com.vhall.framework.media.provider
 			_autoPlay = autoPlay;
 			_uri = uri;
 			_streamUrl = streamUrl;
+			_startPostion = startPostion;
 			
 			valid();
 			

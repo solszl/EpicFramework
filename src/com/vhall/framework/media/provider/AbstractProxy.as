@@ -32,6 +32,8 @@ package com.vhall.framework.media.provider
 		
 		protected var _duration:Number = 0;
 		
+		protected var _startPostion:Number = 0;
+		
 		protected var _streamUrl:String;
 		
 		protected var _uri:String;
@@ -72,21 +74,23 @@ package com.vhall.framework.media.provider
 			return _autoPlay;
 		}
 		
-		public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean = true):void
+		public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
 			_autoPlay = autoPlay;
 			_uri = uri;
 			_streamUrl = streamUrl;
 			_handler = handler;
+			_startPostion = startPostion;
 			
 			valid();
 		}
 		
-		public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true):void
+		public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
 			_autoPlay = autoPlay;
 			_uri = uri;
 			_streamUrl = streamUrl;
+			_startPostion = startPostion;
 			
 			valid();
 		}
