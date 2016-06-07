@@ -44,9 +44,9 @@ package com.vhall.framework.media.provider
 			HLSSettings.flushLiveURLCache = true;
 		}
 		
-		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true):void
+		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true, startPostion:Number = 0):void
 		{
-			super.connect(uri,streamUrl,handler,autoPlay);
+			super.connect(uri,streamUrl,handler,autoPlay,startPostion);
 			
 			_hls ||= new HLS();
 			_hls.addEventListener(HLSEvent.MANIFEST_LOADED,onHLSHandler);
@@ -71,7 +71,7 @@ package com.vhall.framework.media.provider
 			_hls.load(_uri);
 		}
 		
-		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true, startPostion:Number = 0):void
 		{
 			super.changeVideoUrl(uri, streamUrl, autoPlay);
 			
@@ -85,7 +85,11 @@ package com.vhall.framework.media.provider
 		override public function start():void
 		{
 			super.start();
-			stream && stream.play();
+			if(stream)
+			{
+				stream.seek(_startPostion);
+				stream.play();
+			}
 		}
 		
 		override public function stop():void

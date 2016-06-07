@@ -49,9 +49,9 @@ package com.vhall.framework.media.provider
 			_conn.client = client;
 		}
 		
-		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true):void
+		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true,startPostion:Number = 0):void
 		{
-			super.connect(uri,streamUrl,handler,autoPlay);
+			super.connect(uri,streamUrl,handler,autoPlay,startPostion);
 
 			addListeners();
 			
@@ -103,20 +103,24 @@ package com.vhall.framework.media.provider
 			_conn.call("checkBandwidth",null);
 		}
 		
-		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true):void
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true, startPostion:Number = 0):void
 		{
 			var oldUri:String = this._uri;
 			var oldStreamUrl:String = this._streamUrl;
 			
-			super.changeVideoUrl(uri, streamUrl, autoPlay);
+			super.changeVideoUrl(uri, streamUrl, autoPlay, startPostion);
 			
 			if(oldUri == uri && oldStreamUrl != streamUrl)
 			{
 				var nspo:NetStreamPlayOptions = new NetStreamPlayOptions();
 				nspo.oldStreamName = oldStreamUrl;
 				nspo.streamName = streamUrl;
+				nspo.offset = startPostion;
 				nspo.transition = NetStreamPlayTransitions.SWITCH;
-				_autoPlay&&(_ns && _ns.play2(nspo));
+				if(_autoPlay&&_ns)
+				{
+					_ns.play2(nspo);
+				}
 			}else{
 				//清除监听
 				clearNsListeners();
@@ -153,7 +157,10 @@ package com.vhall.framework.media.provider
 		override public function start():void
 		{
 			super.start();
-			_ns && _ns.play(_streamUrl);
+			if(_ns)
+			{
+				_ns.play(_streamUrl);
+			}
 		}
 		
 		override public function stop():void
@@ -184,7 +191,7 @@ package com.vhall.framework.media.provider
 		protected function statusHandler(e:NetStatusEvent):void
 		{
 			CONFIG::LOGGING{
-				Log.info("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : ""));
+				trace("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : ""));
 			}
 			switch(e.info.code)
 			{
@@ -210,7 +217,7 @@ package com.vhall.framework.media.provider
 					excute(MediaProxyStates.STREAM_STOP);
 					break;
 				case InfoCode.NetStream_Play_StreamNotFound:
-					excute(MediaProxyStates.STREAM_NOT_FOUND,_streamUrl);
+					excute(MediaProxyStates.STREAM_NOT_FOUND,_uri,_streamUrl);
 					break;
 				case InfoCode.NetStream_Seek_Failed:
 				case InfoCode.NetStream_Seek_InvalidTime:
@@ -231,6 +238,12 @@ package com.vhall.framework.media.provider
 					break;
 				case InfoCode.NetStream_Unpause_Notify:
 					excute(MediaProxyStates.STREAM_UNPAUSE);
+					break;
+				case InfoCode.NetStream_Play_PublishNotify:
+					excute(MediaProxyStates.PUBLISH_NOTIFY);
+					break;
+				case InfoCode.NetStream_Play_UnpublishNotify:
+					excute(MediaProxyStates.UN_PUBLISH_NOTIFY);
 					break;
 				default:
 					break;

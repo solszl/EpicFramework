@@ -27,6 +27,9 @@ package com.vhall.framework.media.provider
 		/** seek完成*/
 		public static const SEEK_COMPLETE:String = "seekComplete";
 		
+		/** 推流开始直播端*/
+		public static const PUBLISH_START:String = "publishStart";
+		
 		/** 推流通知*/
 		public static const PUBLISH_NOTIFY:String = "publishNotify";
 		

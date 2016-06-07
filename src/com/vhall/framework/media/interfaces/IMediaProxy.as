@@ -31,16 +31,18 @@ package com.vhall.framework.media.interfaces
 		 * @param streamUrl 流名称，http或者本地视频时候，忽略
 		 * @param handler 处理链接播放过程中的回调｛1，n｝个参数
 		 * @param autoPlay 是否自动播放
+		 * @param startPostion 起始播放时间点,切换清晰度之类继续上个播放位置
 		 */		
-		function connect(uri:String, streamUrl:String = null, handler:Function = null,autoPlay:Boolean = true):void;
+		function connect(uri:String, streamUrl:String = null, handler:Function = null,autoPlay:Boolean = true, startPostion:Number = 0):void;
 		
 		/**
 		 * 更换正在播放的视频
 		 * @param uri 服务器地址，http或者本地视频时候为文件路径
 		 * @param streamUrl 流名称，http或者本地视频时候，忽略
 		 * @param autoPlay 是否自动播放
+		 * @param startPostion 起始播放时间点,切换清晰度之类继续上个播放位置
 		 */		
-		function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true):void;
+		function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true, startPostion:Number = 0):void;
 		
 		/** 开始播放*/		
 		function start():void;

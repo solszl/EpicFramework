@@ -90,7 +90,7 @@ package com.vhall.framework.media.video
 		 * @param handler 回调处理函数
 		 * @param autoPlay 是否自动播放，直播时候忽略
 		 */		
-		public function connect(type:String,uri:String,stream:String = null,handler:Function = null,autoPlay:Boolean = true):void
+		public function connect(type:String,uri:String,stream:String = null,handler:Function = null,autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
 			if(_proxy) 
 			{
@@ -106,7 +106,7 @@ package com.vhall.framework.media.video
 			//推流之外的播放器，启用图像增强
 			filters = _proxy.type != MediaProxyType.PUBLISH ? [new SharpenFilter(0.1)] : [];
 			
-			_proxy.connect(uri,stream,proxyHandler,autoPlay);
+			_proxy.connect(uri,stream,proxyHandler,autoPlay,startPostion);
 			
 		}
 		
@@ -129,10 +129,15 @@ package com.vhall.framework.media.video
 				case MediaProxyStates.STREAM_SIZE_NOTIFY:
 					updateVideo();
 					break;
-				case MediaProxyStates.PUBLISH_NOTIFY:
+				case MediaProxyStates.PUBLISH_START:
 					attachView((_proxy as IPublish).usedCam);
 					break;
+				case MediaProxyStates.PUBLISH_NOTIFY:
+					attachView(_proxy.stream);
+					break;
+				case MediaProxyStates.STREAM_STOP:
 				case MediaProxyStates.UN_PUBLISH_NOTIFY:
+					attachView(null);
 				case MediaProxyStates.UN_PUBLISH_SUCCESS:
 					//if(_type==MediaProxyType.PUBLISH) stop();
 					break;
@@ -156,10 +161,11 @@ package com.vhall.framework.media.video
 		 * @param uri
 		 * @param stream
 		 * @param autoPlay
+		 * @param startPostion
 		 */		
-		public function changeVideoUrl(uri:String,stream:String = null,autoPlay:Boolean = true):void
+		public function changeVideoUrl(uri:String,stream:String = null,autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
-			_proxy && (_proxy.changeVideoUrl(uri, stream, autoPlay));
+			_proxy && (_proxy.changeVideoUrl(uri, stream, autoPlay,startPostion));
 		}
 		
 		/**
@@ -168,16 +174,17 @@ package com.vhall.framework.media.video
 		 * @param uri 新的服务器地址，非rtmp为文件路径
 		 * @param stream 新的流名称或者文件名，非rtmp为null
 		 * @param autoPlay 是否自动播放，默认为自动播放，rtmp时设置无效
+		 * @param startPostion 当操作是切换流时候，为当前播放是时间点
 		 * @param cam 推流时候使用的cam名称或者实例，默认取系统默认摄像头
 		 * @param mic 推流时候使用的mic名称或实例，默认取系统默认麦克风
 		 * @param camWidth 采集视频宽度
 		 * @param camHeight 采集视频高度
 		 */		
-		public function attachType(type:String,uri:String,stream:String = null,autoPlay:Boolean = true,cam:* = null,mic:* = null, camWidth:uint = 320, camHeight:uint = 280):void
+		public function attachType(type:String,uri:String,stream:String = null,autoPlay:Boolean = true, startPostion:Number = 0, cam:* = null,mic:* = null, camWidth:uint = 320, camHeight:uint = 280):void
 		{
 			if(_type == type)
 			{
-				changeVideoUrl(uri,stream,autoPlay);
+				changeVideoUrl(uri,stream,autoPlay,startPostion);
 			}else{
 				if(_proxy) stop();
 				_proxy = null;
@@ -187,7 +194,7 @@ package com.vhall.framework.media.video
 					publish(cam,mic,uri,stream,_handler,camWidth,camHeight);
 					return;
 				}
-				connect(type,uri,stream,_handler,autoPlay);
+				connect(type,uri,stream,_handler,autoPlay,startPostion);
 			}
 		}
 		
@@ -309,7 +316,11 @@ package com.vhall.framework.media.video
 		 */		
 		public function start():void
 		{
-			_proxy && _proxy.start();
+			if(_proxy)
+			{
+				_proxy.start();
+				//attachView(_proxy.stream);
+			}
 		}
 		
 		/**
@@ -553,7 +564,7 @@ package com.vhall.framework.media.video
 		 */		
 		public function set volume(value:Number):void
 		{
-			_videoOption.volume = Math.max(0,Math.min(1,value));
+			_videoOption.volume = Math.max(0,Math.min(2,value));
 			if(_proxy) _proxy.volume = _videoOption.volume;
 		}
 		
