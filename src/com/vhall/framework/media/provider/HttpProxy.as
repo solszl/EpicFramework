@@ -68,7 +68,7 @@ package com.vhall.framework.media.provider
 			
 			valid();
 			
-			if(oldUri != uri)
+			if(_conn.connected && oldUri != uri)
 			{
 				var npo:NetStreamPlayOptions = new NetStreamPlayOptions();
 				npo.oldStreamName = oldUri;
@@ -79,6 +79,8 @@ package com.vhall.framework.media.provider
 				{
 					_ns.play2(npo);
 				}
+			}else{
+				this.connect(uri,streamUrl,_handler,autoPlay,startPostion);
 			}
 			_startTime = getTimer();
 		}

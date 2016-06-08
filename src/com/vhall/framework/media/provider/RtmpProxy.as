@@ -110,7 +110,7 @@ package com.vhall.framework.media.provider
 			
 			super.changeVideoUrl(uri, streamUrl, autoPlay, startPostion);
 			
-			if(oldUri == uri && oldStreamUrl != streamUrl)
+			if(_conn.connected&&oldUri == uri && oldStreamUrl != streamUrl)
 			{
 				var nspo:NetStreamPlayOptions = new NetStreamPlayOptions();
 				nspo.oldStreamName = oldStreamUrl;
@@ -125,7 +125,7 @@ package com.vhall.framework.media.provider
 				clearNsListeners();
 				clearCnListeners();
 				//重新链接
-				this.connect(uri,streamUrl,_handler,autoPlay,startPostion);
+				this.connect(uri,streamUrl,_handler,autoPlay,0);
 			}
 		}
 		
@@ -195,6 +195,7 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetConnection_Connect_Failed:
 				case InfoCode.NetConnection_Connect_AppShutDown:
 				case InfoCode.NetConnection_Connect_Rejected:
+					gc();
 					excute(MediaProxyStates.CONNECT_FAILED,e.info.code);
 					break;
 				case InfoCode.NetStream_Buffer_Empty:

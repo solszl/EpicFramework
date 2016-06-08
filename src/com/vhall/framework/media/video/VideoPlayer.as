@@ -296,7 +296,7 @@ package com.vhall.framework.media.video
 			}else{
 				_video.attachNetStream(null);
 			}
-			if(_proxy) _proxy.stop();
+			_video.clear();
 		}
 		
 		/**
@@ -306,7 +306,7 @@ package com.vhall.framework.media.video
 		{
 			stop();
 			//清楚视频最后一帧
-			_video.clear();
+			if(_proxy) _proxy.stop();
 			_proxy = null;
 			_cameraView = false;
 		}
@@ -319,7 +319,13 @@ package com.vhall.framework.media.video
 			if(_proxy)
 			{
 				_proxy.start();
-				//attachView(_proxy.stream);
+				if(_proxy.type == MediaProxyType.PUBLISH){
+					var iPub:IPublish = _proxy as IPublish;
+					iPub.publish(_cam,_mic,_camWidth,_camHeight);
+					useStrategy = _videoOption.useStrategy;
+				}else{
+					attachView(_proxy.stream);
+				}
 			}
 		}
 		

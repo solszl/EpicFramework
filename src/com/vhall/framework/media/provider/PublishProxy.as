@@ -181,7 +181,7 @@ package com.vhall.framework.media.provider
 			
 			valid();
 			
-			if(oldUri == uri && oldStreamUrl != streamUrl)
+			if(_conn.connected && oldUri == uri && oldStreamUrl != streamUrl)
 			{
 				_ns && _ns.publish(_streamUrl);
 			}else{
