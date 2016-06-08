@@ -98,5 +98,7 @@ package com.vhall.framework.media.provider
 		
 		/** The video dimensions are available or have changed. Use the Video or StageVideo videoWidth/videoHeight property to query the new video dimensions. New in Flash Player 11.4/AIR 3.4.*/
 		public static const NetStream_Video_DimensionChange:String = "NetStream.Video.DimensionChange";
+		
+		public static const NetStream_Play_Transition:String = "NetStream.Play.Transition";
 	}
 }

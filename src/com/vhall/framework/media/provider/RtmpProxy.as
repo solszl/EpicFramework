@@ -115,7 +115,6 @@ package com.vhall.framework.media.provider
 				var nspo:NetStreamPlayOptions = new NetStreamPlayOptions();
 				nspo.oldStreamName = oldStreamUrl;
 				nspo.streamName = streamUrl;
-				nspo.offset = startPostion;
 				nspo.transition = NetStreamPlayTransitions.SWITCH;
 				if(_autoPlay&&_ns)
 				{
@@ -126,13 +125,7 @@ package com.vhall.framework.media.provider
 				clearNsListeners();
 				clearCnListeners();
 				//重新链接
-				try{
-					_conn.connect(uri);
-				}catch(e:Error){
-					CONFIG::LOGGING{
-						Log.error("netConnection 切换链接失败:"+_uri);
-					}
-				}
+				this.connect(uri,streamUrl,_handler,autoPlay,startPostion);
 			}
 		}
 		
@@ -245,6 +238,8 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetStream_Play_UnpublishNotify:
 					excute(MediaProxyStates.UN_PUBLISH_NOTIFY);
 					break;
+				case InfoCode.NetStream_Play_Transition:
+					excute(MediaProxyStates.STREAM_TRANSITION);
 				default:
 					break;
 			}
