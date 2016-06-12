@@ -125,6 +125,7 @@ package com.vhall.framework.media.video
 					volume = _videoOption.volume;
 					
 					break;
+				case MediaProxyStates.STREAM_TRANSITION:
 				case MediaProxyStates.STREAM_FULL:
 				case MediaProxyStates.STREAM_SIZE_NOTIFY:
 					updateVideo();

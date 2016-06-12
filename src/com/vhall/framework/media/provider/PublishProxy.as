@@ -59,7 +59,7 @@ package com.vhall.framework.media.provider
 			switch(e.info.code)
 			{
 				case InfoCode.NetStream_Publish_Start:
-					sendMetadata();
+					//sendMetadata();
 					excute(MediaProxyStates.PUBLISH_START);
 					break;
 				case InfoCode.NetStream_Publish_BadName:
@@ -119,7 +119,7 @@ package com.vhall.framework.media.provider
 				_mic = getMicrophoneByName(mic);
 			}
 			
-			if(_cam&&_cam.muted||_mic&&_mic.muted)
+			if(_cam&&_cam.muted)
 			{
 				flash.system.Security.showSettings(flash.system.SecurityPanel.PRIVACY);
 				_cam.addEventListener(StatusEvent.STATUS,hardwareHandler);
