@@ -1,8 +1,10 @@
 package com.vhall.framework.app.net
 {
-	import flash.utils.Dictionary;
-	
 	import appkit.responders.NResponder;
+	
+	import com.vhall.framework.log.Logger;
+	
+	import flash.utils.Dictionary;
 
 	/**
 	 * 抽象消息接收器
@@ -52,6 +54,7 @@ package com.vhall.framework.app.net
 		
 		protected function dispatch(action:String = null, params:Array = null, toTarget:Object = null):void
 		{
+			Logger.getLogger("MSG").info("received msg:" + action);
 			NResponder.dispatch(action,params,toTarget)
 		}
 	}

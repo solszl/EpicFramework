@@ -31,7 +31,7 @@ package com.vhall.framework.utils
 		{
 			try
 			{
-				var o:* = com.adobe.serialization.json.JSON.decode(value);
+				var o:Object = com.adobe.serialization.json.JSON.decode(value);
 			}
 			catch(e:Error)
 			{
