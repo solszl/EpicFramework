@@ -52,7 +52,7 @@ package com.vhall.framework.app
 		{
 			l = new Loader();
 			var ctx:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
-			var req:URLRequest = new URLRequest("loading.swf");
+			var req:URLRequest = new URLRequest("common/loading.swf");
 			l.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
 			l.load(req, ctx);
 		}
