@@ -58,6 +58,25 @@ package com.vhall.framework.load
 			currentItem = loadList.shift();
 			loadedCount++;
 
+			if(currentItem.hasOwnProperty("type"))
+			{
+				switch(currentItem.type)
+				{
+					case 1:
+						urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
+						break;
+					case 2:
+						urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
+						break;
+					default:
+						urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
+						break;
+				}
+			}
+			else
+			{
+				currentItem.type = 1;
+			}
 			var request:URLRequest = new URLRequest(currentItem.url);
 			urlLoader.load(request);
 		}
@@ -69,11 +88,25 @@ package com.vhall.framework.load
 
 		private function loaderCompleteHandler(e:Event):void
 		{
-			var data:ByteArray = urlLoader.data;
-			if(data.length > 0)
+			switch(currentItem.type)
 			{
-				loader.loadBytes(data, _swfContext);
+				case 2:
+					var data:ByteArray = urlLoader.data;
+					if(data.length > 0)
+					{
+						loader.loadBytes(data, _swfContext);
+					}
+					break;
+				case 1:
+					if(onItemCompleteCallBack != null)
+					{
+						onItemCompleteCallBack(currentItem, urlLoader.data, null);
+					}
+					loadNext();
+				default:
+					break;
 			}
+			
 		}
 
 		private function progressHandler(e:ProgressEvent):void
@@ -139,7 +172,6 @@ package com.vhall.framework.load
 				urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIO_Error);
 				urlLoader.addEventListener(ProgressEvent.PROGRESS, progressHandler)
 				urlLoader.addEventListener(Event.COMPLETE, loaderCompleteHandler);
-				urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
 			}
 			else
 			{
