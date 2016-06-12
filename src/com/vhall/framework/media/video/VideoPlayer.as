@@ -139,6 +139,7 @@ package com.vhall.framework.media.video
 				case MediaProxyStates.STREAM_STOP:
 				case MediaProxyStates.UN_PUBLISH_NOTIFY:
 					attachView(null);
+					break;
 				case MediaProxyStates.UN_PUBLISH_SUCCESS:
 					//if(_type==MediaProxyType.PUBLISH) stop();
 					break;
@@ -187,7 +188,7 @@ package com.vhall.framework.media.video
 			{
 				changeVideoUrl(uri,stream,autoPlay,startPostion);
 			}else{
-				if(_proxy) stop();
+				if(_proxy) dispose();
 				_proxy = null;
 				if(type == MediaProxyType.PUBLISH)
 				{
@@ -297,6 +298,7 @@ package com.vhall.framework.media.video
 			}else{
 				_video.attachNetStream(null);
 			}
+			_cameraView = false;
 			_video.clear();
 		}
 		
@@ -305,11 +307,10 @@ package com.vhall.framework.media.video
 		 */		
 		public function dispose():void
 		{
-			stop();
 			//清楚视频最后一帧
 			if(_proxy) _proxy.stop();
 			_proxy = null;
-			_cameraView = false;
+			stop();
 		}
 		
 		/**
