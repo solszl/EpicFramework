@@ -1,6 +1,7 @@
 package com.vhall.framework.app.net
 {
 	import com.vhall.framework.log.Logger;
+	import com.vhall.framework.utils.JsonUtil;
 	
 	import flash.utils.Dictionary;
 
@@ -37,7 +38,8 @@ package com.vhall.framework.app.net
 				return;
 			}
 
-			handleMap[msg](msg_body);
+			var obj:Object = JsonUtil.decode(msg_body);
+			handleMap[msg](obj);
 		}
 
 		/**
