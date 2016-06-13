@@ -4,15 +4,18 @@ package com.vhall.framework.app
 	import com.vhall.framework.keyboard.KeyboardMapper;
 	import com.vhall.framework.log.Logger;
 	import com.vhall.framework.log.LoggerClip;
-
+	
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
+	import flash.text.TextField;
 	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
+	
+	import org.mangui.hls.stream.StreamBuffer;
 
 	/**
 	 *	整个应用程序的基类
@@ -22,6 +25,8 @@ package com.vhall.framework.app
 	public class App extends Sprite
 	{
 		public static var app:Sprite;
+		
+		public static var baseURL:String = "";
 
 		public function App()
 		{
@@ -50,9 +55,23 @@ package com.vhall.framework.app
 
 		private function loadLoadingSkin():void
 		{
+			if(loaderInfo.parameters.hasOwnProperty("doc_srv"))
+			{
+				var ul:String = loaderInfo.parameters["doc_srv"];
+				var str:String = ul.substr(0,ul.lastIndexOf('/') + 1);
+				baseURL = str + "player/";
+			}
+			
+			var url:String = "";
+			if(loaderInfo.url.indexOf("file") >= 0)
+			{
+				baseURL = "";
+			}
+			
+			url = baseURL + "common/loading.swf";
 			l = new Loader();
 			var ctx:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
-			var req:URLRequest = new URLRequest("common/loading.swf");
+			var req:URLRequest = new URLRequest(url);
 			l.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
 			l.load(req, ctx);
 		}
@@ -94,7 +113,7 @@ package com.vhall.framework.app
 		private function initKeyboard():void
 		{
 			var km:KeyboardMapper = new KeyboardMapper(StageManager.stage);
-			km.mapListener(showHideLog, Keyboard.CONTROL, Keyboard.ALTERNATE, Keyboard.SHIFT, Keyboard.L);
+			km.mapListener(showHideLog, Keyboard.CONTROL, Keyboard.L);
 		}
 
 		/**
