@@ -265,7 +265,8 @@ package com.vhall.framework.media.provider
 		{
 			if(Camera.isSupported)
 			{
-				var cam:Camera = Camera.getCamera(name==""||name==null?null:Camera.names.indexOf(name).toString());
+				var index:int = Camera.names.indexOf(name);
+				var cam:Camera = Camera.getCamera(name==""||name==null||index==-1?null:Camera.names.indexOf(name).toString());
 
 				cam.setMode(camWidth,camHeight,15);
 				cam.setQuality(0,75);
@@ -288,7 +289,8 @@ package com.vhall.framework.media.provider
 		{
 			if(Microphone.isSupported)
 			{
-				var mic:Microphone = Microphone.getMicrophone(name==""||name==null?-1:Microphone.names.indexOf(name));
+				var index:int = Camera.names.indexOf(name);
+				var mic:Microphone = Microphone.getMicrophone(name==""||name==null||index==-1?-1:Microphone.names.indexOf(name));
 
 				mic.codec = SoundCodec.SPEEX;
 				mic.setSilenceLevel(0);
