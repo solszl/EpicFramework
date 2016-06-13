@@ -43,6 +43,8 @@ package com.vhall.framework.media.provider
 			
 			valid();
 			
+			!_conn&&createNet();
+			
 			addListeners();
 			
 			try{
@@ -68,7 +70,7 @@ package com.vhall.framework.media.provider
 			
 			valid();
 			
-			if(_conn.connected && oldUri != uri)
+			if(_conn && _conn.connected && oldUri != uri)
 			{
 				var npo:NetStreamPlayOptions = new NetStreamPlayOptions();
 				npo.oldStreamName = oldUri;

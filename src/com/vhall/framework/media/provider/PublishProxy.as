@@ -43,6 +43,8 @@ package com.vhall.framework.media.provider
 		
 		private var _useStrategy:Boolean = false;
 		
+		private var _published:Boolean = false;
+		
 		public function PublishProxy()
 		{
 			super();
@@ -60,12 +62,15 @@ package com.vhall.framework.media.provider
 			{
 				case InfoCode.NetStream_Publish_Start:
 					//sendMetadata();
+					_published = true;
 					excute(MediaProxyStates.PUBLISH_START);
 					break;
 				case InfoCode.NetStream_Publish_BadName:
+					_published = false;
 					excute(MediaProxyStates.PUBLISH_BAD_NAME,_streamUrl);
 					break;
 				case InfoCode.NetStream_Unpublish_Success:
+					_published = false;
 					excute(MediaProxyStates.UN_PUBLISH_SUCCESS);
 					break;
 			}
@@ -181,7 +186,7 @@ package com.vhall.framework.media.provider
 			
 			valid();
 			
-			if(_conn.connected && oldUri == uri && oldStreamUrl != streamUrl)
+			if(_conn && _conn.connected && oldUri == uri && oldStreamUrl != streamUrl)
 			{
 				_ns && _ns.publish(_streamUrl);
 			}else{
@@ -227,31 +232,47 @@ package com.vhall.framework.media.provider
 		{
 			//推流取消播放功能
 			_playing = true;
-			cameraMuted = microphoneMuted = !_playing;
+			if(_published)
+			{
+				cameraMuted = microphoneMuted = !_playing;
+			}
 		}
 		
 		override public function stop():void
 		{
 			_playing = false;
-			cameraMuted = microphoneMuted = !_playing;
+			if(_published)
+			{
+				cameraMuted = microphoneMuted = !_playing;
+				super.stop();
+			}
 		}
 		
 		override public function pause():void
 		{
 			_playing = false;
-			cameraMuted = microphoneMuted = !_playing;
+			if(_published)
+			{
+				cameraMuted = microphoneMuted = !_playing;
+			}
 		}
 		
 		override public function resume():void
 		{
 			_playing = true;
-			cameraMuted = microphoneMuted = !_playing;
+			if(_published)
+			{
+				cameraMuted = microphoneMuted = !_playing;
+			}
 		}
 		
 		override public function toggle():void
 		{
 			_playing = !_playing;
-			cameraMuted = microphoneMuted = !_playing;
+			if(_published)
+			{
+				cameraMuted = microphoneMuted = !_playing;
+			}
 		}
 		
 		/**

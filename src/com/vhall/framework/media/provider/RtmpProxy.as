@@ -52,7 +52,9 @@ package com.vhall.framework.media.provider
 		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true,startPostion:Number = 0):void
 		{
 			super.connect(uri,streamUrl,handler,autoPlay,startPostion);
-
+			
+			!_conn && createNet();
+			
 			addListeners();
 			
 			try{
@@ -110,7 +112,7 @@ package com.vhall.framework.media.provider
 			
 			super.changeVideoUrl(uri, streamUrl, autoPlay, startPostion);
 			
-			if(_conn.connected&&oldUri == uri && oldStreamUrl != streamUrl)
+			if(_conn && _conn.connected && oldUri == uri && oldStreamUrl != streamUrl)
 			{
 				var nspo:NetStreamPlayOptions = new NetStreamPlayOptions();
 				nspo.oldStreamName = oldStreamUrl;
@@ -184,7 +186,7 @@ package com.vhall.framework.media.provider
 		protected function statusHandler(e:NetStatusEvent):void
 		{
 			CONFIG::LOGGING{
-				trace("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : ""));
+				trace("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : "") + "类型："+ _type);
 			}
 			switch(e.info.code)
 			{
@@ -358,6 +360,7 @@ package com.vhall.framework.media.provider
 				_conn.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,errorHandler);
 				_conn.removeEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 				_conn.close();
+				_conn = null;
 			}
 		}
 		
