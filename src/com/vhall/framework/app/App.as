@@ -113,7 +113,7 @@ package com.vhall.framework.app
 		private function initKeyboard():void
 		{
 			var km:KeyboardMapper = new KeyboardMapper(StageManager.stage);
-			km.mapListener(showHideLog, Keyboard.CONTROL, Keyboard.L);
+			km.mapListener(showHideLog, Keyboard.SHIFT, Keyboard.L);
 		}
 
 		/**
