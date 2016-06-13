@@ -15,7 +15,7 @@ package com.vhall.framework.app.net
 	{
 		private var hasCollected:Boolean = false;
 
-		private var _dic:Dictionary = new Dictionary();
+		private static var _dic:Dictionary = new Dictionary();
 
 		public function AbsMsgReceiver()
 		{
