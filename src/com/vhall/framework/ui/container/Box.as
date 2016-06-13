@@ -23,6 +23,11 @@ package com.vhall.framework.ui.container
 
 		override public function addChild(child:DisplayObject):DisplayObject
 		{
+			if(children.indexOf(child) >= 0)
+			{
+				return child;
+			}
+			
 			children.push(child);
 			var obj:DisplayObject = super.addChild(child);
 			RenderManager.getInstance().invalidate(invalidate);
@@ -35,6 +40,13 @@ package com.vhall.framework.ui.container
 			{
 				index = children.length;
 			}
+			
+			if(children.indexOf(child) >= 0)
+			{
+				setChildIndex(child, index);
+				return child;
+			}
+			
 			children.splice(index, 0, child);
 			var obj:DisplayObject = super.addChildAt(child, index);
 			RenderManager.getInstance().invalidate(invalidate);
