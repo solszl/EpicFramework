@@ -190,7 +190,7 @@ package com.vhall.framework.ui.manager
 			showHideTip(DisplayObject(e.currentTarget));
 		}
 
-		private function onMouseOutHandler(e:MouseEvent):void
+		private function onMouseOutHandler(e:Event):void
 		{
 			showHideTip();
 		}
