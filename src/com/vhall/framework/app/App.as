@@ -27,12 +27,18 @@ package com.vhall.framework.app
 		public static var app:Sprite;
 		
 		public static var baseURL:String = "";
+		
+		/**	初始化开始*/
+		public static var INIT_START:String = "app_init_start";
+		/**	初始化完毕*/
+		public static var INIT_END:String = "app_init_end";
 
 		public function App()
 		{
 			super();
 			app = this;
 
+			dispatchEvent(new Event(INIT_START));
 			initApp();
 		}
 
@@ -81,7 +87,7 @@ package com.vhall.framework.app
 			deinitLoader();
 			//派发初始化完成事件
 			//外部接收到该事件后加载代码模块，UI皮肤等
-			dispatchEvent(new Event(Event.COMPLETE));
+			dispatchEvent(new Event(INIT_END));
 		}
 
 		/**
