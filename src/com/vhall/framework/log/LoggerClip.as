@@ -85,7 +85,7 @@ package com.vhall.framework.log
 			}
 			this.curLines++;
 			var today_date:Date = new Date();
-			var date_str:String = today_date.getHours() + ":" + today_date.getMinutes() + ":" + today_date.getSeconds();
+			var date_str:String = today_date.getHours() + ":" + today_date.getMinutes() + ":" + today_date.getSeconds() + "." +today_date.milliseconds;
 			this.mcOutput.htmlText += "</br><font color='#FFFFFF'>" + date_str + " " + msg + "</font>";
 			this.mcOutput.scrollV = this.mcOutput.maxScrollV;
 		}

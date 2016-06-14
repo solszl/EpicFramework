@@ -53,14 +53,12 @@ package com.vhall.framework.app
 			StageManager.init(this);
 			initLog();
 			initKeyboard();
-			//加载loading皮肤
-			loadLoadingSkin();
+			initBaseURL();
+			dispatchEvent(new Event(INIT_END));
 		}
 
-		private var l:Loader;
-
-		private function loadLoadingSkin():void
-		{
+		
+		protected function initBaseURL():void{
 			if(loaderInfo.parameters.hasOwnProperty("doc_srv"))
 			{
 				var ul:String = loaderInfo.parameters["doc_srv"];
@@ -68,39 +66,12 @@ package com.vhall.framework.app
 				baseURL = str + "player/";
 			}
 			
-			var url:String = "";
 			if(loaderInfo.url.indexOf("file") >= 0)
 			{
 				baseURL = "";
 			}
-			
-			url = baseURL + "common/loading.swf";
-			l = new Loader();
-			var ctx:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
-			var req:URLRequest = new URLRequest(url);
-			l.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
-			l.load(req, ctx);
 		}
-
-		private function onLoadComplete(event:Event):void
-		{
-			deinitLoader();
-			//派发初始化完成事件
-			//外部接收到该事件后加载代码模块，UI皮肤等
-			dispatchEvent(new Event(INIT_END));
-		}
-
-		/**
-		 *	@private loader 销毁
-		 *
-		 */
-		private function deinitLoader():void
-		{
-			l.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoadComplete);
-			l.unload();
-			l = null;
-		}
-
+		
 		/**
 		 *	@private 初始化日志
 		 *
