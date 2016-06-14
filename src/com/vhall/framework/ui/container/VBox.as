@@ -24,6 +24,7 @@ package com.vhall.framework.ui.container
 		public var marginTop:Number = 0;
 		public var marginBottom:Number = 0;
 
+		private var calcH:Number = 0;
 		public function VBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
 			super(parent, xpos, ypos);
@@ -40,6 +41,8 @@ package com.vhall.framework.ui.container
 		override protected function layoutChildren():void
 		{
 //			super.layoutChildren();
+			calcH = 0;
+			
 			var numChild:int = this.numChildren;
 			var child:DisplayObject;
 			var ypos:Number = marginTop;
@@ -55,11 +58,14 @@ package com.vhall.framework.ui.container
 				child.y = ypos;
 				ypos += child.height;
 				ypos += gap;
-
+				calcH += child.height;
+				
 				maxWidth = child.width > maxWidth ? child.width : maxWidth;
 			}
 
-			height += marginBottom;
+			maxWidth = maxWidth > _width ? maxWidth : _width;
+			calcH += (numChild - 1) * gap;
+			height = calcH + marginBottom;
 		}
 
 		protected function layoutHorizontal():void

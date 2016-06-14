@@ -67,7 +67,7 @@ package com.vhall.framework.ui.container
 
 			maxHeight = maxHeight > _height ? maxHeight : _height;
 			calcW += (numChild - 1) * gap;
-			width += marginRight;
+			width = calcW + marginRight;
 		}
 
 		protected function layoutVertical():void
