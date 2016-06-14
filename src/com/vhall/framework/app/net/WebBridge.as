@@ -51,7 +51,6 @@ package com.vhall.framework.app.net
 			var s:String = com.adobe.serialization.json.JSON.encode(body);
 			var result:String = Base64.encode(s);
 			try{
-				Logger.getLogger("MSG").info("sendCmdMsg",result);
 				ExternalInterface.call("sendCmdMsg", result);
 			}catch(e:Error){};
 		}
@@ -87,7 +86,6 @@ package com.vhall.framework.app.net
 			}
 			var s:String = com.adobe.serialization.json.JSON.encode(body);
 			try{
-				Logger.getLogger("MSG").info("sendSocketMsg",s);
 				ExternalInterface.call("sendSocketMsg", "flashMsg", s);
 			}catch(e:Error){};
 		}
