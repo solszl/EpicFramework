@@ -5,17 +5,10 @@ package com.vhall.framework.app
 	import com.vhall.framework.log.Logger;
 	import com.vhall.framework.log.LoggerClip;
 	
-	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.net.URLRequest;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-	import flash.text.TextField;
 	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
-	
-	import org.mangui.hls.stream.StreamBuffer;
 
 	/**
 	 *	整个应用程序的基类
@@ -38,8 +31,8 @@ package com.vhall.framework.app
 			super();
 			app = this;
 
-			dispatchEvent(new Event(INIT_START));
 			initApp();
+			dispatchEvent(new Event(INIT_START));
 		}
 
 		protected function initApp():void
