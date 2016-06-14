@@ -310,6 +310,7 @@ package com.vhall.framework.media.video
 			//清楚视频最后一帧
 			if(_proxy) _proxy.stop();
 			_proxy = null;
+			_type = null;
 			stop();
 		}
 		
