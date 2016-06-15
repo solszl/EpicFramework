@@ -99,6 +99,11 @@ package com.vhall.framework.media.video
 				}
 				return;
 			}
+			if(_proxy) 
+			{
+				_proxy.dispose();
+				_proxy = null;
+			}
 			_proxy = MediaProxyFactory.create(type);
 			_handler = handler;		
 			_type = type;
