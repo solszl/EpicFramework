@@ -54,7 +54,7 @@ package com.vhall.framework.app.net
 		
 		protected function dispatch(action:String = null, params:Array = null, toTarget:Object = null):void
 		{
-			Logger.getLogger("MSG").info("received msg:" + action);
+			Logger.getLogger("[MSG]").info("received: " + action);
 			NResponder.dispatch(action,params,toTarget)
 		}
 	}

@@ -31,10 +31,9 @@ package com.vhall.framework.app.net
 		 */
 		public function handle(msg:*, msg_body:*):void
 		{
-
 			if(!(msg in handleMap))
 			{
-				Logger.getLogger("MSG").info("no msg: " + msg + " in handleMap");
+				Logger.getLogger("[MSG]").info("no msg: " + msg + " in handleMap");
 				return;
 			}
 

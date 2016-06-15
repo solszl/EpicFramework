@@ -2,6 +2,7 @@ package com.vhall.framework.app.net
 {
 	import com.adobe.serialization.json.JSON;
 	import com.hurlant.util.Base64;
+	import com.vhall.framework.log.Logger;
 	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -29,6 +30,7 @@ package com.vhall.framework.app.net
 
 		public function SocketBridge(ip:String, port:int)
 		{
+			Logger.getLogger("Socket").info("connect ip: " +ip + " port: ",port);
 			socket = new Socket(ip, port);
 			socket.addEventListener(Event.CONNECT, socketHandler);
 			socket.addEventListener(Event.CLOSE, socketHandler);
@@ -48,10 +50,12 @@ package com.vhall.framework.app.net
 			// 反序列化字符串拿到消息体
 			var o:Object = com.adobe.serialization.json.JSON.decode(s);
 			handleMap[o.type](o);
+			Logger.getLogger("[MSG Socket]").info("received: " + o.type);
 		}
 
 		protected function socketHandler(e:Event):void
 		{
+			Logger.getLogger("[MSG Socket]").info(e.type);
 			handleMap[e.type](e);
 		}
 
@@ -69,6 +73,7 @@ package com.vhall.framework.app.net
 				body.type = msg;
 				var s:String = com.adobe.serialization.json.JSON.encode(body);
 				s = useBase64 ? Base64.encode(s) : s;
+				Logger.getLogger("[MSG Socket]").info("type: " + msg + " msg_body: " + s);
 				bodyBytes.length = 0;
 				bodyBytes.writeUTFBytes(s);
 				socket.writeBytes(bodyBytes);
