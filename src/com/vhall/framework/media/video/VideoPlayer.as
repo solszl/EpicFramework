@@ -303,6 +303,7 @@ package com.vhall.framework.media.video
 			}else{
 				_video.attachNetStream(null);
 			}
+			if(_proxy) _proxy.stop();
 			_cameraView = false;
 			_video.clear();
 		}
@@ -312,11 +313,11 @@ package com.vhall.framework.media.video
 		 */		
 		public function dispose():void
 		{
+			stop();
 			//清楚视频最后一帧
-			if(_proxy) _proxy.stop();
+			if(_proxy) _proxy.dispose();
 			_proxy = null;
 			_type = null;
-			stop();
 		}
 		
 		override public function get visible():Boolean
