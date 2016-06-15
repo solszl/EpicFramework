@@ -9,6 +9,8 @@
 
 package com.vhall.framework.media.provider
 {
+	import com.vhall.framework.utils.FPUtil;
+	
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -86,7 +88,11 @@ package com.vhall.framework.media.provider
 
 			//取消硬件解码
 			_ns.useHardwareDecoder = false;
-			_ns.videoStreamSettings = h264Video;
+			
+			if(FPUtil.vaild(11))
+			{
+				_ns.videoStreamSettings = h264Video;
+			}
 			
 			bufferTime = 1;
 			bufferTimeMax = 2;
@@ -138,8 +144,13 @@ package com.vhall.framework.media.provider
 		protected function get h264Video():H264VideoStreamSettings
 		{
 			var h264:H264VideoStreamSettings = new H264VideoStreamSettings();
-			//设置视频编码的配置文件和级别
-			h264.setProfileLevel(H264Profile.MAIN,H264Level.LEVEL_5_1);
+			
+			/*
+			*	设置视频编码的配置文件和级别
+			*	H264Profile编码使用的策略MAIN功能大于BASELINE
+			*	H264Level编解码级别，同等profile情况数字越大，画质清晰度越高
+			*/
+			h264.setProfileLevel(H264Profile.MAIN,H264Level.LEVEL_2_1);
 			//设置视频的分辨率和fps，和推流端获取一致
 			h264.setMode(-1,-1,-1);
 			//视频I帧个camera一致
