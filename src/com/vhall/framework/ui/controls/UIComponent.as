@@ -8,6 +8,7 @@ package com.vhall.framework.ui.controls
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.utils.getQualifiedClassName;
 
 	/**
@@ -38,39 +39,50 @@ package com.vhall.framework.ui.controls
 			init();
 		}
 
+		/**初始化方法*/		
 		protected function init():void
 		{
 			// subclass overwrite
 			createChildren();
 		}
 
+		/**创建子对象*/		
 		protected function createChildren():void
 		{
-
 		}
 
+		/**	调用渲染逻辑，第一步执行 尺寸变更函数，第二部执行显示渲染，第三部决定是否派发初始化完成事件*/
 		protected function invalidate():void
 		{
 			sizeChanged();
 			updateDisplay();
+			
+			initialized = initialized == false ? true : false;
 		}
 
+		/**	渲染显示列表*/
 		protected function updateDisplay():void
 		{
-
 		}
 		
+		/**	尺寸变更函数*/
 		protected function sizeChanged():void
 		{
-			
 		}
 
+		/**	调用父容器进行渲染*/
 		protected function parentInvalidate():void
 		{
 			if(parent && parent is UIComponent)
 			{
 				(parent as UIComponent).invalidate();
 			}
+		}
+		
+		/**	组件初始化完毕后执行此函数*/
+		protected function componentInited(e:Event):void
+		{
+			removeEventListener("component_inited",componentInited);
 		}
 
 		override public function set alpha(value:Number):void
@@ -139,9 +151,9 @@ package com.vhall.framework.ui.controls
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
+		/**	销毁函数*/
 		public function destory():void
 		{
-			
 		}
 
 		/**
@@ -156,10 +168,10 @@ package com.vhall.framework.ui.controls
 			}
 		}
 		
+		/**	立即刷新*/
 		public function validateNow():void
 		{
-			sizeChanged();
-			updateDisplay();
+			invalidate();
 		}
 
 		/**显示边框*/
@@ -185,7 +197,7 @@ package com.vhall.framework.ui.controls
 		{
 			return StringUtil.substitute(info, getQualifiedClassName(this), width, height, x, y, this.parent != null, this.stage != null);
 		}
-
+		
 		private var _tooltip:Object;
 		private var _left:Object;
 		private var _right:Object;
@@ -195,7 +207,7 @@ package com.vhall.framework.ui.controls
 		private var _verticalCenter:Number;
 		private var _callOut:String = "none";
 
-		/**	用户自定义数据，该数据外部维护*/
+		private var _initialized:Boolean = false;
 		private var _userData:Object;
 		
 		/**
@@ -288,14 +300,36 @@ package com.vhall.framework.ui.controls
 			_verticalCenter = value;
 		}
 		
+		/**	用户自定义数据，该数据外部维护*/
+		public function get userData():Object
+		{
+			return _userData ||= {};
+		}
+		
 		public function set userData(value:Object):void
 		{
 			_userData = value;
 		}
-		
-		public function get userData():Object
+
+		/**	组件是否初始化完毕*/
+		public function get initialized():Boolean
 		{
-			return _userData ||= {};
+			return _initialized;
+		}
+
+		public function set initialized(value:Boolean):void
+		{
+			if(value == _initialized)
+			{
+				return;
+			}
+			
+			_initialized = value;
+			if(value)
+			{
+				addEventListener("component_inited", componentInited, false, 0, true);
+				dispatchEvent(new Event("component_inited"));
+			}
 		}
 	}
 }

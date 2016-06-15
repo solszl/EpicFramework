@@ -99,7 +99,6 @@ package com.vhall.framework.ui.controls
 			}
 
 			super.invalidate();
-//			updateDisplay();
 		}
 
 		public function get skin():Object
@@ -114,7 +113,6 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 			_skin = value;
-//			splitPropertyString("skin", value.toString());
 			propertiesDic["skin"][0] = value;
 			state = stateMap["rollOut"];
 		}
