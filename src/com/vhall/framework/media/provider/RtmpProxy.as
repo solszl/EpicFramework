@@ -172,7 +172,7 @@ package com.vhall.framework.media.provider
 		override public function stop():void
 		{
 			super.stop();
-			_ns && _ns.close();
+			_ns && _ns.dispose();
 		}
 		
 		override public function pause():void

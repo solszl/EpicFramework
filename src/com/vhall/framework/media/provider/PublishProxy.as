@@ -248,7 +248,7 @@ package com.vhall.framework.media.provider
 			if(_published)
 			{
 				cameraMuted = microphoneMuted = !_playing;
-				super.stop();
+				_ns&&_ns.close();
 			}
 		}
 		
