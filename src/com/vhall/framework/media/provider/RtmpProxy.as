@@ -139,7 +139,7 @@ package com.vhall.framework.media.provider
 		{
 			var h264:H264VideoStreamSettings = new H264VideoStreamSettings();
 			//设置视频编码的配置文件和级别
-			h264.setProfileLevel(H264Profile.MAIN,H264Level.LEVEL_3_1);
+			h264.setProfileLevel(H264Profile.MAIN,H264Level.LEVEL_5_1);
 			//设置视频的分辨率和fps，和推流端获取一致
 			h264.setMode(-1,-1,-1);
 			//视频I帧个camera一致

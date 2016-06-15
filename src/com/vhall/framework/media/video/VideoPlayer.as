@@ -314,6 +314,16 @@ package com.vhall.framework.media.video
 			stop();
 		}
 		
+		override public function get visible():Boolean
+		{
+			return _video.visible;
+		}
+		
+		override public function set visible(value:Boolean):void
+		{
+			_video.visible = value;
+		}
+		
 		/**
 		 * 非自动播放视频，在MediaProxyStates.CONNECT_NOTIFY后播放视频
 		 */		
@@ -324,8 +334,7 @@ package com.vhall.framework.media.video
 				_proxy.start();
 				if(_proxy.type == MediaProxyType.PUBLISH){
 					var iPub:IPublish = _proxy as IPublish;
-					iPub.publish(_cam,_mic,_camWidth,_camHeight);
-					useStrategy = _videoOption.useStrategy;
+					attachView(iPub.usedCam);
 				}else{
 					attachView(_proxy.stream);
 				}

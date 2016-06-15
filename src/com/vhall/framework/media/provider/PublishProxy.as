@@ -44,6 +44,8 @@ package com.vhall.framework.media.provider
 		private var _useStrategy:Boolean = false;
 		
 		private var _published:Boolean = false;
+
+		private var _bandwidth:int = 0;
 		
 		public function PublishProxy()
 		{
@@ -63,7 +65,7 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetStream_Publish_Start:
 					//sendMetadata();
 					_published = true;
-					excute(MediaProxyStates.PUBLISH_START);
+					excute(MediaProxyStates.PUBLISH_START,[_bandwidth]);
 					break;
 				case InfoCode.NetStream_Publish_BadName:
 					_published = false;
@@ -226,6 +228,7 @@ package com.vhall.framework.media.provider
 			}
 			_cam = null;
 			_mic = null;
+			_published = false;
 		}
 		
 		override public function start():void
@@ -235,6 +238,7 @@ package com.vhall.framework.media.provider
 			if(_published)
 			{
 				cameraMuted = microphoneMuted = !_playing;
+				_ns.publish(_streamUrl);
 			}
 		}
 		
@@ -275,6 +279,41 @@ package com.vhall.framework.media.provider
 			}
 		}
 		
+		private function calcBandwidth(w:Number,h:Number):int
+		{
+			if (w == 0 || h == 0)
+				return 0;
+			
+			var level1:Number = 176 * 144;
+			var level2:Number = 320 * 240;
+			var level3:Number = 640 * 480;
+			var level4:Number = 1280 * 720;
+			
+			var t:Number = w * h;
+			var bw:Number;
+			
+			if (t <= level1)
+			{
+				bw = 70;
+			}
+			else if (t <= level2)
+			{
+				//bw = 160 * (t / level2);
+				bw = 400 * (t / level2);
+			}
+			else if (t <= level3)
+			{
+				//bw = 320 * (t / level3) * 1.2;
+				bw = 600 * (t / level3) * 1.2;
+			}
+			else
+			{
+				//bw = 700 * (t / level4) * 1.3;
+				bw = 860 * (t / level4) * 1.3;
+			}
+			return bw + 60; //加上音频传输所需要的带宽
+		}
+		
 		/**
 		 * 获取可以使用的Camera
 		 * @param name Camera名称，null或者空为获取默认Camera
@@ -284,13 +323,15 @@ package com.vhall.framework.media.provider
 		 */		
 		private function getCameraByName(name:String, camWidth:uint = 320, camHeight:uint = 280):Camera
 		{
+			if(name == null) return null;
 			if(Camera.isSupported)
 			{
 				var index:int = Camera.names.indexOf(name);
 				var cam:Camera = Camera.getCamera(name==""||name==null||index==-1?null:Camera.names.indexOf(name).toString());
 
 				cam.setMode(camWidth,camHeight,15);
-				cam.setQuality(0,75);
+				_bandwidth = calcBandwidth(camWidth,camHeight)
+				cam.setQuality(_bandwidth*1024,75);
 				cam.setKeyFrameInterval(15);
 				cam.setMotionLevel(50);
 				//本地显示回放是否使用压缩后的视频流，设置为true显示画面和用户更像是
@@ -308,6 +349,7 @@ package com.vhall.framework.media.provider
 		 */		
 		private function getMicrophoneByName(name:String):Microphone
 		{
+			if(name == null) return null;
 			if(Microphone.isSupported)
 			{
 				var index:int = Camera.names.indexOf(name);
