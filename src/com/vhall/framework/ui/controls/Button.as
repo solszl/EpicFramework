@@ -1,11 +1,11 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
-
+	import com.vhall.framework.ui.interfaces.IState;
+	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
-	import com.vhall.framework.ui.interfaces.IState;
 
 	/**
 	 * 按钮类
@@ -23,6 +23,7 @@ package com.vhall.framework.ui.controls
 		private var _skin:Object;
 		private var _label:String;
 		private var _labelColor:Object;
+		private var _labelSize:Object;
 
 		private var _labelChanged:Boolean = false;
 
@@ -188,6 +189,23 @@ package com.vhall.framework.ui.controls
 			_labelColorChanged = true;
 			splitPropertyString("labelColor", value.toString());
 			RenderManager.getInstance().invalidate(invalidate);
+		}
+		
+		public function set labelSize(value:Object):void
+		{
+			if(_labelSize == value)
+			{
+				return;
+			}
+			
+			_labelSize = value;
+			btnLabel.fontSize = value;
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+		
+		public function get labelSize():Object
+		{
+			return _labelSize;
 		}
 		private var propertiesDic:Dictionary = new Dictionary();
 

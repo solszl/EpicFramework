@@ -21,7 +21,7 @@ package com.vhall.framework.ui.controls
 
 		private static const PADDING:Number = 6;
 
-		private static const MSG:String = "<font color='#FF0000'>{0}</font>";
+		private static const MSG:String = "<font color='#FFFFFF' font-family='Microsoft YaHei'>{0}</font>";
 
 		private static const MAX_WIDTH:Number = 200;
 
@@ -90,7 +90,6 @@ package com.vhall.framework.ui.controls
 
 			tf = new TextField();
 			tf.selectable = false;
-			tf.textColor = 0xFFFFFF;
 			tf.x = PADDING;
 			tf.y = PADDING;
 			addChild(tf);
@@ -106,10 +105,10 @@ package com.vhall.framework.ui.controls
 			{
 				graphics.clear();
 				//边框颜色
-				graphics.lineStyle(1.6, 0xa0cc99, 1, true);
+				graphics.lineStyle(1, 0x383838, 0.7, true);
 				//填充颜色
-				graphics.beginFill(0xC0C0C0, .2);
-				graphics.drawRoundRect(0, 0, _w - 2 * 1.6, _h - 2 * 1.6, 8, 8);
+				graphics.beginFill(0x000000, .7);
+				graphics.drawRoundRect(0, 0, _w - 2 * 1, _h - 2 * 1, 0, 0);
 				graphics.endFill();
 			}
 		}
