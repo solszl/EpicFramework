@@ -219,8 +219,6 @@ package com.vhall.framework.media.provider
 		{
 			cameraMuted = microphoneMuted = true;
 			
-			super.gc();
-			
 			clearInterval(_id);
 			if(_cam && _cam.hasEventListener(StatusEvent.STATUS))
 			{
@@ -229,6 +227,8 @@ package com.vhall.framework.media.provider
 			_cam = null;
 			_mic = null;
 			_published = false;
+			
+			super.gc();
 		}
 		
 		override public function start():void

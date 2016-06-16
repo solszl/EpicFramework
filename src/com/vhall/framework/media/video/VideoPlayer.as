@@ -44,6 +44,8 @@ package com.vhall.framework.media.video
 		private var _cameraView:Boolean = false;
 		
 		private var _backgroundColor:int = 0x000000;
+		/** 图像保真 默认关闭*/
+		private var _eyefidelity:Boolean = false;
 		
 		/**
 		 * 推流时候使用的摄像头和麦克 
@@ -109,7 +111,7 @@ package com.vhall.framework.media.video
 			_type = type;
 			
 			//推流之外的播放器，启用图像增强
-			filters = _proxy.type != MediaProxyType.PUBLISH ? [new SharpenFilter(0.1)] : [];
+			eyefidelity = _eyefidelity;
 			
 			_proxy.connect(uri,stream,proxyHandler,autoPlay,startPostion);
 			
@@ -257,6 +259,7 @@ package com.vhall.framework.media.video
 				size.height = _video.videoHeight;
 			}
 			var ratio:Number = Math.min(_viewPort.width/size.width,_viewPort.height/size.height);
+			
 			_video.width = size.width * ratio;
 			_video.height = size.height * ratio;
 			_video.x = _viewPort.left + (_viewPort.width - _video.width >> 1);
@@ -318,6 +321,7 @@ package com.vhall.framework.media.video
 			if(_proxy) _proxy.dispose();
 			_proxy = null;
 			_type = null;
+			_video.clear();
 		}
 		
 		override public function get visible():Boolean
@@ -432,6 +436,16 @@ package com.vhall.framework.media.video
 			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
 				return (_proxy as IPublish).usedMic;
 			return null;
+		}
+		
+		/**
+		 * 图像保真增强，默认关闭，开启额外消耗CPU
+		 * @param bool
+		 */		
+		public function set eyefidelity(bool:Boolean):void
+		{
+			_eyefidelity = bool;
+			filters = bool && _proxy.type != MediaProxyType.PUBLISH ? [new SharpenFilter(0.1)] : [];
 		}
 		
 		/**
