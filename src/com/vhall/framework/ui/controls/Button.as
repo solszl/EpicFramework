@@ -207,6 +207,15 @@ package com.vhall.framework.ui.controls
 		{
 			return _labelSize;
 		}
+		
+		/**	设置按钮皮肤，即时刷新样式*/
+		public function setSkin(value:Object):void
+		{
+			propertiesDic["skin"][0] = value;
+			bg.source = getProperty("skin", state);
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+		
 		private var propertiesDic:Dictionary = new Dictionary();
 
 		/**
