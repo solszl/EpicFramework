@@ -15,6 +15,7 @@ package com.vhall.framework.media.provider
 	import flash.events.StatusEvent;
 	import flash.media.Camera;
 	import flash.media.Microphone;
+	import flash.media.MicrophoneEnhancedMode;
 	import flash.media.MicrophoneEnhancedOptions;
 	import flash.media.SoundCodec;
 	import flash.media.scanHardware;
@@ -330,8 +331,8 @@ package com.vhall.framework.media.provider
 				var cam:Camera = Camera.getCamera(name==""||name==null||index==-1?null:Camera.names.indexOf(name).toString());
 
 				cam.setMode(camWidth,camHeight,15);
-				_bandwidth = calcBandwidth(camWidth,camHeight)
-				cam.setQuality(_bandwidth*1024,75);
+				//设置带宽会耗费网速
+				cam.setQuality(0,75);
 				cam.setKeyFrameInterval(15);
 				cam.setMotionLevel(50);
 				//本地显示回放是否使用压缩后的视频流，设置为true显示画面和用户更像是
@@ -352,19 +353,29 @@ package com.vhall.framework.media.provider
 			if(name == null) return null;
 			if(Microphone.isSupported)
 			{
-				var index:int = Camera.names.indexOf(name);
-				var mic:Microphone = Microphone.getMicrophone(name==""||name==null||index==-1?-1:Microphone.names.indexOf(name));
-
+				var index:int = Microphone.names.indexOf(name);
+				var useMic:* = name==""||name==null||index==-1?-1:Microphone.names.indexOf(name)
+				var mic:Microphone = Microphone.getEnhancedMicrophone(useMic);
+				
+				if(mic)
+				{
+					var micEnopt:MicrophoneEnhancedOptions = new MicrophoneEnhancedOptions();
+					micEnopt.mode = MicrophoneEnhancedMode.FULL_DUPLEX;
+					micEnopt.autoGain = false;
+					micEnopt.echoPath = 128;
+					micEnopt.nonLinearProcessing = true;
+					mic["enhancedOptions"] = micEnopt;
+					mic.setUseEchoSuppression(true);//是否使用回音抑制功能
+				}else{
+					mic = Microphone.getMicrophone(useMic);
+				}
+				
 				mic.codec = SoundCodec.SPEEX;
 				mic.setSilenceLevel(0);
-				mic.setUseEchoSuppression(true);//是否使用回音抑制功能
 				mic.setLoopBack(false);//麦克声音不在本地回放
 				mic.encodeQuality = 8;
-				mic.noiseSuppressionLevel = -30;
-				var micEnopt:MicrophoneEnhancedOptions = new MicrophoneEnhancedOptions();
-				micEnopt.autoGain = false;
-				micEnopt.nonLinearProcessing = false;
-				mic.enhancedOptions = micEnopt;
+				//噪音过滤分贝
+				mic.noiseSuppressionLevel = 10;
 				mic.rate = 22;
 				
 				volume = _volume;

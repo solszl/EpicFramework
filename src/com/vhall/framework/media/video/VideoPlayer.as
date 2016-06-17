@@ -258,6 +258,9 @@ package com.vhall.framework.media.video
 				size.width = _video.videoWidth;
 				size.height = _video.videoHeight;
 			}
+			
+			super.visible = this._type == MediaProxyType.PUBLISH||!(_video.videoHeight == 0 || _video.videoWidth == 0);
+			
 			var ratio:Number = Math.min(_viewPort.width/size.width,_viewPort.height/size.height);
 			
 			_video.width = size.width * ratio;
@@ -503,7 +506,7 @@ package com.vhall.framework.media.video
 		 */		
 		public function get stream():NetStream
 		{
-			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
+			if(_proxy)
 				return _proxy.stream;
 			return null;
 		}
