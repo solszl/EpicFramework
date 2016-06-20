@@ -59,6 +59,12 @@ package com.vhall.framework.ui.controls
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 		
+		public function setSelected(value:Boolean):void
+		{
+			this._selected = value;
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+		
 		/**	设置数据*/
 		public function set data(value:*):void
 		{

@@ -17,6 +17,8 @@ package com.vhall.framework.ui.interfaces
 		 *
 		 */
 		function get selected():Boolean;
+		
+		function setSelected(value:Boolean):void;
 
 	}
 }

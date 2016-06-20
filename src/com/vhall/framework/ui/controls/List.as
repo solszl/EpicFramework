@@ -4,6 +4,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.container.Box;
 	import com.vhall.framework.ui.container.HBox;
 	import com.vhall.framework.ui.container.VBox;
+	import com.vhall.framework.ui.event.ListEvent;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -131,6 +132,10 @@ package com.vhall.framework.ui.controls
 						ItemRender(e.target).onMouseOut();
 						break;
 					case MouseEvent.CLICK:
+						if(ItemRender(e.target).selected)
+						{
+							return;
+						}
 						ItemRender(e.target).onMouseClick();
 						selectItem = e.target as ItemRender;
 						break;
@@ -212,6 +217,7 @@ package com.vhall.framework.ui.controls
 
 			_dataProvider = value;
 			dataProviderChanged = true;
+			dispatchEvent(new ListEvent(ListEvent.DataChanged));
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -223,12 +229,9 @@ package com.vhall.framework.ui.controls
 
 		public function set selectIndex(value:int):void
 		{
+			fireEvent(ListEvent.IndexChanged)
 			setSelectIndex(value);
-
-			if(hasEventListener(Event.SELECT))
-			{
-				dispatchEvent(new Event(Event.SELECT));
-			}
+			fireEvent(ListEvent.SelectChanged);
 		}
 
 		/**	当前选中数据*/
@@ -241,13 +244,14 @@ package com.vhall.framework.ui.controls
 			
 			if (selectIndex >= 0 && selectIndex < _dataProvider.length)
 			{
-				return _dataProvider.getItemAt(selectIndex);
+				return _dataProvider[selectIndex];
 			}
 			return null;
 		}
 
 		public function set selectData(value:Object):void
 		{
+			fireEvent(ListEvent.DataChanged);
 			var index:int=_dataProvider.indexOf(value);
 			selectIndex = index;
 		}
@@ -270,8 +274,20 @@ package com.vhall.framework.ui.controls
 
 		public function set selectItem(value:ItemRender):void
 		{
+			fireEvent(ListEvent.ItemChanged);
 			var idx:int = con.getChildIndex(value);
 			selectIndex = idx;
+		}
+		
+		public function fireEvent(type:String):void
+		{
+			if(hasEventListener(type))
+			{
+				var e:ListEvent = new ListEvent(type);
+				e.data = selectData;
+				e.index = selectIndex;
+				dispatchEvent(e);
+			}
 		}
 	}
 }

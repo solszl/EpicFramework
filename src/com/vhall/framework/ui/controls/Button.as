@@ -31,12 +31,12 @@ package com.vhall.framework.ui.controls
 
 		public function Button(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
-			super(parent, xpos, ypos);
-			this.btnLabel.text = "";
-			labelColor = Style.Button_Label_Color;
 			propertiesDic["skin"] = [];
 			propertiesDic["label"] = [];
 			propertiesDic["labelColor"] = [];
+			super(parent, xpos, ypos);
+			this.btnLabel.text = "";
+			labelColor = Style.Button_Label_Color;
 		}
 
 		override protected function createChildren():void
