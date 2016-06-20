@@ -74,5 +74,8 @@ package com.vhall.framework.media.provider
 		/** 未找到硬件设备,参数为字符串说明 */		
 		public static const NO_HARD_WARE:String = "noHardWare";
 		
+		/** 推流摄像头被占用请检查设备*/
+		public static const CAMERA_IS_USING:String = "cameraIsUsing";
+		
 	}
 }

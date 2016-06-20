@@ -48,6 +48,8 @@ package com.vhall.framework.media.provider
 
 		private var _bandwidth:int = 0;
 		
+		private var _camUsedCheck:int;
+		
 		public function PublishProxy()
 		{
 			super();
@@ -113,6 +115,8 @@ package com.vhall.framework.media.provider
 		
 		public function publish(cam:*, mic:*, camWidth:uint = 320, camHeight:uint = 280):void
 		{
+			clearInterval(_camUsedCheck);
+			
 			if(cam is Camera)
 			{
 				_cam = cam as Camera;
@@ -152,8 +156,25 @@ package com.vhall.framework.media.provider
 			
 			_cam && _ns.attachCamera(_cam);
 			_mic && _ns.attachAudio(_mic);
-			
 			_ns.publish(_streamUrl);
+			
+			var checkTimes:uint = 0;
+			_camUsedCheck = setInterval(function():void
+			{
+				++checkTimes;
+				if(_cam.currentFPS > 0)
+				{
+					clearInterval(_camUsedCheck);
+				}else{
+					if(checkTimes == 5){
+						CONFIG::LOGGING{
+							Log.error("摄像头被占用");
+							excute(MediaProxyStates.CAMERA_IS_USING);
+						}
+						clearInterval(_camUsedCheck);
+					}
+				}
+			},1000);
 			
 			//应用质量平衡策略
 			_useStrategy && Strategy.get().blance(_ns,_cam,_mic);
@@ -221,6 +242,7 @@ package com.vhall.framework.media.provider
 			cameraMuted = microphoneMuted = true;
 			
 			clearInterval(_id);
+			clearInterval(_camUsedCheck);
 			if(_cam && _cam.hasEventListener(StatusEvent.STATUS))
 			{
 				_cam.removeEventListener(StatusEvent.STATUS,hardwareHandler);
