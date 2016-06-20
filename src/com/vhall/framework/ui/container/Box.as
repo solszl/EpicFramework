@@ -121,6 +121,7 @@ package com.vhall.framework.ui.container
 
 		override public function getChildAt(index:int):DisplayObject
 		{
+			index = index < 0 ? 0 : index
 			return children[index];
 		}
 		

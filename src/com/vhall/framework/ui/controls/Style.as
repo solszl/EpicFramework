@@ -9,7 +9,7 @@ package com.vhall.framework.ui.controls
 	public class Style
 	{
 		/**	默认文本颜色*/
-		internal static const Button_Label_Color:String = "0xFF0000";
+		internal static const Button_Label_Color:String = "0xFFFFFF";
 
 		/**	拖拽栏背景色*/
 		public static const DragBar_Background_Color:uint = 0x000000;
