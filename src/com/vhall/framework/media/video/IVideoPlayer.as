@@ -89,5 +89,11 @@ package com.vhall.framework.media.video
 		 * @return 
 		 */		
 		function get streamUrl():String;
+		
+		/**
+		 * 当前播放状态
+		 * @return 
+		 */		
+		function get state():String;
 	}
 }

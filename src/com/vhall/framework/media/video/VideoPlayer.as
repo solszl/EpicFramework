@@ -59,6 +59,8 @@ package com.vhall.framework.media.video
 		
 		private var _handler:Function;
 		
+		private var _state:String;
+		
 		/**
 		 * 默认显示大小320X240
 		 */		
@@ -119,6 +121,7 @@ package com.vhall.framework.media.video
 		
 		private function proxyHandler(states:String,...value):void
 		{
+			_state = states;
 			switch(states)
 			{
 				case MediaProxyStates.CONNECT_NOTIFY:
@@ -498,6 +501,11 @@ package com.vhall.framework.media.video
 		{
 			_viewPort.copyFrom(port);
 			updateVideo();
+		}
+		
+		public function get state():String
+		{
+			return _state;
 		}
 		
 		/**

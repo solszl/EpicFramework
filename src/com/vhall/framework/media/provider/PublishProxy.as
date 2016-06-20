@@ -329,16 +329,19 @@ package com.vhall.framework.media.provider
 			{
 				var index:int = Camera.names.indexOf(name);
 				var cam:Camera = Camera.getCamera(name==""||name==null||index==-1?null:Camera.names.indexOf(name).toString());
-
-				cam.setMode(camWidth,camHeight,15);
-				//设置带宽会耗费网速
-				cam.setQuality(0,75);
-				cam.setKeyFrameInterval(15);
-				cam.setMotionLevel(50);
-				//本地显示回放是否使用压缩后的视频流，设置为true显示画面和用户更像是
-				//cam.setLoopback(true);
 				
-				return cam;
+				if(cam)
+				{
+					cam.setMode(camWidth,camHeight,15);
+					//设置带宽会耗费网速256000/8.0
+					cam.setQuality(0,75);
+					cam.setKeyFrameInterval(15);
+					cam.setMotionLevel(50);
+					//本地显示回放是否使用压缩后的视频流，设置为true显示画面和用户更像是
+					//cam.setLoopback(true);
+					
+					return cam;
+				}
 			}
 			return null;
 		}
@@ -370,17 +373,20 @@ package com.vhall.framework.media.provider
 					mic = Microphone.getMicrophone(useMic);
 				}
 				
-				mic.codec = SoundCodec.SPEEX;
-				mic.setSilenceLevel(0);
-				mic.setLoopBack(false);//麦克声音不在本地回放
-				mic.encodeQuality = 8;
-				//噪音过滤分贝
-				mic.noiseSuppressionLevel = 10;
-				mic.rate = 22;
-				
-				volume = _volume;
-				
-				return mic;
+				if(mic)
+				{
+					mic.codec = SoundCodec.SPEEX;
+					mic.setSilenceLevel(0);
+					mic.setLoopBack(false);//麦克声音不在本地回放
+					mic.encodeQuality = 8;
+					//噪音过滤分贝
+					mic.noiseSuppressionLevel = 10;
+					mic.rate = 22;
+					
+					volume = _volume;
+					
+					return mic;
+				}
 			}
 			return null;
 		}
