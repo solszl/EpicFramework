@@ -158,23 +158,26 @@ package com.vhall.framework.media.provider
 			_mic && _ns.attachAudio(_mic);
 			_ns.publish(_streamUrl);
 			
-			var checkTimes:uint = 0;
-			_camUsedCheck = setInterval(function():void
+			if(_cam)
 			{
-				++checkTimes;
-				if(_cam.currentFPS > 0)
+				var checkTimes:uint = 0;
+				_camUsedCheck = setInterval(function():void
 				{
-					clearInterval(_camUsedCheck);
-				}else{
-					if(checkTimes == 5){
-						CONFIG::LOGGING{
-							Log.error("摄像头被占用");
-							excute(MediaProxyStates.CAMERA_IS_USING);
-						}
+					++checkTimes;
+					if(_cam.currentFPS > 0)
+					{
 						clearInterval(_camUsedCheck);
+					}else{
+						if(checkTimes == 5){
+							CONFIG::LOGGING{
+								Log.error("摄像头被占用");
+								excute(MediaProxyStates.CAMERA_IS_USING);
+							}
+							clearInterval(_camUsedCheck);
+						}
 					}
-				}
-			},1000);
+				},1000);
+			}
 			
 			//应用质量平衡策略
 			_useStrategy && Strategy.get().blance(_ns,_cam,_mic);
