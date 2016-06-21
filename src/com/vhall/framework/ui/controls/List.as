@@ -229,8 +229,8 @@ package com.vhall.framework.ui.controls
 
 		public function set selectIndex(value:int):void
 		{
-			fireEvent(ListEvent.IndexChanged)
 			setSelectIndex(value);
+			fireEvent(ListEvent.IndexChanged)
 			fireEvent(ListEvent.SelectChanged);
 		}
 
@@ -251,9 +251,9 @@ package com.vhall.framework.ui.controls
 
 		public function set selectData(value:Object):void
 		{
-			fireEvent(ListEvent.DataChanged);
 			var index:int=_dataProvider.indexOf(value);
 			selectIndex = index;
+			fireEvent(ListEvent.DataChanged);
 		}
 
 		/**	当前选中渲染器*/
@@ -274,9 +274,9 @@ package com.vhall.framework.ui.controls
 
 		public function set selectItem(value:ItemRender):void
 		{
-			fireEvent(ListEvent.ItemChanged);
 			var idx:int = con.getChildIndex(value);
 			selectIndex = idx;
+			fireEvent(ListEvent.ItemChanged);
 		}
 		
 		public function fireEvent(type:String):void

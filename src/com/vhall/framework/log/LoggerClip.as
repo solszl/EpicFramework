@@ -88,6 +88,13 @@ package com.vhall.framework.log
 			var date_str:String = today_date.getHours() + ":" + today_date.getMinutes() + ":" + today_date.getSeconds() + "." +today_date.milliseconds;
 			this.mcOutput.htmlText += "</br><font color='#FFFFFF'>" + date_str + " " + msg + "</font>";
 			this.mcOutput.scrollV = this.mcOutput.maxScrollV;
+			if(hasEventListener(LogEvent.Changed))
+			{
+				var e:LogEvent = new LogEvent(LogEvent.Changed);
+				e.time = date_str;
+				e.content = msg;
+				dispatchEvent(e);
+			}
 		}
 
 		public function clearOutput(e:Event = null):void

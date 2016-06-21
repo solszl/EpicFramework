@@ -48,7 +48,10 @@ package com.vhall.framework.ui.controls
 			// 容器
 			con = new List(this.direction, this, this.gap);
 			con.renderCall = itemRenderCall;
-//			con.addEventListener(ListEvent.SelectChanged, onListSelectHandler);
+			con.addEventListener(ListEvent.SelectChanged, onListEventHandler);
+			con.addEventListener(ListEvent.DataChanged, onListEventHandler);
+			con.addEventListener(ListEvent.ItemChanged, onListEventHandler);
+			con.addEventListener(ListEvent.IndexChanged, onListEventHandler);
 		}
 
 		public function set dataProvider(value:Array):void
@@ -96,6 +99,20 @@ package com.vhall.framework.ui.controls
 		private function itemRenderCall(item:ItemRender, data:*):void
 		{
 			item.addEventListener(Event.SELECT, onSelectHandler);
+		}
+		
+		public function set selectedIndex(value:int):void
+		{
+			con.selectIndex = value;
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+		
+		private function onListEventHandler(e:ListEvent):void
+		{
+			if(hasEventListener(e.type))
+			{
+				dispatchEvent(e);
+			}
 		}
 	}
 }
