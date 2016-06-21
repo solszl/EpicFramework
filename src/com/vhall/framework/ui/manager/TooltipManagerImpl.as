@@ -17,7 +17,7 @@ package com.vhall.framework.ui.manager
 	 * @author Sol
 	 * @date 2016-05-26
 	 */
-	public class TooltipManagerImpl
+	internal class TooltipManagerImpl
 	{
 		private static var instance:TooltipManagerImpl;
 

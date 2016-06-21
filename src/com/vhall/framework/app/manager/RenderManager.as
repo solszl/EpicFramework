@@ -3,10 +3,6 @@ package com.vhall.framework.app.manager
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
-	
-	import flashx.textLayout.operations.RedoOperation;
-	
-	import mx.containers.Form;
 
 	/**
 	 * 渲染管理器
