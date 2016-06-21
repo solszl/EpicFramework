@@ -171,8 +171,8 @@ package com.vhall.framework.media.provider
 						if(checkTimes == 5){
 							CONFIG::LOGGING{
 								Log.error("摄像头被占用");
-								excute(MediaProxyStates.CAMERA_IS_USING);
 							}
+							excute(MediaProxyStates.CAMERA_IS_USING);
 							clearInterval(_camUsedCheck);
 						}
 					}
