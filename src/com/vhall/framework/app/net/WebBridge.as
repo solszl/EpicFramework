@@ -89,5 +89,21 @@ package com.vhall.framework.app.net
 				ExternalInterface.call("sendSocketMsg", "flashMsg", s);
 			}catch(e:Error){};
 		}
+		
+		/**
+		 * 记录数据发送
+		 * @param body 信息
+		 * 
+		 */		
+		public function sendRecordMsg(body:Object):void{
+			if(!ExternalInterface.available)
+			{
+				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
+				return;
+			}
+			try{
+				ExternalInterface.call("sendRecordMsg", "recordMsg", body);
+			}catch(e:Error){};
+		}
 	}
 }
