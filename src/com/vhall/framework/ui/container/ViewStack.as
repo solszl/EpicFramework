@@ -72,5 +72,12 @@ package com.vhall.framework.ui.container
 			}
 			super.invalidate();
 		}
+		
+		override protected function sizeChanged():void
+		{
+			super.sizeChanged();
+			currentChild.width = width;
+			currentChild.height = height;
+		}
 	}
 }
