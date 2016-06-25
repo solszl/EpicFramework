@@ -31,7 +31,7 @@ package com.vhall.framework.app.net
 			if(!_instance)
 			{
 				_instance = this;
-				initSomeThing();
+					//				initSomeThing();
 			}
 		}
 
@@ -43,7 +43,7 @@ package com.vhall.framework.app.net
 		}
 
 		/**
-		 *	拿到收发器，为了下一部的发消息用
+		 * 拿到收发器，为了下一部的发消息用
 		 * @param type 类型 WEB 为 webBridge 否则为socketBridge
 		 * @return
 		 *
@@ -54,7 +54,7 @@ package com.vhall.framework.app.net
 		}
 
 		/**
-		 *	注册消息到收发器中
+		 * 注册消息到收发器中
 		 * @param bridge	消息收发器
 		 * @param msg	消息
 		 *
@@ -65,7 +65,7 @@ package com.vhall.framework.app.net
 		}
 
 		/**
-		 *	从收发器中卸载消息
+		 * 从收发器中卸载消息
 		 * @param bridge	消息收发器
 		 * @param msg	消息内容
 		 *
@@ -76,7 +76,7 @@ package com.vhall.framework.app.net
 		}
 
 		/**
-		 *	添加webJS回调
+		 * 添加webJS回调
 		 * @param name
 		 *
 		 */
@@ -89,5 +89,33 @@ package com.vhall.framework.app.net
 
 			ExternalInterface.addCallback(name, wb.handle);
 		}
+
+		public function initWebBridge(wb:WebBridge = null):void
+		{
+			if(wb == null)
+			{
+				this.wb = new WebBridge();
+				return;
+			}
+
+			this.wb = wb;
+		}
+
+		public function initSocket(sb:SocketBridge = null):void
+		{
+			if(sb == null)
+			{
+				this.sb = new SocketBridge();
+				SocketBridge(this.sb).ip = "127.0.0.1";
+				SocketBridge(this.sb).port = "966";
+				SocketBridge(this.sb).connect();
+				return;
+			}
+
+			this.sb = sb;
+			SocketBridge(this.sb).connect();
+		}
 	}
 }
+
+

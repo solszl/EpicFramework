@@ -3,7 +3,8 @@ package com.vhall.framework.app.net
 	import com.adobe.serialization.json.JSON;
 	import com.hurlant.util.Base64;
 	import com.vhall.framework.log.Logger;
-	
+	import com.vhall.framework.utils.StringUtil;
+
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -21,22 +22,32 @@ package com.vhall.framework.app.net
 		/**	socket 实例*/
 		private var socket:Socket;
 		/**	ip地址*/
-		private var ip:String;
+		public var ip:String;
 		/**	端口号*/
-		private var port:int;
+		public var port:int;
 
 		private var bodyBytes:ByteArray = new ByteArray();
 		private var receBytes:ByteArray = new ByteArray();
 
-		public function SocketBridge(ip:String, port:int)
+		public function SocketBridge(ip:String = "", port:int = 0)
 		{
 			Logger.getLogger("Socket").info("connect ip: " +ip + " port: ",port);
-			socket = new Socket(ip, port);
+			this.ip = ip;
+			this.port = port;
+			socket = new Socket();
 			socket.addEventListener(Event.CONNECT, socketHandler);
 			socket.addEventListener(Event.CLOSE, socketHandler);
 			socket.addEventListener(IOErrorEvent.IO_ERROR, socketHandler);
 			socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, socketHandler);
 			socket.addEventListener(ProgressEvent.SOCKET_DATA, progressHandler);
+		}
+
+		public function connect():void
+		{
+			if(!StringUtil.isNullOrEmpty(this.ip) && this.port != 0)
+			{
+				socket.connect(this.ip, this.port);
+			}
 		}
 
 		protected function progressHandler(e:ProgressEvent):void
@@ -82,3 +93,5 @@ package com.vhall.framework.app.net
 		}
 	}
 }
+
+
