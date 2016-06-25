@@ -107,7 +107,7 @@ package com.vhall.framework.app.net
 			{
 				this.sb = new SocketBridge();
 				SocketBridge(this.sb).ip = "127.0.0.1";
-				SocketBridge(this.sb).port = "966";
+				SocketBridge(this.sb).port = 966;
 				SocketBridge(this.sb).connect();
 				return;
 			}
