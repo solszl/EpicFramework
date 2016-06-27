@@ -1,8 +1,6 @@
 package com.vhall.framework.app.net
 {
 	import com.vhall.framework.log.Logger;
-	import com.vhall.framework.utils.JsonUtil;
-	
 	import flash.utils.Dictionary;
 
 	/**
@@ -12,7 +10,6 @@ package com.vhall.framework.app.net
 	 */
 	public class AbsBridge implements IBridge
 	{
-		protected var handleMap:Dictionary;
 
 		/**
 		 * 抽象消息对接类
@@ -22,6 +19,8 @@ package com.vhall.framework.app.net
 		{
 			handleMap = new Dictionary();
 		}
+
+		protected var handleMap:Dictionary;
 
 		/**
 		 * 消息处理函数
@@ -37,7 +36,8 @@ package com.vhall.framework.app.net
 				return;
 			}
 
-			var obj:Object = JsonUtil.decode(msg_body);
+
+			var obj:Object = JSON.parse(msg_body); //JSON.decode(msg_body);
 			handleMap[msg](obj);
 		}
 
@@ -78,6 +78,5 @@ package com.vhall.framework.app.net
 				}
 			}
 		}
-		
 	}
 }
