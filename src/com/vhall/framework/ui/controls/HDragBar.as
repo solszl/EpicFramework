@@ -2,7 +2,6 @@ package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.ui.event.DragEvent;
-	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
@@ -25,25 +24,10 @@ package com.vhall.framework.ui.controls
 			bg.width = value;
 		}
 
-		override protected function updateDisplay():void
-		{
-			super.updateDisplay();
-
-			//重新布局
-			if(_quadChanged)
-			{
-				quad.y = (height - quad.height) >> 1;
-				_quadChanged = false;
-			}
-
-			quad.x = width * percent - quad.width / 2;
-			finished.width = Math.max(width * percent,1);
-		}
-
 		override protected function onDragStart(e:MouseEvent = null):void
 		{
 			super.onDragStart();
-			quad.startDrag(false, new Rectangle(-quad.width/2, quad.y, width - quad.width/2, 0));
+			quad.startDrag(false, new Rectangle(-quad.width / 2, quad.y, width - quad.width / 2, 0));
 			draging = true;
 		}
 
@@ -71,6 +55,21 @@ package com.vhall.framework.ui.controls
 					finished.width = Math.max(quad.x + quad.width / 2, 1);
 					break;
 			}
+		}
+
+		override protected function updateDisplay():void
+		{
+			super.updateDisplay();
+
+			//重新布局
+			if(_quadChanged)
+			{
+				quad.y = (height - quad.height) >> 1;
+				_quadChanged = false;
+			}
+
+			quad.x = width * percent - quad.width / 2;
+			finished.width = Math.max(width * percent, 1);
 		}
 	}
 }
