@@ -11,11 +11,6 @@ package com.vhall.framework.app.net
 	{
 		private static var _instance:MessageManager;
 
-		/**	web 消息 收发器*/
-		private var wb:AbsBridge;
-		/**	socket 消息收发器*/
-		private var sb:AbsBridge;
-
 		public static function getInstance():MessageManager
 		{
 			if(!_instance)
@@ -35,11 +30,29 @@ package com.vhall.framework.app.net
 			}
 		}
 
-		/**@private 初始化一些必要的东西*/
-		private function initSomeThing():void
+		/**	socket 消息收发器*/
+		private var sb:AbsBridge;
+
+		/**	web 消息 收发器*/
+		private var wb:AbsBridge;
+
+		/**
+		 * 添加webJS回调
+		 * @param name
+		 *
+		 */
+		public function addWebCallBack(name:String):void
 		{
-			wb = new WebBridge();
-			sb = new SocketBridge("127.0.0.1", 966);
+			if(!ExternalInterface.available)
+			{
+				return;
+			}
+			if(wb == null)
+			{
+				initWebBridge();
+			}
+
+			ExternalInterface.addCallback(name, wb.handle);
 		}
 
 		/**
@@ -51,6 +64,32 @@ package com.vhall.framework.app.net
 		public function getBridge(type:String = "WEB"):*
 		{
 			return type == "WEB" ? wb : sb;
+		}
+
+		public function initSocket(sb:SocketBridge = null):void
+		{
+			if(sb == null)
+			{
+				this.sb = new SocketBridge();
+				SocketBridge(this.sb).ip = "127.0.0.1";
+				SocketBridge(this.sb).port = 966;
+				SocketBridge(this.sb).connect();
+				return;
+			}
+
+			this.sb = sb;
+			SocketBridge(this.sb).connect();
+		}
+
+		public function initWebBridge(wb:WebBridge = null):void
+		{
+			if(wb == null)
+			{
+				this.wb = new WebBridge();
+				return;
+			}
+
+			this.wb = wb;
 		}
 
 		/**
@@ -75,48 +114,11 @@ package com.vhall.framework.app.net
 			(getBridge(bridgeType) as AbsBridge).unregistMsgReceiver(msg);
 		}
 
-		/**
-		 * 添加webJS回调
-		 * @param name
-		 *
-		 */
-		public function addWebCallBack(name:String):void
+		/**@private 初始化一些必要的东西*/
+		private function initSomeThing():void
 		{
-			if(!ExternalInterface.available)
-			{
-				return;
-			}
-			if(wb == null){
-				initWebBridge();
-			}
-
-			ExternalInterface.addCallback(name, wb.handle);
-		}
-
-		public function initWebBridge(wb:WebBridge = null):void
-		{
-			if(wb == null)
-			{
-				this.wb = new WebBridge();
-				return;
-			}
-
-			this.wb = wb;
-		}
-
-		public function initSocket(sb:SocketBridge = null):void
-		{
-			if(sb == null)
-			{
-				this.sb = new SocketBridge();
-				SocketBridge(this.sb).ip = "127.0.0.1";
-				SocketBridge(this.sb).port = 966;
-				SocketBridge(this.sb).connect();
-				return;
-			}
-
-			this.sb = sb;
-			SocketBridge(this.sb).connect();
+			wb = new WebBridge();
+			sb = new SocketBridge("127.0.0.1", 966);
 		}
 	}
 }
