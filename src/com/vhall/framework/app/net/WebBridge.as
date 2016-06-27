@@ -4,7 +4,7 @@ package com.vhall.framework.app.net
 	import com.hurlant.util.Base64;
 	import com.vhall.framework.log.Logger;
 	import com.vhall.framework.utils.JsonUtil;
-
+	
 	import flash.external.ExternalInterface;
 
 	/**
@@ -19,91 +19,68 @@ package com.vhall.framework.app.net
 		}
 
 		/**
-		 * 派发消息
-		 * @param handler
-		 * @param body
-		 */
-		public function sendMsg(handler:String,body:Object = null, useBase64:Boolean = false):void
-		{
-			if(!ExternalInterface.available)
-			{
-				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
-				return;
-			}
-			var s:String = com.adobe.serialization.json.JSON.encode(body);
-			var result:String = useBase64?Base64.encode(s):s;
-			try{
-				ExternalInterface.call(handler, result);
-			}catch(e:Error){};
-		}
-
-		/**
-		 * 发送命令给js
-		 * @param body 数据
-		 *
+		 *发送到js带msgType
+		 * @param cmdType cmd类型
+		 * @param msgtype 消息类型
+		 * @param body 消息数据
+		 * @param encodeJson 是否json
+		 * @param base64 是否base64
+		 * 
 		 */		
-		public function sendCMDMsg(body:Object):void{
+		public function sendMsg4Type(cmdType:String,msgType:String,body:Object,encodeJson:Boolean = false,base64:Boolean = false):void{
 			if(!ExternalInterface.available)
 			{
 				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
 				return;
 			}
-			var s:String = com.adobe.serialization.json.JSON.encode(body);
-			var result:String = Base64.encode(s);
 			try{
-				ExternalInterface.call("sendCmdMsg", result);
-			}catch(e:Error){};
+				Logger.getLogger("WebBridge").info("cmdType:" + cmdType + " msgType:" + msgType);
+				var msgStr:String;
+				if(encodeJson){
+					msgStr = com.adobe.serialization.json.JSON.encode(body);
+					if(base64){
+						msgStr  = Base64.encode(msgStr);
+					}
+					ExternalInterface.call(cmdType, msgType, msgStr);
+				}else{
+					ExternalInterface.call(cmdType, msgType, body);
+				}
+			}catch(e:Error){
+				Logger.getLogger("WebBridge").info("Error: cmdType:" + cmdType + " msgType:" + msgType);
+			};
 		}
-
+		
 		/**
-		 * 只会在bufflength(这个比较特殊，就这个一个用，之后跟js协商解决)
-		 * @param type 信息类型
-		 * @param body 数据
-		 *
+		 *发送到js
+		 * @param cmdType cmd类型
+		 * @param msgtype 消息类型
+		 * @param body 消息数据
+		 * @param encodeJson 是否json
+		 * @param base64 是否base64
+		 * 
 		 */		
-		public function sendBufferMsgToJs(type:String,body:Object):void{
+		public function sendMsg(cmdType:String,body:Object,encodeJson:Boolean = false,base64:Boolean = false):void{
 			if(!ExternalInterface.available)
 			{
 				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
 				return;
 			}
 			try{
-				Logger.getLogger("MSG").info("sendMsgToFlash",type);
-				ExternalInterface.call("sendMsgToFlash", type, body);
-			}catch(e:Error){};
-		}
-
-		/**
-		 * 将事件消息发起JS进行处理
-		 * @param body 信息
-		 *
-		 */		
-		public function sendEventMsg(body:Object):void{
-			if(!ExternalInterface.available)
-			{
-				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
-				return;
-			}
-			var s:String = com.adobe.serialization.json.JSON.encode(body);
-			try{
-				ExternalInterface.call("sendSocketMsg", "flashMsg", s);
-			}catch(e:Error){};
-		}
-
-		/**
-		 * 记录数据发送
-		 * @param body 信息
-		 *
-		 */		
-		public function sendRecordMsg(body:Object):void{
-			if(!ExternalInterface.available)
-			{
-				Logger.getLogger("MSG").info("SWF not in broswer, can not send message!");
-				return;
-			}
-			try{
-				ExternalInterface.call("sendRecordMsg", "recordMsg", body);
-			}catch(e:Error){};
+				Logger.getLogger("WebBridge").info("cmdType:" + cmdType );
+				var msgStr:String;
+				if(encodeJson){
+					msgStr = com.adobe.serialization.json.JSON.encode(body);
+					if(base64){
+						msgStr = Base64.encode(msgStr);
+					}
+					ExternalInterface.call(cmdType, msgStr);
+				}else{
+					ExternalInterface.call(cmdType, body);
+				}
+				
+			}catch(e:Error){
+				Logger.getLogger("WebBridge").info("Error: cmdType:" + cmdType);
+			};
 		}
 	}
 }

@@ -86,6 +86,9 @@ package com.vhall.framework.app.net
 			{
 				return;
 			}
+			if(wb == null){
+				initWebBridge();
+			}
 
 			ExternalInterface.addCallback(name, wb.handle);
 		}
