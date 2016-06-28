@@ -5,7 +5,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.load.ResourceLibrary;
 	import com.vhall.framework.load.ResourceLoader;
 	import com.vhall.framework.ui.utils.ComponentUtils;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -86,7 +86,7 @@ package com.vhall.framework.ui.controls
 
 		override public function setSize(w:Number, h:Number):void
 		{
-			super.setSize(w,h);
+			super.setSize(w, h);
 			_w = w;
 			_h = h;
 		}
@@ -202,9 +202,11 @@ package com.vhall.framework.ui.controls
 			{
 				return;
 			}
+			var bmd:BitmapData = (content as Bitmap).bitmapData;
 
-			setBitmapData((content as Bitmap).bitmapData);
-
+			setBitmapData(bmd);
+			_w = bmd.width;
+			_h = bmd.height;
 			resizeIfNeed();
 			ResourceItems.addToCache(item.url, content as DisplayObject);
 		}
@@ -258,12 +260,12 @@ package com.vhall.framework.ui.controls
 		override protected function sizeChanged():void
 		{
 			super.sizeChanged();
-			
+
 			if(_w == 0 || _h == 0)
 			{
 				return;
 			}
-			
+
 			if(_useScale9Rect)
 			{
 				resizeBitmap(_w, _h);
@@ -273,7 +275,7 @@ package com.vhall.framework.ui.controls
 				bitmap.width = _w;
 				bitmap.height = _h;
 			}
-			
+
 			width = bitmap.width;
 			height = bitmap.height;
 		}

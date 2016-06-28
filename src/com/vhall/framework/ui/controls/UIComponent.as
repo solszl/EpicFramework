@@ -5,7 +5,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.interfaces.IToolTip;
 	import com.vhall.framework.ui.manager.TooltipManager;
 	import com.vhall.framework.utils.StringUtil;
-	
+
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -16,7 +16,7 @@ package com.vhall.framework.ui.controls
 	 * @author Sol
 	 *
 	 */
-	public class UIComponent extends Sprite implements IToolTip,IRelative
+	public class UIComponent extends Sprite implements IToolTip, IRelative
 	{
 		/**
 		 *	构建基类
@@ -39,14 +39,14 @@ package com.vhall.framework.ui.controls
 			init();
 		}
 
-		/**初始化方法*/		
+		/**初始化方法*/
 		protected function init():void
 		{
 			// subclass overwrite
 			createChildren();
 		}
 
-		/**创建子对象*/		
+		/**创建子对象*/
 		protected function createChildren():void
 		{
 		}
@@ -56,15 +56,18 @@ package com.vhall.framework.ui.controls
 		{
 			sizeChanged();
 			updateDisplay();
-			
-			initialized = initialized == false ? true : false;
+
+			if(initialized == false)
+			{
+				initialized = true;
+			}
 		}
 
 		/**	渲染显示列表*/
 		protected function updateDisplay():void
 		{
 		}
-		
+
 		/**	尺寸变更函数*/
 		protected function sizeChanged():void
 		{
@@ -78,11 +81,11 @@ package com.vhall.framework.ui.controls
 				(parent as UIComponent).invalidate();
 			}
 		}
-		
+
 		/**	组件初始化完毕后执行此函数*/
 		protected function componentInited(e:Event):void
 		{
-			removeEventListener("component_inited",componentInited);
+			removeEventListener("component_inited", componentInited);
 		}
 
 		override public function set alpha(value:Number):void
@@ -150,7 +153,7 @@ package com.vhall.framework.ui.controls
 			this._height = Math.round(h);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
-		
+
 		/**	销毁函数*/
 		public function destory():void
 		{
@@ -167,7 +170,7 @@ package com.vhall.framework.ui.controls
 				this.parent.removeChild(this);
 			}
 		}
-		
+
 		/**	立即刷新*/
 		public function validateNow():void
 		{
@@ -197,7 +200,7 @@ package com.vhall.framework.ui.controls
 		{
 			return StringUtil.substitute(info, getQualifiedClassName(this), width, height, x, y, this.parent != null, this.stage != null);
 		}
-		
+
 		private var _tooltip:Object;
 		private var _left:Object;
 		private var _right:Object;
@@ -209,7 +212,7 @@ package com.vhall.framework.ui.controls
 
 		private var _initialized:Boolean = false;
 		private var _userData:Object;
-		
+
 		/**
 		 *	tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
 		 */
@@ -299,13 +302,13 @@ package com.vhall.framework.ui.controls
 		{
 			_verticalCenter = value;
 		}
-		
+
 		/**	用户自定义数据，该数据外部维护*/
 		public function get userData():Object
 		{
 			return _userData ||= {};
 		}
-		
+
 		public function set userData(value:Object):void
 		{
 			_userData = value;
@@ -323,7 +326,7 @@ package com.vhall.framework.ui.controls
 			{
 				return;
 			}
-			
+
 			_initialized = value;
 			if(value)
 			{
