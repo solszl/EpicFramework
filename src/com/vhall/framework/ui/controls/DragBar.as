@@ -5,6 +5,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.event.DragEvent;
 	import com.vhall.framework.ui.utils.ComponentUtils;
 	import com.vhall.framework.utils.MathUtil;
+
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -38,10 +39,10 @@ package com.vhall.framework.ui.controls
 		protected var _w:Number;
 
 		/**	背景*/
-		protected var bg:Image;
+		protected var _bg:Image;
 
 		/**	缓冲的进度*/
-		protected var buffer:Image;
+		protected var _buffer:Image;
 
 		/**	方向*/
 		protected var direction:String;
@@ -49,9 +50,9 @@ package com.vhall.framework.ui.controls
 		protected var draging:Boolean;
 
 		/** 已播放进度*/
-		protected var finished:Image;
+		protected var _finished:Image;
 		/**	滑块*/
-		protected var quad:Image;
+		protected var _quad:Image;
 
 		// 是否使用动画
 		protected var useTween:Boolean;
@@ -113,7 +114,7 @@ package com.vhall.framework.ui.controls
 		 */
 		public function set quadSkin(value:Object):void
 		{
-			quad.source = value;
+			_quad.source = value;
 			_quadChanged = true;
 			RenderManager.getInstance().invalidate(invalidate);
 		}
@@ -156,16 +157,16 @@ package com.vhall.framework.ui.controls
 		{
 			super.createChildren();
 			initSize();
-			bg = new Image(this);
+			_bg = new Image(this);
 
 			// alpha 设置为0 先隐藏
-			buffer = new Image(this);
-			buffer.mouseChildren = buffer.mouseEnabled = false;
-			finished = new Image(this);
-			finished.mouseChildren = finished.mouseEnabled = false;
+			_buffer = new Image(this);
+			_buffer.mouseChildren = _buffer.mouseEnabled = false;
+			_finished = new Image(this);
+			_finished.mouseChildren = _finished.mouseEnabled = false;
 			//滑块
-			quad = new Image(this);
-			quad.mouseChildren = quad.mouseEnabled = false;
+			_quad = new Image(this);
+			_quad.mouseChildren = _quad.mouseEnabled = false;
 
 			initSkin();
 
@@ -211,14 +212,14 @@ package com.vhall.framework.ui.controls
 
 		protected function initSkin():void
 		{
-			bg.source = ComponentUtils.genInteractiveRect(_w, _h, null, 0, 0, Style.DragBar_Background_Color);
-			buffer.source = ComponentUtils.genInteractiveRect(1, _h, null, 0, 0, Style.DragBar_Buffer_Color);
-			finished.source = ComponentUtils.genInteractiveRect(1, _h, null, 0, 0, Style.DragBar_Played_Color);
+			_bg.source = ComponentUtils.genInteractiveRect(_w, _h, null, 0, 0, Style.DragBar_Background_Color);
+			_buffer.source = ComponentUtils.genInteractiveRect(1, _h, null, 0, 0, Style.DragBar_Buffer_Color);
+			_finished.source = ComponentUtils.genInteractiveRect(1, _h, null, 0, 0, Style.DragBar_Played_Color);
 		}
 
 		override protected function invalidate():void
 		{
-			quad.source == null ? quadSkin = ComponentUtils.genInteractiveCircle(6, null, 0, 0, 0xFF0000) : quad.source;
+			_quad.source == null ? quadSkin = ComponentUtils.genInteractiveCircle(6, null, 0, 0, 0xFF0000) : _quad.source;
 			super.invalidate();
 		}
 
@@ -274,6 +275,26 @@ package com.vhall.framework.ui.controls
 			var temp:Number = Number(value.toFixed(6));
 //			return temp > 1 ? 1 : temp < 0 ? temp : 0;
 			return MathUtil.limitIn(temp, 0, 1);
+		}
+
+		public function get quadImage():Image
+		{
+			return this._quad;
+		}
+
+		public function get finishBGImage():Image
+		{
+			return this._finished;
+		}
+
+		public function get bufferBGImage():Image
+		{
+			return this._buffer;
+		}
+
+		public function get backgroundImage():Image
+		{
+			return this._bg;
 		}
 	}
 }

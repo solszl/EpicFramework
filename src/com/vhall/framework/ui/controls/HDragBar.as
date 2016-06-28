@@ -21,13 +21,13 @@ package com.vhall.framework.ui.controls
 		override public function set width(value:Number):void
 		{
 			super.width = value;
-			bg.width = value;
+			_bg.width = value;
 		}
 
 		override protected function onDragStart(e:MouseEvent = null):void
 		{
 			super.onDragStart();
-			quad.startDrag(false, new Rectangle(-quad.width / 2, quad.y, width - quad.width / 2, 0));
+			_quad.startDrag(false, new Rectangle(-_quad.width / 2, _quad.y, width - _quad.width / 2, 0));
 			draging = true;
 		}
 
@@ -40,7 +40,7 @@ package com.vhall.framework.ui.controls
 					fireEvent(e, DragEvent.CLICK);
 					break;
 				case MouseEvent.MOUSE_DOWN:
-					if(e.target != quad)
+					if(e.target != _quad)
 					{
 						percent = e.localX / width;
 					}
@@ -48,11 +48,11 @@ package com.vhall.framework.ui.controls
 					break;
 				case MouseEvent.MOUSE_UP:
 					onDragDrop(e);
-					percent = finished.width / width;
+					percent = _finished.width / width;
 					break;
 				case MouseEvent.MOUSE_MOVE:
 					fireEvent(e, DragEvent.HOVER);
-					finished.width = Math.max(quad.x + quad.width / 2, 1);
+					_finished.width = Math.max(_quad.x + _quad.width / 2, 1);
 					break;
 			}
 		}
@@ -64,12 +64,12 @@ package com.vhall.framework.ui.controls
 			//重新布局
 			if(_quadChanged)
 			{
-				quad.y = (height - quad.height) >> 1;
+				_quad.y = (height - _quad.height) >> 1;
 				_quadChanged = false;
 			}
 
-			quad.x = width * percent - quad.width / 2;
-			finished.width = Math.max(width * percent, 1);
+			_quad.x = width * percent - _quad.width / 2;
+			_finished.width = Math.max(width * percent, 1);
 		}
 	}
 }
