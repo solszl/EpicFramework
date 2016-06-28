@@ -1,8 +1,8 @@
 /**
  * ===================================
- * Author:	iDzeir					
- * Email:	qiyanlong@wozine.com	
- * Company:	http://www.vhall.com		
+ * Author:	iDzeir
+ * Email:	qiyanlong@wozine.com
+ * Company:	http://www.vhall.com
  * Created:	May 16, 2016 11:26:38 AM
  * ===================================
  */
@@ -11,14 +11,14 @@ package com.vhall.framework.media.provider
 {
 	import flash.media.SoundTransform;
 	import flash.net.NetStream;
-	
+
 	import org.mangui.hls.HLS;
 	import org.mangui.hls.HLSSettings;
 	import org.mangui.hls.constant.HLSPlayStates;
 	import org.mangui.hls.event.HLSEvent;
 	import org.mangui.hls.event.HLSLoadMetrics;
 	import org.mangui.hls.event.HLSPlayMetrics;
-	
+
 	CONFIG::LOGGING
 	{
 		import org.mangui.hls.utils.Log;
@@ -28,26 +28,27 @@ package com.vhall.framework.media.provider
 	public class HLSProxy extends AbstractProxy
 	{
 		private var _hls:HLS;
-		
+
 		private var _playMetrics:HLSPlayMetrics;
-		
+
 		private var _loadMetrics:HLSLoadMetrics;
-		
+
 		private var _durationReady:Boolean = false;
-		
+
 		public function HLSProxy()
 		{
 			super(MediaProxyType.HLS);
-			
+
 			HLSSettings.maxBufferLength = 30;
 			HLSSettings.manifestLoadMaxRetryTimeout = 2000;
 			HLSSettings.flushLiveURLCache = true;
+			HLSSettings.minBufferLength = 0;
 		}
-		
+
 		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true, startPostion:Number = 0):void
 		{
 			super.connect(uri,streamUrl,handler,autoPlay,startPostion);
-			
+
 			_hls ||= new HLS();
 			_hls.addEventListener(HLSEvent.MANIFEST_LOADED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.MEDIA_TIME,onHLSHandler);
@@ -58,30 +59,33 @@ package com.vhall.framework.media.provider
 			_hls.addEventListener(HLSEvent.SEEK_STATE,onHLSHandler);
 			_hls.addEventListener(HLSEvent.FRAGMENT_LOADED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.FRAGMENT_PLAYING,onHLSHandler);
-			
+
 			_hls.addEventListener(HLSEvent.FRAGMENT_SKIPPED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.TAGS_LOADED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.LEVEL_LOADED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.AUDIO_LEVEL_LOADED,onHLSHandler);
-			
+
 			_hls.addEventListener(HLSEvent.WARNING,onHLSHandler);
 			_hls.addEventListener(HLSEvent.ERROR,onHLSHandler);
-			
+
+			bufferTime = 1;
+			bufferTimeMax = 2;
+
 			_hls.load(_uri);
 		}
-		
+
 		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true, startPostion:Number = 0):void
 		{
 			super.changeVideoUrl(uri, streamUrl, autoPlay);
-			
+
 			_durationReady = false;
 			this._playMetrics = null;
 			this._loadMetrics = null;
-			
+
 			_hls.load(uri);
 		}
-		
+
 		override public function start():void
 		{
 			super.start();
@@ -91,56 +95,56 @@ package com.vhall.framework.media.provider
 				stream.play();
 			}
 		}
-		
+
 		override public function stop():void
 		{
 			super.stop();
 			stream && stream.close();
 			gc();
 		}
-		
+
 		override public function pause():void
 		{
 			super.pause();
 			stream && stream.pause();
 			excute(MediaProxyStates.STREAM_PAUSE);
 		}
-		
+
 		override public function resume():void
 		{
 			super.resume();
 			stream && stream.resume();
 			excute(MediaProxyStates.STREAM_UNPAUSE);
 		}
-		
+
 		override public function toggle():void
 		{
 			super.toggle();
 			stream && stream.togglePause();
 			_playing?excute(MediaProxyStates.STREAM_UNPAUSE):excute(MediaProxyStates.STREAM_PAUSE);;
 		}
-		
+
 		protected function onHLSHandler(e:HLSEvent):void
 		{
-			/*CONFIG::LOGGING{
+			CONFIG::LOGGING{
 				Log.info(e.duration+" "+ e.type+" "+e.state);
-			}*/
+			}
 			switch(e.type)
 			{
 				case HLSEvent.MANIFEST_LOADED:
 					break;
 				case HLSEvent.MANIFEST_PARSED:
 					CONFIG::LOGGING{
-						Log.info(e);
-					}
+					Log.info(e);
+				}
 					volume = _volume;
 					excute(MediaProxyStates.CONNECT_NOTIFY);
 					_autoPlay&&start();
 					break;
 				case HLSEvent.PLAYBACK_STATE:
 					CONFIG::LOGGING{
-						Log.info("HLS state:"+e.state)
-					}
+					Log.info("HLS state:"+e.state)
+				}
 					switch(e.state)
 					{
 						case HLSPlayStates.PAUSED:
@@ -177,22 +181,22 @@ package com.vhall.framework.media.provider
 					break;
 				case HLSEvent.SEEK_STATE:
 					CONFIG::LOGGING{
-						Log.warn(e.state);
-					}
+					Log.warn(e.state);
+				}
 					break;
 				case HLSEvent.WARNING:
 					CONFIG::LOGGING{
-						Log.warn(e.error.msg);
-					}
+					Log.warn(e.error.msg);
+				}
 					break;
 				case HLSEvent.ERROR:
 					CONFIG::LOGGING{
-						Log.error(e.error.msg);
-					}
+					Log.error(e.error.msg);
+				}
 					break;
 			}
 		}
-		
+
 		override protected function gc():void
 		{
 			super.gc();
@@ -207,24 +211,24 @@ package com.vhall.framework.media.provider
 				_hls.removeEventListener(HLSEvent.SEEK_STATE,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.FRAGMENT_LOADED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.FRAGMENT_PLAYING,onHLSHandler);
-				
+
 				_hls.removeEventListener(HLSEvent.FRAGMENT_SKIPPED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.TAGS_LOADED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.LEVEL_LOADED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.AUDIO_LEVEL_LOADED,onHLSHandler);
-				
+
 				_hls.removeEventListener(HLSEvent.WARNING,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.ERROR,onHLSHandler);
 			}
-			
+
 			_durationReady = false;
 			this._playMetrics = null;
 			this._loadMetrics = null;
 			_hls.dispose();
 			_hls = null;
 		}
-		
+
 		/**
 		 * 视频时长初始化
 		 */		
@@ -237,18 +241,18 @@ package com.vhall.framework.media.provider
 				excute(MediaProxyStates.DURATION_NOTIFY,_duration);
 			}
 		}
-		
+
 		override public function get time():Number
 		{
 			if(_hls) return _hls.position;
 			return 0;
 		}
-		
+
 		override public function set time(value:Number):void
 		{
 			if(stream) stream.seek(value);
 		}
-			
+
 		/**
 		 * 视频加载相关信息初始化
 		 */		
@@ -256,7 +260,7 @@ package com.vhall.framework.media.provider
 		{
 			_loadMetrics = value;
 		}
-		
+
 		/**
 		 * 视频播放相关信息初始化
 		 */		
@@ -266,7 +270,7 @@ package com.vhall.framework.media.provider
 			_playMetrics = value;
 			//trace("视频宽高：",_playMetrics.duration,_playMetrics.video_width,_playMetrics.video_height);
 		}
-		
+
 		override public function set volume(value:Number):void
 		{
 			super.volume = value;
@@ -276,22 +280,23 @@ package com.vhall.framework.media.provider
 				stream.soundTransform = st;
 			}
 		}
-		
+
 		override public function get stream():NetStream
 		{
 			if(!_hls) return null;
 			return _hls.stream;
 		}
-		
+
 		public function get loaded():Number
 		{
 			if(stream) return _hls.position + stream.bufferLength / duration;
 			return 0;
 		}
-		
+
 		override public function toString():String
 		{
 			return _type.toLocaleUpperCase() + " 拉流：" + Number(_loadMetrics.bandwidth/8000).toFixed(2) + " k/s";
 		}
 	}
 }
+
