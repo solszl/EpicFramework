@@ -1,8 +1,8 @@
 /**
  * ===================================
- * Author:	iDzeir					
- * Email:	qiyanlong@wozine.com	
- * Company:	http://www.vhall.com		
+ * Author:	iDzeir
+ * Email:	qiyanlong@wozine.com
+ * Company:	http://www.vhall.com
  * Created:	May 16, 2016 11:41:26 AM
  * ===================================
  */
@@ -15,77 +15,77 @@ package com.vhall.framework.media.video
 	import com.vhall.framework.media.provider.MediaProxyFactory;
 	import com.vhall.framework.media.provider.MediaProxyStates;
 	import com.vhall.framework.media.provider.MediaProxyType;
-	
+
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.media.Camera;
 	import flash.media.Microphone;
 	import flash.media.Video;
 	import flash.net.NetStream;
-	
+
 	CONFIG::LOGGING
 	{
 		import org.mangui.hls.utils.Log;
 	}	
-	
+
 	/**
 	 * 封装视频播放video
 	 */	
 	public class VideoPlayer extends Sprite implements IVideoPlayer
 	{
 		private var _video:Video;
-		
+
 		private var _type:String;
-		
+
 		private var _proxy:IMediaProxy;
-		
+
 		private var _viewPort:Rectangle;
-		
+
 		private var _cameraView:Boolean = false;
-		
+
 		private var _backgroundColor:int = 0x000000;
 		/** 图像保真 默认关闭*/
 		private var _eyefidelity:Boolean = false;
-		
+
 		/**
-		 * 推流时候使用的摄像头和麦克 
+		 * 推流时候使用的摄像头和麦克
 		 */		
 		private var _cam:*;
 		private var _mic:*;
 		private var _camWidth:uint = 320;
 		private var _camHeight:uint = 280;
-		
+
 		private var _videoOption:VideoOptions;
-		
+
 		private var _handler:Function;
-		
+
 		private var _state:String;
-		
+
 		/**
 		 * 默认显示大小320X240
 		 */		
 		public function VideoPlayer()
 		{
 			this.mouseChildren = false;
-			
+
 			_video = new Video();
 			_video.smoothing = true;
 			addChild(_video);
-			
+
 			_viewPort = _video.getBounds(this);
-			
+
 			_videoOption = VideoOptions.op;
 		}
-		
+
 		/**
 		 * 创建一个视频播放器
-		 * @return 
+		 * @return
 		 */		
 		public static function create():VideoPlayer
 		{
 			return new VideoPlayer();
 		}
-		
+
 		/**
 		 * 链接通道，播放流
 		 * @param type 播放器播放类型
@@ -111,14 +111,14 @@ package com.vhall.framework.media.video
 			_proxy = MediaProxyFactory.create(type);
 			_handler = handler;		
 			_type = type;
-			
+
 			//推流之外的播放器，启用图像增强
 			eyefidelity = _eyefidelity;
-			
+
 			_proxy.connect(uri,stream,proxyHandler,autoPlay,startPostion);
-			
+
 		}
-		
+
 		private function proxyHandler(states:String,...value):void
 		{
 			_state = states;
@@ -133,7 +133,7 @@ package com.vhall.framework.media.video
 						attachView(_proxy.stream);
 					}
 					volume = _videoOption.volume;
-					
+
 					break;
 				case MediaProxyStates.STREAM_TRANSITION:
 				case MediaProxyStates.STREAM_FULL:
@@ -154,7 +154,7 @@ package com.vhall.framework.media.video
 					//if(_type==MediaProxyType.PUBLISH) stop();
 					break;
 			}
-			
+
 			//处理外部回调业务
 			if(_handler != null){
 				var args:Array = value.length != 0 ? [states].concat(value):[states];
@@ -167,9 +167,9 @@ package com.vhall.framework.media.video
 				}
 			}
 		}
-		
+
 		/**
-		 * 切换正在播放视频的视频流 
+		 * 切换正在播放视频的视频流
 		 * @param uri
 		 * @param stream
 		 * @param autoPlay
@@ -179,7 +179,7 @@ package com.vhall.framework.media.video
 		{
 			_proxy && (_proxy.changeVideoUrl(uri, stream, autoPlay,startPostion));
 		}
-		
+
 		/**
 		 * 将播放器切换到别的类型
 		 * @param type 新的播放器类型
@@ -209,7 +209,7 @@ package com.vhall.framework.media.video
 				connect(type,uri,stream,_handler,autoPlay,startPostion);
 			}
 		}
-		
+
 		/**
 		 * 播放器推流
 		 * @param cam 推流画面来源，Camera实例或者Camera名称，null或者空为去默认摄像头
@@ -227,7 +227,7 @@ package com.vhall.framework.media.video
 			_cameraView = true;
 			_camWidth = camWidth;
 			_camHeight = camHeight;
-			
+
 			CONFIG::LOGGING
 			{
 				Log.info("摄像头："+_cam +
@@ -238,7 +238,7 @@ package com.vhall.framework.media.video
 			}
 			connect(MediaProxyType.PUBLISH, uri, stream, handler)
 		}
-		
+
 		/**
 		 * 更新video尺寸，位置
 		 */		
@@ -261,17 +261,17 @@ package com.vhall.framework.media.video
 				size.width = _video.videoWidth;
 				size.height = _video.videoHeight;
 			}
-			
+
 			super.visible = this._type == MediaProxyType.PUBLISH||!(_video.videoHeight == 0 || _video.videoWidth == 0);
-			
+
 			var ratio:Number = Math.min(_viewPort.width/size.width,_viewPort.height/size.height);
-			
+
 			_video.width = size.width * ratio;
 			_video.height = size.height * ratio;
 			_video.x = _viewPort.left + (_viewPort.width - _video.width >> 1);
 			_video.y = _viewPort.top + (_viewPort.height - _video.height >> 1);
 		}
-		
+
 		/**
 		 * 绘制视频设置区域
 		 * @param alpha
@@ -283,7 +283,7 @@ package com.vhall.framework.media.video
 			this.graphics.drawRect(_viewPort.left,_viewPort.top,_viewPort.width,_viewPort.height);
 			this.graphics.endFill();
 		}
-		
+
 		/**
 		 * 播放器获得视频来源
 		 * @param source Camera或者netStream
@@ -300,7 +300,7 @@ package com.vhall.framework.media.video
 				_cameraView = false;
 			}
 		}
-		
+
 		/**
 		 * 停止视频播放
 		 */		
@@ -316,7 +316,7 @@ package com.vhall.framework.media.video
 			_cameraView = false;
 			_video.clear();
 		}
-		
+
 		/**
 		 * 销毁播放器和代理的关系，清楚最后一帧
 		 */		
@@ -329,17 +329,17 @@ package com.vhall.framework.media.video
 			_type = null;
 			_video.clear();
 		}
-		
+
 		override public function get visible():Boolean
 		{
 			return _video.visible;
 		}
-		
+
 		override public function set visible(value:Boolean):void
 		{
 			_video.visible = value;
 		}
-		
+
 		/**
 		 * 非自动播放视频，在MediaProxyStates.CONNECT_NOTIFY后播放视频
 		 */		
@@ -356,7 +356,7 @@ package com.vhall.framework.media.video
 				}
 			}
 		}
-		
+
 		/**
 		 * 视频暂停
 		 */		
@@ -364,7 +364,7 @@ package com.vhall.framework.media.video
 		{
 			_proxy && _proxy.pause();
 		}
-		
+
 		/**
 		 * 视频暂停恢复
 		 */		
@@ -372,24 +372,24 @@ package com.vhall.framework.media.video
 		{
 			_proxy && _proxy.resume();
 		}
-		
+
 		/**
 		 * 切换视频播放状态，暂停/恢复
 		 */		
 		public function toggle():void
 		{
 			_proxy && _proxy.toggle();
-			
+
 			if(this._cameraView && _proxy)
 			{
 				//_video.clear();
 				//_video.attachCamera(this.isPlaying?((_proxy as IPublish).usedCam):null);
 			}
 		}
-		
+
 		/**
 		 * 推流时候获取麦克风当前的活动量
-		 * @return 
+		 * @return
 		 */		
 		public function get micActivityLevel():Number
 		{
@@ -397,10 +397,10 @@ package com.vhall.framework.media.video
 				return (_proxy as IPublish).micActivityLevel;
 			return 0;
 		}
-		
+
 		/**
 		 * 推流时候获取摄像头当前的活动量
-		 * @return 
+		 * @return
 		 */	
 		public function get camActivityLevel():Number
 		{
@@ -408,7 +408,7 @@ package com.vhall.framework.media.video
 				return (_proxy as IPublish).camActivityLevel;
 			return 0;
 		}
-		
+
 		/**
 		 * 设置推流端是否使用动态视频质量策略，默认关闭
 		 * @param bool
@@ -424,7 +424,7 @@ package com.vhall.framework.media.video
 
 		/**
 		 * 获取推流摄像头，非推流状态返回null
-		 * @return 
+		 * @return
 		 */		
 		public function get usedCam():Camera
 		{
@@ -432,10 +432,10 @@ package com.vhall.framework.media.video
 				return (_proxy as IPublish).usedCam;
 			return null;
 		}
-		
+
 		/**
 		 * 获取推流麦克风，非推流状态返回null
-		 * @return 
+		 * @return
 		 */		
 		public function get usedMic():Microphone
 		{
@@ -443,7 +443,7 @@ package com.vhall.framework.media.video
 				return (_proxy as IPublish).usedMic;
 			return null;
 		}
-		
+
 		/**
 		 * 图像保真增强，默认关闭，开启额外消耗CPU
 		 * @param bool
@@ -453,7 +453,7 @@ package com.vhall.framework.media.video
 			_eyefidelity = bool;
 			filters = bool && _proxy.type != MediaProxyType.PUBLISH ? [new SharpenFilter(0.1)] : [];
 		}
-		
+
 		/**
 		 * 推流成功后开关视频采集
 		 * @param bool
@@ -463,7 +463,7 @@ package com.vhall.framework.media.video
 			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
 				(_proxy as IPublish).cameraMuted = bool;
 		}
-		
+
 		/**
 		 * 推流成功后开关音频采集
 		 * @param bool
@@ -473,7 +473,7 @@ package com.vhall.framework.media.video
 			if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
 				(_proxy as IPublish).microphoneMuted = bool;
 		}
-		
+
 		/**
 		 * 播放器背景颜色,默认为黑色0xFFFFFF
 		 * @param value 0~0xFFFFFF
@@ -483,7 +483,7 @@ package com.vhall.framework.media.video
 			_backgroundColor = Math.min(0xFFFFFF,Math.max(0,value));
 			drawBackground();
 		}
-		
+
 		/**
 		 * 播放器背景颜色透明度
 		 * @param value 0~1
@@ -492,7 +492,7 @@ package com.vhall.framework.media.video
 		{
 			drawBackground(Math.min(1,Math.max(0,value)));
 		}
-		
+
 		/**
 		 * 设置播放器显示矩形
 		 * @param port
@@ -502,15 +502,15 @@ package com.vhall.framework.media.video
 			_viewPort.copyFrom(port);
 			updateVideo();
 		}
-		
+
 		public function get state():String
 		{
 			return _state;
 		}
-		
+
 		/**
 		 * 推流时候公开netstream，方便发送独立数据
-		 * @return 
+		 * @return
 		 */		
 		public function get stream():NetStream
 		{
@@ -518,7 +518,7 @@ package com.vhall.framework.media.video
 				return _proxy.stream;
 			return null;
 		}
-		
+
 		public function get time():Number
 		{
 			if(_proxy) return _proxy.time;
@@ -538,75 +538,75 @@ package com.vhall.framework.media.video
 				}
 			}
 		}
-		
+
 		/**
 		 * 视频是否正在播放
-		 * @return 
+		 * @return
 		 */		
 		public function get isPlaying():Boolean
 		{
 			if(_proxy) return _proxy.isPlaying;
 			return false;
 		}
-		
+
 		public function get autoPlay():Boolean
 		{
 			if(_proxy) return _proxy.autoPlay;
 			return false;
 		}
-		
+
 		/**
 		 * 视频当前缓冲进度
-		 * @return 
+		 * @return
 		 */		
 		public function get loaded():Number
 		{
 			if(_proxy.type == MediaProxyType.HTTP) return (_proxy as IProgress).loaded();
 			return 0;
 		}
-		
+
 		/**
-		 * 获取当前播放的bufferLength 
-		 * @return 
+		 * 获取当前播放的bufferLength
+		 * @return
 		 */		
 		public function get bufferLength():Number
 		{
 			if(stream) return stream.bufferLength;
 			return 0;
 		}
-		
+
 		/**
 		 * 视频总时长
-		 * @return 
+		 * @return
 		 */		
 		public function get duration():Number
 		{
 			if(_proxy) return _proxy.duration;
 			return 0;
 		}
-		
+
 		public function get volume():Number
 		{
 			return _videoOption.volume;
 		}
-		
+
 		public function get type():String
 		{
 			return _type;
 		}
-		
+
 		public function get uri():String
 		{
 			if(!_proxy) return "";
 			return _proxy.uri;
 		}
-		
+
 		public function get streamUrl():String
 		{
 			if(!_proxy) return "";
 			return _proxy.streamUrl;
 		}
-		
+
 		/**
 		 * 视频音量
 		 * @param value
@@ -616,51 +616,51 @@ package com.vhall.framework.media.video
 			_videoOption.volume = Math.max(0,Math.min(2,value));
 			if(_proxy) _proxy.volume = _videoOption.volume;
 		}
-		
+
 		override public function set width(value:Number):void
 		{
 			_viewPort.width = value;
 			updateVideo();
 		}
-		
+
 		override public function get width():Number
 		{
 			return _viewPort.width;
 		}
-		
+
 		override public function set height(value:Number):void
 		{
 			_viewPort.height = value;
 			updateVideo();
 		}
-		
+
 		override public function get height():Number
 		{
 			return _viewPort.height;
 		}
-		
+
 		override public function set x(value:Number):void
 		{
 			_viewPort.x = value;
 			updateVideo();
 		}
-		
+
 		override public function get x():Number
 		{
 			return _viewPort.left;
 		}
-		
+
 		override public function set y(value:Number):void
 		{
 			_viewPort.y = value;
 			updateVideo();
 		}
-		
+
 		override public function get y():Number
 		{
 			return _viewPort.top;
 		}
-		
+
 		override public function toString():String
 		{
 			return "[VideoPlayer " + String(_proxy)+"]";
@@ -672,11 +672,11 @@ import flash.filters.ConvolutionFilter;
 class VideoOptions
 {
 	public var volume:Number = 0.68;
-	
+
 	public var useStrategy:Boolean = false;
-	
+
 	private static var _instance:VideoOptions;
-	
+
 	public static function get op():VideoOptions
 	{
 		return _instance ||= new VideoOptions();
@@ -686,7 +686,7 @@ class VideoOptions
 class SharpenFilter extends ConvolutionFilter {
 	// Protected Properties:
 	protected var _amount:Number;
-	
+
 	// Initialization:
 	/**
 	 * Constructs a new SharpenFilter instance.
@@ -695,7 +695,7 @@ class SharpenFilter extends ConvolutionFilter {
 		super(3,3,[0,0,0,0,1,0,0,0,0],1);
 		this.amount = amount;
 	}
-	
+
 	// Public getter / setters:
 	/**
 	 * A number between 0 and 1 indicating the amount of sharpening to apply.
@@ -708,12 +708,14 @@ class SharpenFilter extends ConvolutionFilter {
 		matrix = [b,a,b,
 			a,c,a,
 			b,a,b];
-		
+
 		//滤波值：-4，-8
-		/*matrix = [0,1,0,
-			1,-4,1,
-			0,1,0];*/
+	/*matrix = [0,1,0,
+		1,-4,1,
+		0,1,0];*/
 	}
 	public function get amount():Number { return _amount; }
-	
+
 }
+
+
