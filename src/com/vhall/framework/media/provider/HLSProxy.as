@@ -148,11 +148,13 @@ package com.vhall.framework.media.provider
 					switch(e.state)
 					{
 						case HLSPlayStates.PAUSED:
-							//excute(MediaProxyStates.STREAM_PAUSE);
-							break;
 						case HLSPlayStates.PLAYING:
-							//excute(MediaProxyStates.STREAM_UNPAUSE);
+							excute(MediaProxyStates.STREAM_FULL);
 							break;
+						case HLSPlayStates.PAUSED_BUFFERING:
+						case HLSPlayStates.PLAYING_BUFFERING:
+							excute(MediaProxyStates.STREAM_LOADING);
+							break
 					}
 					break;
 				case HLSEvent.TAGS_LOADED:
