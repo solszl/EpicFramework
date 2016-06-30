@@ -77,7 +77,7 @@ package com.vhall.framework.media.provider
 
 		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true, startPostion:Number = 0):void
 		{
-			super.changeVideoUrl(uri, streamUrl, autoPlay);
+			super.changeVideoUrl(uri, streamUrl, autoPlay,startPostion);
 
 			_durationReady = false;
 			this._playMetrics = null;
@@ -91,8 +91,8 @@ package com.vhall.framework.media.provider
 			super.start();
 			if(stream)
 			{
-				stream.seek(_startPostion);
 				stream.play();
+				time = _startPostion;
 			}
 		}
 
