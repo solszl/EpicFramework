@@ -138,6 +138,7 @@ package com.vhall.framework.media.provider
 					Log.info(e);
 				}
 					volume = _volume;
+					mute = _mute;
 					excute(MediaProxyStates.CONNECT_NOTIFY);
 					_autoPlay&&start();
 					break;
@@ -288,6 +289,16 @@ package com.vhall.framework.media.provider
 			if(stream){
 				var st:SoundTransform = stream.soundTransform;
 				st.volume = _volume;
+				stream.soundTransform = st;
+			}
+		}
+
+		override public function set mute(bool:Boolean):void
+		{
+			super.mute = bool;
+			if(stream){
+				var st:SoundTransform = stream.soundTransform;
+				st.volume = bool?0:_volume;
 				stream.soundTransform = st;
 			}
 		}

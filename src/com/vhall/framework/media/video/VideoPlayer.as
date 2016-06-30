@@ -133,6 +133,7 @@ package com.vhall.framework.media.video
 						attachView(_proxy.stream);
 					}
 					volume = _videoOption.volume;
+					mute = _videoOption.mute;
 
 					break;
 				case MediaProxyStates.STREAM_TRANSITION:
@@ -617,6 +618,12 @@ package com.vhall.framework.media.video
 			if(_proxy) _proxy.volume = _videoOption.volume;
 		}
 
+		public function set mute(bool:Boolean):void
+		{
+			_videoOption.mute = bool;
+			if(_proxy) _proxy.mute = _videoOption.mute;
+		}
+
 		override public function set width(value:Number):void
 		{
 			_viewPort.width = value;
@@ -674,6 +681,8 @@ class VideoOptions
 	public var volume:Number = 0.68;
 
 	public var useStrategy:Boolean = false;
+
+	public var mute:Boolean = false;
 
 	private static var _instance:VideoOptions;
 
