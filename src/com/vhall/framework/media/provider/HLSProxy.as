@@ -182,8 +182,17 @@ package com.vhall.framework.media.provider
 					loadMetrics = e.loadMetrics;
 					break;
 				case HLSEvent.SEEK_STATE:
+					switch(e.state)
+					{
+						case "SEEKING":
+							excute(MediaProxyStates.SEEK_NOTIFY);
+							break;
+						case "SEEKED":
+							excute(MediaProxyStates.SEEK_COMPLETE);
+							break;
+					}
 					CONFIG::LOGGING{
-					Log.warn(e.state);
+					Log.info(e.state);
 				}
 					break;
 				case HLSEvent.WARNING:
