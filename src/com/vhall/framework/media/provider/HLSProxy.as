@@ -40,7 +40,7 @@ package com.vhall.framework.media.provider
 			super(MediaProxyType.HLS);
 
 			HLSSettings.maxBufferLength = 30;
-			HLSSettings.manifestLoadMaxRetryTimeout = 2000;
+			//HLSSettings.manifestLoadMaxRetryTimeout = 2000;
 			HLSSettings.flushLiveURLCache = true;
 			HLSSettings.minBufferLength = 0;
 		}
