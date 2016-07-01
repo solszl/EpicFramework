@@ -444,6 +444,21 @@ package com.vhall.framework.media.provider
 			return 0;
 		}
 
+		override public function get bytesLoaded():int
+		{
+			return 0;
+		}
+
+		override public function get bytesTotal():int
+		{
+			return 0;
+		}
+
+		override public function get loaded():Number
+		{
+			return 0;
+		}
+
 		/**
 		 * 设置麦克的音量
 		 * @param value

@@ -212,6 +212,21 @@ package com.vhall.framework.media.provider
 			return null;
 		}
 
+		public function get bytesLoaded():int
+		{
+			return 0;
+		}
+
+		public function get bytesTotal():int
+		{
+			return 0;
+		}
+
+		public function get loaded():Number
+		{
+			return 0;
+		}
+
 		public function stop():void
 		{
 			_playing = false;

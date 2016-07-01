@@ -10,7 +10,6 @@
 package com.vhall.framework.media.video
 {
 	import com.vhall.framework.media.interfaces.IMediaProxy;
-	import com.vhall.framework.media.interfaces.IProgress;
 	import com.vhall.framework.media.interfaces.IPublish;
 	import com.vhall.framework.media.provider.MediaProxyFactory;
 	import com.vhall.framework.media.provider.MediaProxyStates;
@@ -557,12 +556,12 @@ package com.vhall.framework.media.video
 		}
 
 		/**
-		 * 视频当前缓冲进度
+		 * 视频当前缓冲进度，推流是返回0,rtmp直播时候返回Infinity
 		 * @return
 		 */		
 		public function get loaded():Number
 		{
-			if(_proxy.type == MediaProxyType.HTTP) return (_proxy as IProgress).loaded();
+			if(_proxy.type != MediaProxyType.PUBLISH) return _proxy.loaded;
 			return 0;
 		}
 
@@ -577,7 +576,7 @@ package com.vhall.framework.media.video
 		}
 
 		/**
-		 * 视频总时长
+		 * 视频总时长,rtmp直播返回无群大，推流返回0
 		 * @return
 		 */		
 		public function get duration():Number

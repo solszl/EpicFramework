@@ -406,6 +406,12 @@ package com.vhall.framework.media.provider
 			return _ns;
 		}
 
+		override public function get loaded():Number
+		{
+			if(_ns) return (_ns.time + _ns.bufferLength) / _duration;
+			return 0;
+		}
+
 		override public function set volume(value:Number):void
 		{
 			super.volume = value;

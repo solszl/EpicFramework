@@ -9,12 +9,15 @@
 
 package com.vhall.framework.media.provider
 {
+	import com.vhall.framework.media.interfaces.IProgress;
+
 	import flash.media.SoundTransform;
 	import flash.net.NetStream;
 
 	import org.mangui.hls.HLS;
 	import org.mangui.hls.HLSSettings;
 	import org.mangui.hls.constant.HLSPlayStates;
+	import org.mangui.hls.constant.HLSSeekMode;
 	import org.mangui.hls.event.HLSEvent;
 	import org.mangui.hls.event.HLSLoadMetrics;
 	import org.mangui.hls.event.HLSPlayMetrics;
@@ -25,7 +28,7 @@ package com.vhall.framework.media.provider
 	}
 
 	/** HLS视频播放代理*/
-	public class HLSProxy extends AbstractProxy
+	public class HLSProxy extends AbstractProxy implements IProgress
 	{
 		private var _hls:HLS;
 
@@ -43,6 +46,7 @@ package com.vhall.framework.media.provider
 			//HLSSettings.manifestLoadMaxRetryTimeout = 2000;
 			HLSSettings.flushLiveURLCache = true;
 			HLSSettings.minBufferLength = 0;
+			HLSSettings.seekMode = HLSSeekMode.ACCURATE_SEEK;
 		}
 
 		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true, startPostion:Number = 0):void
@@ -309,7 +313,7 @@ package com.vhall.framework.media.provider
 			return _hls.stream;
 		}
 
-		public function get loaded():Number
+		override public function get loaded():Number
 		{
 			if(stream) return _hls.position + stream.bufferLength / duration;
 			return 0;

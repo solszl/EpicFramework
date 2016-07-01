@@ -14,7 +14,7 @@ package com.vhall.framework.media.interfaces
 	/**
 	 * 推拉流视频播放封装接口
 	 */	
-	public interface IMediaProxy
+	public interface IMediaProxy extends IProgress
 	{
 		/** 代理类型MediaProxyType*/
 		function get type():String;
