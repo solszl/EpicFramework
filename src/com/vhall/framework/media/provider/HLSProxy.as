@@ -201,11 +201,13 @@ package com.vhall.framework.media.provider
 				}
 					break;
 				case HLSEvent.WARNING:
+					excute(MediaProxyStates.PROXY_ERROR,e.error.msg);
 					CONFIG::LOGGING{
 					Log.warn(e.error.msg);
 				}
 					break;
 				case HLSEvent.ERROR:
+					excute(MediaProxyStates.PROXY_ERROR,e.error.msg);
 					CONFIG::LOGGING{
 					Log.error(e.error.msg);
 				}
