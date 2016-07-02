@@ -1,25 +1,26 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
+	import com.vhall.framework.ui.interfaces.IGuide;
 	import com.vhall.framework.ui.interfaces.IRelative;
 	import com.vhall.framework.ui.interfaces.IToolTip;
 	import com.vhall.framework.ui.manager.TooltipManager;
 	import com.vhall.framework.utils.StringUtil;
-	
+
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getQualifiedClassName;
 
 	/**
-	 *	组件基类
+	 * 组件基类
 	 * @author Sol
 	 *
 	 */
-	public class UIComponent extends Sprite implements IToolTip,IRelative
+	public class UIComponent extends Sprite implements IToolTip, IRelative, IGuide
 	{
 		/**
-		 *	构建基类
+		 * 构建基类
 		 * @param parent 是否有父容器，当存在父容器的时候，该组件自动添加到父容器
 		 * @param xpos	默认横坐标位置
 		 * @param ypos	默认纵坐标位置
@@ -39,14 +40,14 @@ package com.vhall.framework.ui.controls
 			init();
 		}
 
-		/**初始化方法*/		
+		/**初始化方法*/
 		protected function init():void
 		{
 			// subclass overwrite
 			createChildren();
 		}
 
-		/**创建子对象*/		
+		/**创建子对象*/
 		protected function createChildren():void
 		{
 		}
@@ -56,7 +57,7 @@ package com.vhall.framework.ui.controls
 		{
 			sizeChanged();
 			updateDisplay();
-			
+
 			initialized = initialized == false ? true : false;
 		}
 
@@ -64,7 +65,7 @@ package com.vhall.framework.ui.controls
 		protected function updateDisplay():void
 		{
 		}
-		
+
 		/**	尺寸变更函数*/
 		protected function sizeChanged():void
 		{
@@ -78,11 +79,11 @@ package com.vhall.framework.ui.controls
 				(parent as UIComponent).invalidate();
 			}
 		}
-		
+
 		/**	组件初始化完毕后执行此函数*/
 		protected function componentInited(e:Event):void
 		{
-			removeEventListener("component_inited",componentInited);
+			removeEventListener("component_inited", componentInited);
 		}
 
 		override public function set alpha(value:Number):void
@@ -139,7 +140,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	设置宽高
+		 * 设置宽高
 		 * @param w 宽
 		 * @param h 高
 		 *
@@ -150,7 +151,7 @@ package com.vhall.framework.ui.controls
 			this._height = Math.round(h);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
-		
+
 		/**	销毁函数*/
 		public function destory():void
 		{
@@ -167,7 +168,7 @@ package com.vhall.framework.ui.controls
 				this.parent.removeChild(this);
 			}
 		}
-		
+
 		/**	立即刷新*/
 		public function validateNow():void
 		{
@@ -178,6 +179,7 @@ package com.vhall.framework.ui.controls
 		public function showBorder(color:uint = 0xff0000):void
 		{
 			RenderManager.getInstance().validateNow();
+
 			with(this)
 			{
 				graphics.clear();
@@ -189,7 +191,7 @@ package com.vhall.framework.ui.controls
 		private static const info:String = "[{0}] width: {1} , height: {2} , x: {3} , y: {4} , haveParent, {5}, onStage: {6}";
 
 		/**
-		 *	拿到组件的宽,高,X,Y,以及反射出来的名字
+		 * 拿到组件的宽,高,X,Y,以及反射出来的名字
 		 * @return
 		 *
 		 */
@@ -197,21 +199,31 @@ package com.vhall.framework.ui.controls
 		{
 			return StringUtil.substitute(info, getQualifiedClassName(this), width, height, x, y, this.parent != null, this.stage != null);
 		}
-		
+
 		private var _tooltip:Object;
+
 		private var _left:Object;
+
 		private var _right:Object;
+
 		private var _top:Object;
+
 		private var _bottom:Object;
+
 		private var _horizontalCenter:Number;
+
 		private var _verticalCenter:Number;
+
 		private var _callOut:String = "none";
 
 		private var _initialized:Boolean = false;
+
 		private var _userData:Object;
-		
+
+		private var _guideName:String = "";
+
 		/**
-		 *	tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
+		 * tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
 		 */
 		[Inspectable(category = "General", enumeration = "top,left,right,bottom,none", defaultValue = "none")]
 		public function get callOut():String
@@ -299,13 +311,13 @@ package com.vhall.framework.ui.controls
 		{
 			_verticalCenter = value;
 		}
-		
+
 		/**	用户自定义数据，该数据外部维护*/
 		public function get userData():Object
 		{
 			return _userData ||= {};
 		}
-		
+
 		public function set userData(value:Object):void
 		{
 			_userData = value;
@@ -323,13 +335,26 @@ package com.vhall.framework.ui.controls
 			{
 				return;
 			}
-			
+
 			_initialized = value;
+
 			if(value)
 			{
 				addEventListener("component_inited", componentInited, false, 0, true);
 				dispatchEvent(new Event("component_inited"));
 			}
 		}
+
+		public function set guideName(name:String):void
+		{
+			this._guideName = name;
+		}
+
+		public function get guideName():String
+		{
+			return this._guideName;
+		}
 	}
 }
+
+
