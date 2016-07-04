@@ -16,6 +16,8 @@ package com.vhall.framework.media.video
 	import com.vhall.framework.media.provider.MediaProxyType;
 
 	import flash.display.Sprite;
+	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.media.Camera;
 	import flash.media.Microphone;
@@ -74,6 +76,27 @@ package com.vhall.framework.media.video
 			_viewPort = _video.getBounds(this);
 
 			_videoOption = VideoOptions.op;
+
+			if(stage)
+				videoStage = stage;
+			else
+				addEventListener(Event.ADDED_TO_STAGE,onAdded);
+		}
+
+		protected function onAdded(event:Event):void
+		{
+			this.removeEventListener(Event.ADDED_TO_STAGE,onAdded);
+			videoStage = stage;
+		}
+
+		public function set videoStage(value:Stage):void
+		{
+			_videoOption.stage = value;
+
+			if(_proxy)
+			{
+				_proxy.stage = value;
+			}
 		}
 
 		/**
@@ -113,6 +136,8 @@ package com.vhall.framework.media.video
 
 			//推流之外的播放器，启用图像增强
 			eyefidelity = _eyefidelity;
+
+			_proxy.stage = _videoOption.stage;
 
 			_proxy.connect(uri,stream,proxyHandler,autoPlay,startPostion);
 
@@ -673,6 +698,7 @@ package com.vhall.framework.media.video
 		}
 	}
 }
+import flash.display.Stage;
 import flash.filters.ConvolutionFilter;
 
 class VideoOptions
@@ -683,7 +709,11 @@ class VideoOptions
 
 	public var mute:Boolean = false;
 
+	public var stage:Stage;
+
 	private static var _instance:VideoOptions;
+
+	public function VideoOptions(){}
 
 	public static function get op():VideoOptions
 	{

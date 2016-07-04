@@ -11,6 +11,7 @@ package com.vhall.framework.media.provider
 {
 	import com.vhall.framework.media.interfaces.IMediaProxy;
 
+	import flash.display.Stage;
 	import flash.net.NetStream;
 
 	CONFIG::LOGGING{
@@ -48,9 +49,16 @@ package com.vhall.framework.media.provider
 
 		private var _inBufferSeek:Boolean;
 
+		protected var _stage:Stage;
+
 		public function AbstractProxy(type:String)
 		{
 			_type = type;
+		}
+
+		public function set stage(value:Stage):void
+		{
+			_stage = value;
 		}
 
 		/**

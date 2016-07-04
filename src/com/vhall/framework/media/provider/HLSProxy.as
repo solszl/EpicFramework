@@ -11,6 +11,7 @@ package com.vhall.framework.media.provider
 {
 	import com.vhall.framework.media.interfaces.IProgress;
 
+	import flash.display.Stage;
 	import flash.media.SoundTransform;
 	import flash.net.NetStream;
 
@@ -64,13 +65,13 @@ package com.vhall.framework.media.provider
 			_hls.addEventListener(HLSEvent.FRAGMENT_LOADED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.FRAGMENT_PLAYING,onHLSHandler);
 
-			_hls.addEventListener(HLSEvent.FRAGMENT_SKIPPED,onHLSHandler);
+			//_hls.addEventListener(HLSEvent.FRAGMENT_SKIPPED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.TAGS_LOADED,onHLSHandler);
-			_hls.addEventListener(HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED,onHLSHandler);
+			//_hls.addEventListener(HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED,onHLSHandler);
 			_hls.addEventListener(HLSEvent.LEVEL_LOADED,onHLSHandler);
-			_hls.addEventListener(HLSEvent.AUDIO_LEVEL_LOADED,onHLSHandler);
+			//_hls.addEventListener(HLSEvent.AUDIO_LEVEL_LOADED,onHLSHandler);
 
-			_hls.addEventListener(HLSEvent.WARNING,onHLSHandler);
+			//_hls.addEventListener(HLSEvent.WARNING,onHLSHandler);
 			_hls.addEventListener(HLSEvent.ERROR,onHLSHandler);
 
 			bufferTime = 1;
@@ -95,9 +96,16 @@ package com.vhall.framework.media.provider
 			super.start();
 			if(stream)
 			{
+				stage = _stage;
 				stream.play();
 				time = _startPostion;
 			}
+		}
+
+		override public function set stage(value:Stage):void
+		{
+			super.stage = value;
+			_hls && (_hls.stage = value);
 		}
 
 		override public function stop():void
@@ -154,19 +162,19 @@ package com.vhall.framework.media.provider
 					{
 						case HLSPlayStates.PAUSED:
 						case HLSPlayStates.PLAYING:
-							excute(MediaProxyStates.STREAM_FULL);
+							excute(MediaProxyStates.STREAM_FULL,e.state == HLSPlayStates.PAUSED?false:true);
 							break;
 						case HLSPlayStates.PAUSED_BUFFERING:
 						case HLSPlayStates.PLAYING_BUFFERING:
-							excute(MediaProxyStates.STREAM_LOADING);
+							excute(MediaProxyStates.STREAM_LOADING,e.state == HLSPlayStates.PAUSED_BUFFERING?false:true);
 							break
 					}
 					break;
 				case HLSEvent.TAGS_LOADED:
 				case HLSEvent.FRAGMENT_LOADED:
-				case HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED:
+				//case HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED:
 				case HLSEvent.LEVEL_LOADED:
-				case HLSEvent.AUDIO_LEVEL_LOADED:
+					//case HLSEvent.AUDIO_LEVEL_LOADED:
 					loadMetrics = e.loadMetrics;
 					break;
 				case HLSEvent.MEDIA_TIME:
@@ -176,7 +184,7 @@ package com.vhall.framework.media.provider
 					excute(MediaProxyStates.STREAM_STOP);
 					break;
 				case HLSEvent.PLAYLIST_DURATION_UPDATED:
-				case HLSEvent.FRAGMENT_SKIPPED:
+					//case HLSEvent.FRAGMENT_SKIPPED:
 					excute(MediaProxyStates.STREAM_SIZE_NOTIFY);
 					setDuration(e.duration);
 					break;
@@ -194,18 +202,19 @@ package com.vhall.framework.media.provider
 							break;
 						case "SEEKED":
 							excute(MediaProxyStates.SEEK_COMPLETE);
+							_playing = true;
 							break;
 					}
 					CONFIG::LOGGING{
 					Log.info(e.state);
 				}
 					break;
-				case HLSEvent.WARNING:
+				/*case HLSEvent.WARNING:
 					excute(MediaProxyStates.PROXY_ERROR,e.error.msg);
 					CONFIG::LOGGING{
 					Log.warn(e.error.msg);
 				}
-					break;
+					break;*/
 				case HLSEvent.ERROR:
 					excute(MediaProxyStates.PROXY_ERROR,e.error.msg);
 					CONFIG::LOGGING{
@@ -230,13 +239,13 @@ package com.vhall.framework.media.provider
 				_hls.removeEventListener(HLSEvent.FRAGMENT_LOADED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.FRAGMENT_PLAYING,onHLSHandler);
 
-				_hls.removeEventListener(HLSEvent.FRAGMENT_SKIPPED,onHLSHandler);
+				//_hls.removeEventListener(HLSEvent.FRAGMENT_SKIPPED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.TAGS_LOADED,onHLSHandler);
-				_hls.removeEventListener(HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED,onHLSHandler);
+				//_hls.removeEventListener(HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.LEVEL_LOADED,onHLSHandler);
-				_hls.removeEventListener(HLSEvent.AUDIO_LEVEL_LOADED,onHLSHandler);
+				//_hls.removeEventListener(HLSEvent.AUDIO_LEVEL_LOADED,onHLSHandler);
 
-				_hls.removeEventListener(HLSEvent.WARNING,onHLSHandler);
+				//_hls.removeEventListener(HLSEvent.WARNING,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.ERROR,onHLSHandler);
 			}
 

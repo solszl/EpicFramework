@@ -1,8 +1,8 @@
 /**
  * ===================================
- * Author:	iDzeir					
- * Email:	qiyanlong@wozine.com	
- * Company:	http://www.vhall.com		
+ * Author:	iDzeir
+ * Email:	qiyanlong@wozine.com
+ * Company:	http://www.vhall.com
  * Created:	May 27, 2016 10:40:20 AM
  * ===================================
  */
@@ -21,36 +21,37 @@ package com.vhall.framework.media.provider
 	internal final class Strategy
 	{
 		private static var _instance:Strategy;
-		
+
 		private var _ns:NetStream;
 		private var _cam:Camera;
 		private var _mic:Microphone;
-		
+
+		public function Strategy(){}
 		/**
-		 * 计时器id 
+		 * 计时器id
 		 */		
 		private var _id:int;
-		
+
 		/**
-		 * 连续存在缓存秒数（计时器为每秒执行） 
+		 * 连续存在缓存秒数（计时器为每秒执行）
 		 */		
 		private var _bufferTimes:int = 0;
-		
+
 		/**
 		 * 连续空buffer秒次数（计时器为每秒执行）
 		 */		
 		private var _emptyTimes:int = 0;
-		
+
 		/**
-		 * 触发调整画面质量的临界连续次数 
+		 * 触发调整画面质量的临界连续次数
 		 */		
 		private const MAX:uint = 8;
-		
+
 		public static function get():Strategy
 		{
 			return _instance ||= new Strategy();
 		}
-		
+
 		/**
 		 * 根据推流网络状况动态平衡采集质量
 		 * @param ns 推流netstream
@@ -60,11 +61,11 @@ package com.vhall.framework.media.provider
 		public function blance(ns:NetStream,cam:Camera,mic:Microphone = null):void
 		{
 			unBlance();
-			
+
 			_ns = ns;
 			_cam = cam;
 			_mic = mic;
-			
+
 			_id = setInterval(function():void
 			{
 				if(_ns && _ns.info)
@@ -74,18 +75,18 @@ package com.vhall.framework.media.provider
 				}
 			},1000);
 		}
-		
+
 		private function blanceVideoWithBuffer(buffer:int):void
 		{
 			if(!_cam) return;
 			buffer == 0 ? minus() : add();
 		}
-		
+
 		private function blanceAudioWithBuffer(buffer:int):void
 		{
-			
+
 		}
-		
+
 		private function add():void
 		{
 			//连续buffer
@@ -97,7 +98,7 @@ package com.vhall.framework.media.provider
 			}
 			_emptyTimes = 0;
 		}
-		
+
 		private function minus():void
 		{
 			//连续空buffer
@@ -109,7 +110,7 @@ package com.vhall.framework.media.provider
 			}
 			_bufferTimes = 0;
 		}
-		
+
 		public function unBlance():void
 		{
 			_ns = null;
@@ -119,3 +120,4 @@ package com.vhall.framework.media.provider
 		}
 	}
 }
+

@@ -235,6 +235,7 @@ package com.vhall.framework.media.provider
 					excute(MediaProxyStates.SEEK_NOTIFY);
 					break;
 				case InfoCode.NetStream_Seek_Complete:
+					_playing = true;
 					excute(MediaProxyStates.SEEK_COMPLETE);
 					break;
 				case InfoCode.NetStream_Video_DimensionChange:

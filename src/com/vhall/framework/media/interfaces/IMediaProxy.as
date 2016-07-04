@@ -9,6 +9,7 @@
 
 package com.vhall.framework.media.interfaces
 {
+	import flash.display.Stage;
 	import flash.net.NetStream;
 
 	/**
@@ -16,6 +17,8 @@ package com.vhall.framework.media.interfaces
 	 */	
 	public interface IMediaProxy extends IProgress
 	{
+		function set stage(value:Stage):void;
+
 		/** 代理类型MediaProxyType*/
 		function get type():String;
 
