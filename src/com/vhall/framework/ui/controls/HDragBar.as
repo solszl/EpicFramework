@@ -26,7 +26,7 @@ package com.vhall.framework.ui.controls
 
 		override protected function onDragStart(e:MouseEvent = null):void
 		{
-			super.onDragStart();
+			super.onDragStart(e);
 			_quad.startDrag(false, new Rectangle(-_quad.width / 2, _quad.y, width - _quad.width / 2, 0));
 			draging = true;
 		}
@@ -67,7 +67,6 @@ package com.vhall.framework.ui.controls
 				_quad.y = (height - _quad.height) >> 1;
 				_quadChanged = false;
 			}
-
 			_quad.x = width * percent - _quad.width / 2;
 			_finished.width = Math.max(width * percent, 1);
 		}
