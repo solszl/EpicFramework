@@ -1,6 +1,7 @@
 package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
+	import com.vhall.framework.ui.interfaces.IGuide;
 	import com.vhall.framework.ui.interfaces.IRelative;
 	import com.vhall.framework.ui.interfaces.IToolTip;
 	import com.vhall.framework.ui.manager.TooltipManager;
@@ -12,14 +13,14 @@ package com.vhall.framework.ui.controls
 	import flash.utils.getQualifiedClassName;
 
 	/**
-	 *	组件基类
+	 * 组件基类
 	 * @author Sol
 	 *
 	 */
-	public class UIComponent extends Sprite implements IToolTip, IRelative
+	public class UIComponent extends Sprite implements IToolTip, IRelative, IGuide
 	{
 		/**
-		 *	构建基类
+		 * 构建基类
 		 * @param parent 是否有父容器，当存在父容器的时候，该组件自动添加到父容器
 		 * @param xpos	默认横坐标位置
 		 * @param ypos	默认纵坐标位置
@@ -142,7 +143,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	设置宽高
+		 * 设置宽高
 		 * @param w 宽
 		 * @param h 高
 		 *
@@ -181,6 +182,7 @@ package com.vhall.framework.ui.controls
 		public function showBorder(color:uint = 0xff0000):void
 		{
 			RenderManager.getInstance().validateNow();
+
 			with(this)
 			{
 				graphics.clear();
@@ -192,7 +194,7 @@ package com.vhall.framework.ui.controls
 		private static const info:String = "[{0}] width: {1} , height: {2} , x: {3} , y: {4} , haveParent, {5}, onStage: {6}";
 
 		/**
-		 *	拿到组件的宽,高,X,Y,以及反射出来的名字
+		 * 拿到组件的宽,高,X,Y,以及反射出来的名字
 		 * @return
 		 *
 		 */
@@ -202,19 +204,29 @@ package com.vhall.framework.ui.controls
 		}
 
 		private var _tooltip:Object;
+
 		private var _left:Object;
+
 		private var _right:Object;
+
 		private var _top:Object;
+
 		private var _bottom:Object;
+
 		private var _horizontalCenter:Number;
+
 		private var _verticalCenter:Number;
+
 		private var _callOut:String = "none";
 
 		private var _initialized:Boolean = false;
+
 		private var _userData:Object;
 
+		private var _guideName:String = "";
+
 		/**
-		 *	tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
+		 * tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
 		 */
 		[Inspectable(category = "General", enumeration = "top,left,right,bottom,none", defaultValue = "none")]
 		public function get callOut():String
@@ -328,11 +340,24 @@ package com.vhall.framework.ui.controls
 			}
 
 			_initialized = value;
+
 			if(value)
 			{
 				addEventListener("component_inited", componentInited, false, 0, true);
 				dispatchEvent(new Event("component_inited"));
 			}
 		}
+
+		public function set guideName(name:String):void
+		{
+			this._guideName = name;
+		}
+
+		public function get guideName():String
+		{
+			return this._guideName;
+		}
 	}
 }
+
+
