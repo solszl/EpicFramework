@@ -68,7 +68,6 @@ package com.vhall.framework.ui.controls
 				_quad.y = (height - _quad.height) >> 1;
 				_quadChanged = false;
 			}
-
 			_quad.x = width * percent - _quad.width / 2;
 			_finished.width = Math.max(width * percent, 1);
 		}
