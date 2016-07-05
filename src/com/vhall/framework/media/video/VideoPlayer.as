@@ -557,7 +557,7 @@ package com.vhall.framework.media.video
 		{
 			if(_proxy)
 			{
-				if([MediaProxyType.HLS,MediaProxyType.HTTP].indexOf(_proxy.type) != -1)
+				if([MediaProxyType.HLS,MediaProxyType.HTTP].indexOf(_proxy.type) != -1||duration !=0)
 				{
 					_proxy.time = value;
 				}

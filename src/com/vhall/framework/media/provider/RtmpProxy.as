@@ -198,7 +198,7 @@ package com.vhall.framework.media.provider
 		protected function statusHandler(e:NetStatusEvent):void
 		{
 			CONFIG::LOGGING{
-				trace("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : "") + "类型："+ _type);
+				Log.info("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : "") + "类型："+ _type);
 			}
 			switch(e.info.code)
 			{

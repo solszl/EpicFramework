@@ -111,5 +111,18 @@ package com.vhall.framework.utils
 			return "";
 		}
 
+		public static function beginWith(str:String,source:String):Boolean
+		{
+			if(isNullOrEmpty(str)) return true;
+			return source.indexOf(str) == 0;
+		}
+
+		public static function endWith(str:String,source:String):Boolean
+		{
+			if(isNullOrEmpty(str)) return true;
+			return (source.lastIndexOf(str) + str.length) == source.length;
+		}
 	}
 }
+
+
