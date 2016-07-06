@@ -247,13 +247,14 @@ package com.vhall.framework.media.provider
 
 				//_hls.removeEventListener(HLSEvent.WARNING,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.ERROR,onHLSHandler);
+
+				_hls.dispose();
+				_hls = null;
 			}
 
 			_durationReady = false;
 			this._playMetrics = null;
 			this._loadMetrics = null;
-			_hls.dispose();
-			_hls = null;
 		}
 
 		/**
