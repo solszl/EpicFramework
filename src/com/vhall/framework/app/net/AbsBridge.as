@@ -37,7 +37,7 @@ package com.vhall.framework.app.net
 			}
 
 
-			var obj:Object = JSON.parse(msg_body); //JSON.decode(msg_body);
+			var obj:Object = JSON.parse(String(msg_body)); //JSON.decode(msg_body);
 			handleMap[msg](obj);
 		}
 
