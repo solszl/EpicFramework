@@ -34,15 +34,13 @@ package com.vhall.framework.media.video
 	 */
 	public class VideoPlayer extends Sprite implements IVideoPlayer
 	{
-		private var _video:Video;
+		private var _video:CouplingVideo;
 
 		private var _type:String;
 
 		private var _proxy:IMediaProxy;
 
 		private var _viewPort:Rectangle;
-
-		private var _cameraView:Boolean = false;
 
 		private var _backgroundColor:int = 0x000000;
 		/** 图像保真 默认关闭*/
@@ -69,8 +67,7 @@ package com.vhall.framework.media.video
 		{
 			this.mouseChildren = false;
 
-			_video = new Video();
-			_video.smoothing = true;
+			_video = new CouplingVideo();
 			addChild(_video);
 
 			_viewPort = _video.getBounds(this);
@@ -261,7 +258,6 @@ package com.vhall.framework.media.video
 		{
 			_cam = cam;
 			_mic = mic;
-			_cameraView = true;
 			_camWidth = camWidth;
 			_camHeight = camHeight;
 
@@ -279,7 +275,7 @@ package com.vhall.framework.media.video
 		{
 			drawBackground();
 			var size:Object = {width:0, height:0};
-			if(_cameraView)
+			if(_video.isCamera)
 			{
 				if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
 				{
@@ -325,17 +321,8 @@ package com.vhall.framework.media.video
 		 */
 		public function attachView(source:*):void
 		{
-			if(source is Camera)
-			{
-				_video.attachCamera(source);
-				_cameraView = true;
-				updateVideo();
-			}
-			else
-			{
-				_video.attachNetStream(source);
-				_cameraView = false;
-			}
+			_video.attachView(source);
+			updateVideo();
 		}
 
 		/**
@@ -343,17 +330,9 @@ package com.vhall.framework.media.video
 		 */
 		public function stop():void
 		{
-			if(_cameraView)
-			{
-				_video.attachCamera(null);
-			}
-			else
-			{
-				_video.attachNetStream(null);
-			}
+			_video.stop();
 			if(_proxy)
 				_proxy.stop();
-			_cameraView = false;
 			_video.clear();
 		}
 
@@ -424,7 +403,7 @@ package com.vhall.framework.media.video
 		{
 			_proxy && _proxy.toggle();
 
-			if(this._cameraView && _proxy)
+			if(_video.isCamera && _proxy)
 			{
 				//_video.clear();
 				//_video.attachCamera(this.isPlaying?((_proxy as IPublish).usedCam):null);
