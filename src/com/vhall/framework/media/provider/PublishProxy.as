@@ -274,8 +274,8 @@ package com.vhall.framework.media.provider
 			if(_published)
 			{
 				cameraMuted = microphoneMuted = !_playing;
-				_ns&&_ns.close();
 			}
+			super.stop();
 		}
 
 		override public function pause():void
