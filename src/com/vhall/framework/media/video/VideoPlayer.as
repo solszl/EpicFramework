@@ -144,43 +144,48 @@ package com.vhall.framework.media.video
 		private function proxyHandler(states:String, ... value):void
 		{
 			_state = states;
-			switch(states)
-			{
-				case MediaProxyStates.CONNECT_NOTIFY:
-					if(_proxy.type == MediaProxyType.PUBLISH)
-					{
-						var iPub:IPublish = _proxy as IPublish;
-						iPub.publish(_cam, _mic, _camWidth, _camHeight);
-						useStrategy = _videoOption.useStrategy;
-					}
-					else
-					{
+			try{
+				switch(states)
+				{
+					case MediaProxyStates.CONNECT_NOTIFY:
+						if(_proxy.type == MediaProxyType.PUBLISH)
+						{
+							var iPub:IPublish = _proxy as IPublish;
+							iPub.publish(_cam, _mic, _camWidth, _camHeight);
+							useStrategy = _videoOption.useStrategy;
+						}
+						else
+						{
+							attachView(_proxy.stream);
+						}
+						volume = _videoOption.volume;
+						mute = _videoOption.mute;
+
+						break;
+					case MediaProxyStates.STREAM_TRANSITION:
+					case MediaProxyStates.STREAM_FULL:
+					case MediaProxyStates.STREAM_SIZE_NOTIFY:
+						updateVideo();
+						break;
+					case MediaProxyStates.PUBLISH_START:
+						attachView((_proxy as IPublish).usedCam);
+						break;
+					case MediaProxyStates.PUBLISH_NOTIFY:
 						attachView(_proxy.stream);
-					}
-					volume = _videoOption.volume;
-					mute = _videoOption.mute;
-
-					break;
-				case MediaProxyStates.STREAM_TRANSITION:
-				case MediaProxyStates.STREAM_FULL:
-				case MediaProxyStates.STREAM_SIZE_NOTIFY:
-					updateVideo();
-					break;
-				case MediaProxyStates.PUBLISH_START:
-					attachView((_proxy as IPublish).usedCam);
-					break;
-				case MediaProxyStates.PUBLISH_NOTIFY:
-					attachView(_proxy.stream);
-					break;
-				case MediaProxyStates.STREAM_STOP:
-				case MediaProxyStates.UN_PUBLISH_NOTIFY:
-					attachView(null);
-					break;
-				case MediaProxyStates.UN_PUBLISH_SUCCESS:
-					//if(_type==MediaProxyType.PUBLISH) stop();
-					break;
+						break;
+					case MediaProxyStates.STREAM_STOP:
+					case MediaProxyStates.UN_PUBLISH_NOTIFY:
+						attachView(null);
+						break;
+					case MediaProxyStates.UN_PUBLISH_SUCCESS:
+						//if(_type==MediaProxyType.PUBLISH) stop();
+						break;
+				}
+			}catch(e:Error){
+				CONFIG::LOGGING{
+					Log.info("内部处理失败"+e.message);
+				}
 			}
-
 			//处理外部回调业务
 			if(_handler != null)
 			{
