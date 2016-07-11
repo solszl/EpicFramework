@@ -21,7 +21,6 @@ package com.vhall.framework.media.video
 	import flash.geom.Rectangle;
 	import flash.media.Camera;
 	import flash.media.Microphone;
-	import flash.media.Video;
 	import flash.net.NetStream;
 
 	CONFIG::LOGGING
@@ -115,19 +114,9 @@ package com.vhall.framework.media.video
 		 */
 		public function connect(type:String, uri:String, stream:String = null, handler:Function = null, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
-			if(_proxy)
-			{
-				CONFIG::LOGGING
-				{
-					Log.error("重复调用connect，改变流地址使用changeVideoUrl方法");
-				}
-				return;
-			}
-			if(_proxy)
-			{
-				_proxy.dispose();
-				_proxy = null;
-			}
+			//每次调用connect清空上次代理，要保持请用changeVideoUrl
+			dispose();
+
 			_proxy = MediaProxyFactory.create(type);
 			_handler = handler;
 			_type = type;
@@ -136,6 +125,7 @@ package com.vhall.framework.media.video
 			eyefidelity = _eyefidelity;
 
 			_proxy.stage = _videoOption.stage;
+			_proxy.transition = _videoOption.transition;
 
 			_proxy.connect(uri, stream, proxyHandler, autoPlay, startPostion);
 
@@ -483,6 +473,15 @@ package com.vhall.framework.media.video
 		}
 
 		/**
+		 * 设置回放视频切换流模式 null为取消平衡切换，从连connect
+		 * @param tran
+		 */		
+		public function set transition(tran:String):void
+		{
+			_videoOption.transition = tran;
+		}
+
+		/**
 		 * 推流成功后开关视频采集
 		 * @param bool
 		 */
@@ -714,6 +713,7 @@ package com.vhall.framework.media.video
 }
 import flash.display.Stage;
 import flash.filters.ConvolutionFilter;
+import flash.net.NetStreamPlayTransitions;
 
 class VideoOptions
 {
@@ -724,6 +724,8 @@ class VideoOptions
 	public var mute:Boolean = false;
 
 	public var stage:Stage;
+
+	public var transition:String = NetStreamPlayTransitions.STOP;
 
 	private static var _instance:VideoOptions;
 
