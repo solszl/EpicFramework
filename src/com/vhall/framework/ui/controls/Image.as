@@ -298,6 +298,10 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 
+			if(w < (rect.width +rect.x + 1) || h < (rect.height +rect.y + 1)){
+				return;
+			}
+
 			var m:Matrix = new Matrix();
 			var result:BitmapData = new BitmapData(w, h, true, 0x000000);
 			var origin:Rectangle;
@@ -325,3 +329,5 @@ package com.vhall.framework.ui.controls
 		}
 	}
 }
+
+
