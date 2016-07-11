@@ -114,19 +114,9 @@ package com.vhall.framework.media.video
 		 */
 		public function connect(type:String, uri:String, stream:String = null, handler:Function = null, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
-			if(_proxy)
-			{
-				CONFIG::LOGGING
-				{
-					Log.error("重复调用connect，改变流地址使用changeVideoUrl方法");
-				}
-				return;
-			}
-			if(_proxy)
-			{
-				_proxy.dispose();
-				_proxy = null;
-			}
+			//每次调用connect清空上次代理，要保持请用changeVideoUrl
+			dispose();
+
 			_proxy = MediaProxyFactory.create(type);
 			_handler = handler;
 			_type = type;
@@ -483,7 +473,7 @@ package com.vhall.framework.media.video
 		}
 
 		/**
-		 * 设置回放视频切换流模式
+		 * 设置回放视频切换流模式 null为取消平衡切换，从连connect
 		 * @param tran
 		 */		
 		public function set transition(tran:String):void

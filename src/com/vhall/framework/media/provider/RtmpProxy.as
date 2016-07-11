@@ -119,7 +119,7 @@ package com.vhall.framework.media.provider
 
 			super.changeVideoUrl(uri, streamUrl, autoPlay, startPostion);
 
-			if(_conn && _conn.connected && oldUri == uri)
+			if(_conn && _conn.connected && oldUri == uri&&_transition)
 			{
 				if(oldStreamUrl == streamUrl) return;
 				var nspo:NetStreamPlayOptions = new NetStreamPlayOptions();

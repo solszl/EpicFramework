@@ -67,7 +67,7 @@ package com.vhall.framework.media.provider
 
 			valid();
 
-			if(_conn && _conn.connected && oldUri != uri)
+			if(_conn && _conn.connected && oldUri != uri && _transition)
 			{
 				if(oldStreamUrl == streamUrl) return;
 				var npo:NetStreamPlayOptions = new NetStreamPlayOptions();
