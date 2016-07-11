@@ -69,13 +69,21 @@ package com.vhall.framework.media.provider
 
 			if(_conn && _conn.connected && oldUri != uri)
 			{
+				if(oldStreamUrl == streamUrl) return;
 				var npo:NetStreamPlayOptions = new NetStreamPlayOptions();
 				npo.oldStreamName = oldUri;
 				npo.streamName = uri;
 				npo.offset = startPostion;
-				npo.transition = NetStreamPlayTransitions.SWITCH;
-				if(_autoPlay&&_ns)
+				npo.transition = _transition;
+				if(_autoPlay)
 				{
+					if(!_ns)
+					{
+						CONFIG::LOGGING{
+							Log.warn("httpProxy不存在的netstream无法changeVideoUrl");
+						}
+						return;
+					}
 					_ns.play2(npo);
 				}
 			}else{

@@ -119,14 +119,22 @@ package com.vhall.framework.media.provider
 
 			super.changeVideoUrl(uri, streamUrl, autoPlay, startPostion);
 
-			if(_conn && _conn.connected && oldUri == uri && oldStreamUrl != streamUrl)
+			if(_conn && _conn.connected && oldUri == uri)
 			{
+				if(oldStreamUrl == streamUrl) return;
 				var nspo:NetStreamPlayOptions = new NetStreamPlayOptions();
 				nspo.oldStreamName = oldStreamUrl;
 				nspo.streamName = streamUrl;
-				nspo.transition = NetStreamPlayTransitions.SWITCH;
-				if(_autoPlay&&_ns)
+				nspo.transition = _transition;
+				if(_autoPlay)
 				{
+					if(!_ns)
+					{
+						CONFIG::LOGGING{
+							Log.warn("rtmpProxy changeVideoUrl,不存在的netstream");
+						}
+						return;
+					}
 					_ns.play2(nspo);
 				}
 			}else{
@@ -167,6 +175,10 @@ package com.vhall.framework.media.provider
 			if(_ns)
 			{
 				_ns.play(_streamUrl);
+			}else{
+				CONFIG::LOGGING{
+					Log.warn("rtmpproxy不存在的netstream无法start");
+				}
 			}
 		}
 

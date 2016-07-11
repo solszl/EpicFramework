@@ -21,7 +21,6 @@ package com.vhall.framework.media.video
 	import flash.geom.Rectangle;
 	import flash.media.Camera;
 	import flash.media.Microphone;
-	import flash.media.Video;
 	import flash.net.NetStream;
 
 	CONFIG::LOGGING
@@ -136,6 +135,7 @@ package com.vhall.framework.media.video
 			eyefidelity = _eyefidelity;
 
 			_proxy.stage = _videoOption.stage;
+			_proxy.transition = _videoOption.transition;
 
 			_proxy.connect(uri, stream, proxyHandler, autoPlay, startPostion);
 
@@ -483,6 +483,15 @@ package com.vhall.framework.media.video
 		}
 
 		/**
+		 * 设置回放视频切换流模式
+		 * @param tran
+		 */		
+		public function set transition(tran:String):void
+		{
+			_videoOption.transition = tran;
+		}
+
+		/**
 		 * 推流成功后开关视频采集
 		 * @param bool
 		 */
@@ -714,6 +723,7 @@ package com.vhall.framework.media.video
 }
 import flash.display.Stage;
 import flash.filters.ConvolutionFilter;
+import flash.net.NetStreamPlayTransitions;
 
 class VideoOptions
 {
@@ -724,6 +734,8 @@ class VideoOptions
 	public var mute:Boolean = false;
 
 	public var stage:Stage;
+
+	public var transition:String = NetStreamPlayTransitions.STOP;
 
 	private static var _instance:VideoOptions;
 

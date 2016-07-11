@@ -94,6 +94,9 @@ package com.vhall.framework.media.interfaces
 		/** @private*/
 		function set time(value:Number):void;
 
+		/** 回放视频切换源策略*/		
+		function set transition(tran:String):void;
+
 		/** 当前播放视频使用的netStream*/		
 		function get stream():NetStream;
 

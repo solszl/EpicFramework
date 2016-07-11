@@ -213,9 +213,17 @@ package com.vhall.framework.media.provider
 
 			valid();
 
-			if(_conn && _conn.connected && oldUri == uri && oldStreamUrl != streamUrl)
+			if(_conn && _conn.connected && oldUri == uri)
 			{
-				_ns && _ns.publish(_streamUrl);
+				if(oldStreamUrl == streamUrl) return;
+				if(!_ns)
+				{
+					CONFIG::LOGGING{
+						Log.warn("publishproxy不存在的netstream，无法changeVideoUrl");
+					}
+					return;
+				}
+				_ns.publish(_streamUrl);
 			}else{
 				//清除监听
 				clearNsListeners();

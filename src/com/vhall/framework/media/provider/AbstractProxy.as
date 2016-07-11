@@ -13,6 +13,7 @@ package com.vhall.framework.media.provider
 
 	import flash.display.Stage;
 	import flash.net.NetStream;
+	import flash.net.NetStreamPlayTransitions;
 
 	CONFIG::LOGGING{
 		import org.mangui.hls.utils.Log;
@@ -50,6 +51,8 @@ package com.vhall.framework.media.provider
 		private var _inBufferSeek:Boolean;
 
 		protected var _stage:Stage;
+
+		protected var _transition:String = NetStreamPlayTransitions.STOP;
 
 		public function AbstractProxy(type:String)
 		{
@@ -169,6 +172,11 @@ package com.vhall.framework.media.provider
 		{
 			_inBufferSeek = bool;
 			stream && (stream.inBufferSeek = bool);
+		}
+
+		public function set transition(tran:String):void
+		{
+			_transition = tran;
 		}
 
 		public function get volume():Number
