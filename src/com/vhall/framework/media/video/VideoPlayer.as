@@ -134,7 +134,8 @@ package com.vhall.framework.media.video
 		private function proxyHandler(states:String, ... value):void
 		{
 			_state = states;
-			try{
+			try
+			{
 				switch(states)
 				{
 					case MediaProxyStates.CONNECT_NOTIFY:
@@ -171,9 +172,12 @@ package com.vhall.framework.media.video
 						//if(_type==MediaProxyType.PUBLISH) stop();
 						break;
 				}
-			}catch(e:Error){
-				CONFIG::LOGGING{
-					Log.info("内部处理失败"+e.message);
+			}
+			catch(e:Error)
+			{
+				CONFIG::LOGGING
+				{
+					Log.info("内部处理失败" + e.message);
 				}
 			}
 			//处理外部回调业务
@@ -475,7 +479,7 @@ package com.vhall.framework.media.video
 		/**
 		 * 设置回放视频切换流模式 null为取消平衡切换，从连connect
 		 * @param tran
-		 */		
+		 */
 		public function set transition(tran:String):void
 		{
 			_videoOption.transition = tran;
