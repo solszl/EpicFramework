@@ -4,7 +4,7 @@ package com.vhall.framework.app
 	import com.vhall.framework.keyboard.KeyboardMapper;
 	import com.vhall.framework.log.Logger;
 	import com.vhall.framework.log.LoggerClip;
-	
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.ui.Keyboard;
@@ -18,9 +18,9 @@ package com.vhall.framework.app
 	public class App extends Sprite
 	{
 		public static var app:Sprite;
-		
+
 		public static var baseURL:String = "";
-		
+
 		/**	初始化开始*/
 		public static var INIT_START:String = "app_init_start";
 		/**	初始化完毕*/
@@ -50,21 +50,22 @@ package com.vhall.framework.app
 			dispatchEvent(new Event(INIT_END));
 		}
 
-		
-		protected function initBaseURL():void{
+
+		protected function initBaseURL():void
+		{
 			if(loaderInfo.parameters.hasOwnProperty("doc_srv"))
 			{
 				var ul:String = loaderInfo.parameters["doc_srv"];
-				var str:String = ul.substr(0,ul.lastIndexOf('/') + 1);
-				baseURL = str + "player/";
+				var str:String = ul.substr(0, ul.lastIndexOf('/') + 1);
+				baseURL = "http:" + str + "player/";
 			}
-			
+
 			if(loaderInfo.url.indexOf("file") >= 0)
 			{
 				baseURL = "";
 			}
 		}
-		
+
 		/**
 		 *	@private 初始化日志
 		 *
