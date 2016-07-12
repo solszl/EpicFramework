@@ -1,9 +1,9 @@
 package com.vhall.framework.app.net
 {
 	import appkit.responders.NResponder;
-	
+
 	import com.vhall.framework.log.Logger;
-	
+
 	import flash.utils.Dictionary;
 
 	/**
@@ -51,11 +51,13 @@ package com.vhall.framework.app.net
 
 			_dic[cmd] = excuter;
 		}
-		
+
 		protected function dispatch(action:String = null, params:Array = null, toTarget:Object = null):void
 		{
-			Logger.getLogger("[MSG]").info("received: " + action);
+			Logger.getLogger("MSG").info("received: " + action);
 			NResponder.dispatch(action,params,toTarget)
 		}
 	}
 }
+
+

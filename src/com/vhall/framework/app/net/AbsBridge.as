@@ -32,7 +32,7 @@ package com.vhall.framework.app.net
 		{
 			if(!(msg in handleMap))
 			{
-				Logger.getLogger("[MSG]").info("no msg: " + msg + " in handleMap");
+				Logger.getLogger("MSG").info("no msg: " + msg + " in handleMap");
 				return;
 			}
 
@@ -80,3 +80,5 @@ package com.vhall.framework.app.net
 		}
 	}
 }
+
+
