@@ -19,6 +19,7 @@ package com.vhall.framework.media.provider
 	import org.mangui.hls.HLSSettings;
 	import org.mangui.hls.constant.HLSPlayStates;
 	import org.mangui.hls.constant.HLSSeekMode;
+	import org.mangui.hls.event.HLSError;
 	import org.mangui.hls.event.HLSEvent;
 	import org.mangui.hls.event.HLSLoadMetrics;
 	import org.mangui.hls.event.HLSPlayMetrics;
@@ -216,11 +217,29 @@ package com.vhall.framework.media.provider
 				}
 					break;*/
 				case HLSEvent.ERROR:
-					excute(MediaProxyStates.PROXY_ERROR,e.error.msg);
-					CONFIG::LOGGING{
-					Log.error(e.error.msg);
-				}
+					onHlsError(e);
 					break;
+			}
+		}
+
+		private function onHlsError(e:HLSEvent):void
+		{
+			excute(MediaProxyStates.PROXY_ERROR,e.error.msg);
+			CONFIG::LOGGING{
+				Log.error(e.error.code+":"+e.error.msg);
+			}
+			if([HLSError.MANIFEST_LOADING_CROSSDOMAIN_ERROR,
+				HLSError.MANIFEST_LOADING_IO_ERROR,
+				HLSError.MANIFEST_PARSING_ERROR,
+				HLSError.FRAGMENT_LOADING_CROSSDOMAIN_ERROR,
+				HLSError.FRAGMENT_LOADING_ERROR,
+				HLSError.FRAGMENT_PARSING_ERROR,
+				HLSError.KEY_LOADING_CROSSDOMAIN_ERROR,
+				HLSError.KEY_LOADING_ERROR,
+				HLSError.KEY_PARSING_ERROR,
+				HLSError.TAG_APPENDING_ERROR].indexOf(e.error.code)!=-1)
+			{
+				excute(MediaProxyStates.CONNECT_FAILED,e.error.msg);
 			}
 		}
 

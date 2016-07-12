@@ -64,7 +64,7 @@ package com.vhall.framework.app.net
 //				var s:String = com.adobe.serialization.json.JSON.encode(body);
 				var s:String = JSON.stringify(body);
 				s = useBase64 ? Base64.encode(s) : s;
-				Logger.getLogger("[MSG Socket]").info("type: " + msg + " msg_body: " + s);
+				Logger.getLogger("MSG Socket").info("type: " + msg + " msg_body: " + s);
 				bodyBytes.length = 0;
 				bodyBytes.writeUTFBytes(s);
 				socket.writeBytes(bodyBytes);
@@ -83,12 +83,12 @@ package com.vhall.framework.app.net
 			// 反序列化字符串拿到消息体
 			var o:Object = JSON.parse(s); //com.adobe.serialization.json.JSON.decode(s);
 			handleMap[o.type](o);
-			Logger.getLogger("[MSG Socket]").info("received: " + o.type);
+			Logger.getLogger("MSG Socket").info("received: " + o.type);
 		}
 
 		protected function socketHandler(e:Event):void
 		{
-			Logger.getLogger("[MSG Socket]").info(e.type);
+			Logger.getLogger("MSG Socket").info(e.type);
 			handleMap[e.type](e);
 		}
 	}

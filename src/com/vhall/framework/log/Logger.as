@@ -11,7 +11,7 @@ package com.vhall.framework.log
 		public static function getLogger(category:String = "ROOT"):Logger
 		{
 			var logger:Logger
-			category = category.toLowerCase();
+			category = "["+category.toLowerCase()+"]";
 			var length:Number = Logger.loggers.length;
 			for(var i:Number = 0; i < length; i++)
 			{
@@ -62,3 +62,5 @@ package com.vhall.framework.log
 		}
 	}
 }
+
+
