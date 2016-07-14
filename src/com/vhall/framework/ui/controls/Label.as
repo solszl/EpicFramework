@@ -2,7 +2,7 @@ package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.utils.StringUtil;
-	
+
 	import flash.display.DisplayObjectContainer;
 	import flash.system.Capabilities;
 	import flash.text.TextField;
@@ -23,7 +23,7 @@ package com.vhall.framework.ui.controls
 		private var _formmat:TextFormat;
 		/**	文本格式发生变化的变量*/
 		private var _textformmatChanged:Boolean = false;
-		
+
 		public var html:Boolean = false;
 
 		public function Label(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
@@ -41,6 +41,8 @@ package com.vhall.framework.ui.controls
 			_tf.autoSize = "left";
 			_formmat = _tf.defaultTextFormat;
 			addChild(_tf);
+
+			font = "Microsoft YaHei";
 		}
 
 		/**	@private*/
@@ -57,7 +59,7 @@ package com.vhall.framework.ui.controls
 			{
 				_text = "";
 			}
-			
+
 			if(html)
 			{
 				this._tf.htmlText = text;
@@ -66,7 +68,7 @@ package com.vhall.framework.ui.controls
 			{
 				this._tf.text = text;
 			}
-			
+
 			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
@@ -80,7 +82,7 @@ package com.vhall.framework.ui.controls
 		{
 			return _text;
 		}
-		
+
 		/**
 		 *	获取textfield
 		 * @return
@@ -306,21 +308,21 @@ package com.vhall.framework.ui.controls
 		override protected function sizeChanged():void
 		{
 			super.sizeChanged();
-			
+
 			if(_textformmatChanged)
 			{
 				this._tf.setTextFormat(this._formmat);
 				_textformmatChanged = false;
 			}
-			
+
 			_tf.height = Math.max(_tf.textHeight + 4, 20);
 			_tf.width = _tf.textWidth + 4 + _formmat.indent;
 		}
-		
+
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
-			
+
 			switch(align)
 			{
 				case "center":
