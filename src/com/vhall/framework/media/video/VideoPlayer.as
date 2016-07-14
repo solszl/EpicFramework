@@ -9,6 +9,7 @@
 
 package com.vhall.framework.media.video
 {
+	import com.vhall.framework.log.Logger;
 	import com.vhall.framework.media.interfaces.IMediaProxy;
 	import com.vhall.framework.media.interfaces.IPublish;
 	import com.vhall.framework.media.provider.MediaProxyFactory;
@@ -175,6 +176,7 @@ package com.vhall.framework.media.video
 			}
 			catch(e:Error)
 			{
+				Logger.getLogger("VideoPlayer").info("error");
 				CONFIG::LOGGING
 				{
 					Log.info("内部处理失败" + e.message);

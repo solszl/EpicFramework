@@ -82,8 +82,8 @@ package com.vhall.framework.app.net
 			var s:String = receBytes.readMultiByte(receBytes.length, "");
 			// 反序列化字符串拿到消息体
 			var o:Object = JSON.parse(s); //com.adobe.serialization.json.JSON.decode(s);
-			handleMap[o.type](o);
 			Logger.getLogger("MSG Socket").info("received: " + o.type);
+			handleMap[o.type](o);
 		}
 
 		protected function socketHandler(e:Event):void

@@ -5,7 +5,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.container.HBox;
 	import com.vhall.framework.ui.container.VBox;
 	import com.vhall.framework.ui.event.ListEvent;
-	
+
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -156,14 +156,14 @@ package com.vhall.framework.ui.controls
 			{
 				return;
 			}
-			
+
 			if(selectIndex < con.numChildren && selectIndex >= 0)
 			{
 				(con.getChildAt(selectIndex) as ItemRender).selected = false;
 			}
-			
+
 			_selectIndex = value;
-			
+
 			if(selectIndex >= 0 && dataProvider != null && dataProvider.length > selectIndex)
 			{
 				(con.getChildAt(selectIndex) as ItemRender).selected = true;
@@ -241,7 +241,7 @@ package com.vhall.framework.ui.controls
 			{
 				return null;
 			}
-			
+
 			if (selectIndex >= 0 && selectIndex < _dataProvider.length)
 			{
 				return _dataProvider[selectIndex];
@@ -263,12 +263,12 @@ package com.vhall.framework.ui.controls
 			{
 				return null;
 			}
-			
+
 			if (selectIndex >= 0 && selectIndex < _dataProvider.length)
 			{
 				return con.getChildAt(selectIndex) as ItemRender;
 			}
-			
+
 			return null;
 		}
 
@@ -278,7 +278,7 @@ package com.vhall.framework.ui.controls
 			selectIndex = idx;
 			fireEvent(ListEvent.ItemChanged);
 		}
-		
+
 		public function fireEvent(type:String):void
 		{
 			if(hasEventListener(type))
@@ -291,3 +291,5 @@ package com.vhall.framework.ui.controls
 		}
 	}
 }
+
+
