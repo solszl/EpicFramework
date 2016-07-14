@@ -116,11 +116,6 @@ package com.vhall.framework.ui.controls
 		/**	@private*/
 		public function set font(value:String):void
 		{
-			if(font == value)
-			{
-				return;
-			}
-
 			if(flash.system.Capabilities.manufacturer == "Google Pepper" && _formmat.font == "Microsoft YaHei")
 			{
 				_formmat.font = "微软雅黑";
@@ -129,6 +124,7 @@ package com.vhall.framework.ui.controls
 			{
 				_formmat.font = value;
 			}
+
 			_textformmatChanged = true;
 			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
@@ -323,6 +319,7 @@ package com.vhall.framework.ui.controls
 		{
 			super.updateDisplay();
 
+			_tf.y = _height - _tf.height >> 1 - 2;
 			switch(align)
 			{
 				case "center":

@@ -47,6 +47,7 @@ package com.vhall.framework.ui.controls
 			bg = new Image(this);
 			// 文本
 			btnLabel = new Label(this);
+			btnLabel.align = "center";
 
 			mouseChildren = false;
 			buttonMode = true;
@@ -275,15 +276,9 @@ package com.vhall.framework.ui.controls
 
 			width = bg.width;
 			height = bg.height;
+			btnLabel.width = width;
+			btnLabel.height = height;
 		}
 
-		override protected function updateDisplay():void
-		{
-			super.updateDisplay();
-			// 让文本居中， 此处没考虑文本宽度 大于 背景的情况
-			var xpos:Number = bg.width - btnLabel.width >> 1;
-			var ypos:Number = bg.height - btnLabel.height >> 1 - 1;
-			btnLabel.move(xpos, ypos);
-		}
 	}
 }
