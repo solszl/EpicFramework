@@ -370,10 +370,13 @@ package com.vhall.framework.media.provider
 				_ns.removeEventListener(AsyncErrorEvent.ASYNC_ERROR,errorHandler);
 				_ns.removeEventListener(IOErrorEvent.IO_ERROR,errorHandler);
 				_ns.removeEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
+				_ns.attachCamera(null);
+				_ns.close();
 				_ns.dispose();
 				_ns = null;
 			}
 		}
+
 
 		//清除netconnection的监听,会导致无法播放
 		protected function clearCnListeners():void
