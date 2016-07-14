@@ -2,7 +2,7 @@ package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.ui.interfaces.IState;
-	
+
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
@@ -190,24 +190,24 @@ package com.vhall.framework.ui.controls
 			splitPropertyString("labelColor", value.toString());
 			RenderManager.getInstance().invalidate(invalidate);
 		}
-		
+
 		public function set labelSize(value:Object):void
 		{
 			if(_labelSize == value)
 			{
 				return;
 			}
-			
+
 			_labelSize = value;
 			btnLabel.fontSize = value;
 			RenderManager.getInstance().invalidate(invalidate);
 		}
-		
+
 		public function get labelSize():Object
 		{
 			return _labelSize;
 		}
-		
+
 		/**	设置按钮皮肤，即时刷新样式*/
 		public function setSkin(value:Object):void
 		{
@@ -215,7 +215,7 @@ package com.vhall.framework.ui.controls
 			bg.source = getProperty("skin", state);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
-		
+
 		private var propertiesDic:Dictionary = new Dictionary();
 
 		/**
@@ -246,11 +246,11 @@ package com.vhall.framework.ui.controls
 
 			return propertiesDic[name][index];
 		}
-		
+
 		override protected function sizeChanged():void
 		{
 			super.sizeChanged();
-			
+
 			// 如果和上一个状态相同，return
 			if(_stateChanged)
 			{
@@ -258,7 +258,7 @@ package com.vhall.framework.ui.controls
 				{
 					return
 				}
-				
+
 				bg.source = getProperty("skin", state);
 				bg.setBitmapDataCallBK = updateDisplay;
 				btnLabel.text = getProperty("label", state) == null ? "" : getProperty("label", state).toString();
@@ -266,13 +266,13 @@ package com.vhall.framework.ui.controls
 				lastState = state;
 				_stateChanged = false;
 			}
-			
+
 			if(_labelChanged)
 			{
 				btnLabel.text = getProperty("label", state).toString();
 				_labelChanged = false;
 			}
-			
+
 			width = bg.width;
 			height = bg.height;
 		}
@@ -282,7 +282,7 @@ package com.vhall.framework.ui.controls
 			super.updateDisplay();
 			// 让文本居中， 此处没考虑文本宽度 大于 背景的情况
 			var xpos:Number = bg.width - btnLabel.width >> 1;
-			var ypos:Number = bg.height - btnLabel.height >> 1;
+			var ypos:Number = bg.height - btnLabel.height >> 1 - 1;
 			btnLabel.move(xpos, ypos);
 		}
 	}
