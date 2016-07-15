@@ -319,7 +319,7 @@ package com.vhall.framework.ui.controls
 		{
 			super.updateDisplay();
 
-			_tf.y = _height - _tf.height >> 1 - 2;
+			_tf.y = _height - _tf.height >> 1;
 			switch(align)
 			{
 				case "center":
