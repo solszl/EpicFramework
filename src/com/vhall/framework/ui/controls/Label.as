@@ -319,7 +319,6 @@ package com.vhall.framework.ui.controls
 		{
 			super.updateDisplay();
 
-			_tf.y = _height - _tf.height >> 1;
 			switch(align)
 			{
 				case "center":
@@ -331,6 +330,7 @@ package com.vhall.framework.ui.controls
 				default:
 					break;
 			}
+			_tf.y = height - _tf.height >> 1;
 		}
 	}
 }
