@@ -53,7 +53,14 @@ package com.vhall.framework.app
 
 		protected function initBaseURL():void
 		{
-			if(loaderInfo.parameters.hasOwnProperty("doc_srv"))
+			//"http://ccstatic01.e.vhall.com/player/"
+
+			//"//ccstatic01.e.vhall.com/document"
+			if(loaderInfo.parameters.hasOwnProperty("skinUrl"))
+			{
+				baseURL = loaderInfo.parameters["skinUrl"];
+			}
+			else if(loaderInfo.parameters.hasOwnProperty("doc_srv"))
 			{
 				var ul:String = loaderInfo.parameters["doc_srv"];
 				var str:String = ul.substr(0, ul.lastIndexOf('/') + 1);
