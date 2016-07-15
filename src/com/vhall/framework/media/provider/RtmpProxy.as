@@ -371,6 +371,7 @@ package com.vhall.framework.media.provider
 				_ns.removeEventListener(IOErrorEvent.IO_ERROR,errorHandler);
 				_ns.removeEventListener(NetDataEvent.MEDIA_TYPE_DATA,mediaHandler);
 				_ns.attachCamera(null);
+				_ns.attachAudio(null);
 				_ns.close();
 				_ns.dispose();
 				_ns = null;

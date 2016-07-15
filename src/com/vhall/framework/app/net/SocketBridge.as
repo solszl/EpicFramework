@@ -3,6 +3,7 @@ package com.vhall.framework.app.net
 	import com.hurlant.util.Base64;
 	import com.vhall.framework.log.Logger;
 	import com.vhall.framework.utils.StringUtil;
+
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -90,6 +91,17 @@ package com.vhall.framework.app.net
 		{
 			Logger.getLogger("MSG Socket").info(e.type);
 			handleMap[e.type](e);
+		}
+		/**
+		 *是否连接了
+		 * @return
+		 *
+		 */
+		public function isConnect():Boolean{
+			if(socket){
+				return socket.connected;
+			}
+			return false;
 		}
 	}
 }

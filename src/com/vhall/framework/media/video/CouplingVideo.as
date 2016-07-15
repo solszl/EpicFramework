@@ -73,22 +73,26 @@ package com.vhall.framework.media.video
 		 */		
 		public function stop():void
 		{
-			removeChildren();
-
 			if(_useVideo)
 			{
 				switch(_useVideo)
 				{
 					case _cameraVideo:
 						_useVideo.attachCamera(null);
+						_useVideo.attachNetStream(null);
 						break;
 					case _streamVideo:
+						_useVideo.attachCamera(null);
 						_useVideo.attachNetStream(null);
 						break;
 				}
 				_useVideo.clear();
+				if(_useVideo.parent){
+					_useVideo.parent.removeChild(_useVideo);
+				}
 				_useVideo = null;
 			}
+			removeChildren();
 		}
 
 		/**
