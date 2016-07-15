@@ -47,7 +47,7 @@ package com.vhall.framework.ui.controls
 					onDragStart(e);
 					break;
 				case MouseEvent.MOUSE_UP:
-					_finished.width = Math.max(_quad.x - _quad.width / 2, 1);
+//					_finished.width = Math.max(_quad.x - _quad.width / 2, 1);
 					percent = _finished.width / width;
 					onDragDrop(e);
 					break;
