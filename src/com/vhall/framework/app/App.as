@@ -19,17 +19,17 @@ package com.vhall.framework.app
 	{
 		public static var app:Sprite;
 
-		public static var baseURL:String="";
+		public static var baseURL:String = "";
 
 		/**	初始化开始*/
-		public static var INIT_START:String="app_init_start";
+		public static var INIT_START:String = "app_init_start";
 		/**	初始化完毕*/
-		public static var INIT_END:String="app_init_end";
+		public static var INIT_END:String = "app_init_end";
 
 		public function App()
 		{
 			super();
-			app=this;
+			app = this;
 
 			initApp();
 			dispatchEvent(new Event(INIT_START));
@@ -67,22 +67,22 @@ package com.vhall.framework.app
 //				var str:String = ul.substr(0, ul.lastIndexOf('/') + 1);
 //				baseURL = "http:" + str + "player/";
 //			}
-			if (loaderInfo.parameters.hasOwnProperty("skinUrl"))
+			if(loaderInfo.parameters.hasOwnProperty("skinUrl"))
 			{
-				var ul:String=loaderInfo.parameters["skinUrl"];
+				var ul:String = loaderInfo.parameters["skinUrl"];
 
-				if (ul.indexOf("//") >= 0)
+				if(ul.indexOf("//") >= 0)
 				{
-					ul=ul.substr(ul.indexOf("//") + 2);
+					ul = ul.substr(ul.indexOf("//") + 2);
 				}
-				var str:String=getUrlString(ul);
-				if (str.indexOf("http:") >= 0)
+				var str:String = getUrlString(ul);
+				if(str.indexOf("http:") >= 0)
 				{
-					baseURL=str + "player/";
+					baseURL = str + "player/";
 				}
 				else
 				{
-					baseURL="http://" + str + "/player/";
+					baseURL = "http://" + str + "/player/";
 				}
 			}
 
@@ -93,18 +93,23 @@ package com.vhall.framework.app
 //				baseURL="http:" + str + "player/";
 //			}
 
-			if (loaderInfo.url.indexOf("file") >= 0)
+			if(loaderInfo.parameters.hasOwnProperty("resPath"))
 			{
-				baseURL="";
+				baseURL = loaderInfo.parameters["resPath"];
+			}
+
+			if(loaderInfo.url.indexOf("file") >= 0)
+			{
+				baseURL = "";
 			}
 		}
 
 		private function getUrlString(url:String):String
 		{
-			var str:String=url;
-			if (url.lastIndexOf("/") >= 0)
+			var str:String = url;
+			if(url.lastIndexOf("/") >= 0)
 			{
-				str=url.substr(0, url.lastIndexOf('/'));
+				str = url.substr(0, url.lastIndexOf('/'));
 				return getUrlString(str);
 			}
 			return str;
@@ -116,8 +121,8 @@ package com.vhall.framework.app
 		 */
 		private function initLog():void
 		{
-			var clip:LoggerClip=new LoggerClip(this);
-			Logger.mcOutputClip=clip;
+			var clip:LoggerClip = new LoggerClip(this);
+			Logger.mcOutputClip = clip;
 			Logger.getLogger().info("Logger inited since start:" + getTimer() + "ms");
 		}
 
@@ -127,7 +132,7 @@ package com.vhall.framework.app
 		 */
 		private function initKeyboard():void
 		{
-			var km:KeyboardMapper=new KeyboardMapper(StageManager.stage);
+			var km:KeyboardMapper = new KeyboardMapper(StageManager.stage);
 			km.mapListener(showHideLog, Keyboard.SHIFT, Keyboard.L);
 		}
 
