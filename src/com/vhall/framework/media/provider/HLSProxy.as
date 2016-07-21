@@ -91,7 +91,7 @@ package com.vhall.framework.media.provider
 					excute(MediaProxyStates.STREAM_LOADING, true);
 					break;
 				case InfoCode.NetStream_Buffer_Full:
-					excute(MediaProxyStates.STREAM_LOADING, true);
+					excute(MediaProxyStates.STREAM_FULL, true);
 					break;
 			}
 		}
