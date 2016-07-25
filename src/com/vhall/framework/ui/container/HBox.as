@@ -1,7 +1,7 @@
 package com.vhall.framework.ui.container
 {
 	import com.vhall.framework.ui.controls.UIComponent;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
@@ -22,16 +22,17 @@ package com.vhall.framework.ui.container
 		private var maxHeight:Number = 0;
 
 		private var _verticalAlign:String = "top";
-		
+
 		private var _horizontalAlign:String = "left";
 
 		private var calcW:Number = 0;
+
 		public function HBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
 			super(parent, xpos, ypos);
 			gap = 5;
 		}
-		
+
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
@@ -51,12 +52,12 @@ package com.vhall.framework.ui.container
 			for(var i:int = 0; i < numChild; i++)
 			{
 				child = getChildAt(i);
-				
+
 				if(child is UIComponent && (child as UIComponent).visible == false)
 				{
 					continue;
 				}
-				
+
 				child.x = xpos;
 				xpos += child.width;
 				xpos += gap;
@@ -94,27 +95,27 @@ package com.vhall.framework.ui.container
 				}
 			}
 		}
-		
+
 		protected function layoutHorizontal():void
 		{
 			if(_horizontalAlign == "left")
 			{
 				return;
 			}
-			
-			var deltaX:Number=_width - calcW;
+
+			var deltaX:Number = _width - calcW;
 			var child:DisplayObject;
-			var i:int=0;
-			for (i=0; i < numChildren; i++)
+			var i:int = 0;
+			for(i = 0; i < numChildren; i++)
 			{
-				child=getChildAt(i);
-				switch (_horizontalAlign)
+				child = getChildAt(i);
+				switch(_horizontalAlign)
 				{
 					case "center":
-						child.x+=deltaX >> 1;
+						child.x += deltaX >> 1;
 						break;
 					case "right":
-						child.x+=deltaX;
+						child.x += deltaX;
 						break;
 				}
 			}
@@ -126,7 +127,7 @@ package com.vhall.framework.ui.container
 		 * <li/><b> center </b> 中间对齐</br>
 		 * <li/><b> bottom </b> 底部对齐</br>
 		 */
-		[Inspectable(category = "General", enumeration = "top, center, bottom", defaultValue = "top")]
+		[Inspectable(category = "General", enumeration = "top, center, bottom", defaultValue = "center")]
 		public function get verticalAlign():String
 		{
 			return _verticalAlign;
