@@ -18,7 +18,7 @@ package com.vhall.framework.ui.controls
 		/**	文本内容*/
 		protected var _text:String;
 		/**	默认承载文本的容器*/
-		private var _tf:TextField;
+		protected var _tf:TextField;
 		/**	文本格式化*/
 		private var _formmat:TextFormat;
 		/**	文本格式发生变化的变量*/
@@ -38,11 +38,16 @@ package com.vhall.framework.ui.controls
 			_tf = new TextField();
 			_tf.defaultTextFormat = new TextFormat("Microsoft YaHei", 12);
 			_tf.selectable = false;
-			_tf.autoSize = "left";
 			_formmat = _tf.defaultTextFormat;
 			addChild(_tf);
 
 			font = "Microsoft YaHei";
+		}
+
+		override public function set width(value:Number):void
+		{
+			super.width = value;
+			_tf.width = value;
 		}
 
 		/**	@private*/
@@ -69,7 +74,6 @@ package com.vhall.framework.ui.controls
 				this._tf.text = text;
 			}
 
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -126,7 +130,6 @@ package com.vhall.framework.ui.controls
 			}
 
 			_textformmatChanged = true;
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -151,7 +154,6 @@ package com.vhall.framework.ui.controls
 			this._formmat.size = value;
 
 			_textformmatChanged = true;
-			RenderManager.getInstance().invalidate(sizeChanged);
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -312,13 +314,13 @@ package com.vhall.framework.ui.controls
 			}
 
 			_tf.height = Math.max(_tf.textHeight + 4, 20);
-			_tf.width = _tf.textWidth + 4 + _formmat.indent;
+			// fix unrecongized width
+//			_tf.width = _tf.textWidth + 4 + _formmat.indent;
 		}
 
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
-
 			switch(align)
 			{
 				case "center":

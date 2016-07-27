@@ -73,7 +73,7 @@ package com.vhall.framework.ui.ext
 
 		private function layoutICON():void
 		{
-			switch(iconAlign)
+			switch(iconAlign.toLowerCase())
 			{
 				case ICONAlign.LEFT:
 					icon.x = 0;
