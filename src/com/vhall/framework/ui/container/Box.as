@@ -2,7 +2,7 @@ package com.vhall.framework.ui.container
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.ui.controls.UIComponent;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
@@ -27,7 +27,7 @@ package com.vhall.framework.ui.container
 			{
 				return child;
 			}
-			
+
 			children.push(child);
 			var obj:DisplayObject = super.addChild(child);
 			RenderManager.getInstance().invalidate(invalidate);
@@ -40,13 +40,13 @@ package com.vhall.framework.ui.container
 			{
 				index = children.length;
 			}
-			
+
 			if(children.indexOf(child) >= 0)
 			{
 				setChildIndex(child, index);
 				return child;
 			}
-			
+
 			children.splice(index, 0, child);
 			var obj:DisplayObject = super.addChildAt(child, index);
 			RenderManager.getInstance().invalidate(invalidate);
@@ -60,15 +60,19 @@ package com.vhall.framework.ui.container
 			{
 				children.splice(chIndex, 1);
 			}
+			else
+			{
+				return null;
+			}
 
 			var obj:DisplayObject = super.removeChild(child);
 			RenderManager.getInstance().invalidate(invalidate);
-			
+
 			if(obj is UIComponent)
 			{
 				UIComponent(obj).destory();
 			}
-			
+
 			return obj;
 		}
 
@@ -83,7 +87,7 @@ package com.vhall.framework.ui.container
 //			var obj:DisplayObject = super.removeChildAt(index);
 //			RenderManager.getInstance().invalidate(invalidate);
 //			return obj;
-			
+
 			var obj:DisplayObject = removeChild(getChildAt(index));
 			RenderManager.getInstance().invalidate(invalidate);
 			return obj;
@@ -124,19 +128,19 @@ package com.vhall.framework.ui.container
 			index = index < 0 ? 0 : index
 			return children[index];
 		}
-		
+
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
-			
-			for each (var child:DisplayObject in children) 
+
+			for each(var child:DisplayObject in children)
 			{
 				if(child is UIComponent)
 				{
 					UIComponent(child).validateNow();
 				}
 			}
-			
+
 			layoutChildren();
 		}
 
