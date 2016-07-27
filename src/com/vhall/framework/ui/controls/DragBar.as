@@ -270,7 +270,7 @@ package com.vhall.framework.ui.controls
 		 * @param value
 		 *
 		 */
-		private function getRoundPercent(value:Number):Number
+		protected function getRoundPercent(value:Number):Number
 		{
 			var temp:Number = Number(value.toFixed(6));
 //			return temp > 1 ? 1 : temp < 0 ? temp : 0;
