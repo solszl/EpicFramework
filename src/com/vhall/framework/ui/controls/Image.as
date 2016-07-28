@@ -47,6 +47,15 @@ package com.vhall.framework.ui.controls
 			super.createChildren();
 			bitmap = new Bitmap();
 			addChildAt(bitmap, 0);
+			bitmap.bitmapData.dispose();
+			bitmap.bitmapData = null;
+		}
+
+		override public function destory():void
+		{
+			super.destory();
+			setBitmapDataCallBK = null;
+			innerCallBK = null;
 		}
 
 		/**
@@ -151,7 +160,6 @@ package com.vhall.framework.ui.controls
 					failed(null, "");
 					return;
 				}
-				resizeIfNeed();
 			}
 			else
 			{
@@ -164,7 +172,6 @@ package com.vhall.framework.ui.controls
 						failed(null, "");
 						return;
 					}
-					resizeIfNeed();
 				}
 				else
 				{
@@ -196,6 +203,8 @@ package com.vhall.framework.ui.controls
 			bitmap.bitmapData = value;
 		}
 
+		private var innerCallBK:Function;
+
 		private function complete(item:Object, content:Object, domain:ApplicationDomain):void
 		{
 			if(source != item.url)
@@ -204,10 +213,10 @@ package com.vhall.framework.ui.controls
 			}
 			var bmd:BitmapData = (content as Bitmap).bitmapData;
 
+			innerCallBK = parentInvalidate;
 			setBitmapData(bmd);
 			_w = bmd.width;
 			_h = bmd.height;
-			resizeIfNeed();
 			ResourceItems.addToCache(item.url, content as DisplayObject);
 		}
 
@@ -227,13 +236,13 @@ package com.vhall.framework.ui.controls
 		private function resizeIfNeed():void
 		{
 			var sizeChange:Boolean = false;
-			if(isNaN(_w))
+			if(isNaN(_w) || _w == 0)
 			{
 				_w = bitmap.bitmapData.width;
 				sizeChange = true;
 			}
 
-			if(isNaN(_h))
+			if(isNaN(_h) || _h == 0)
 			{
 				_h = bitmap.bitmapData.height;
 				sizeChange = true;
@@ -241,20 +250,18 @@ package com.vhall.framework.ui.controls
 
 			if(sizeChange && (!isNaN(_w) && !isNaN(_h)))
 			{
-				RenderManager.getInstance().invalidate(invalidate);
+				invalidate();
 			}
 		}
 
 		private function setBitmapData(bmd:BitmapData):void
 		{
 			bitmap.bitmapData = bmd;
-			RenderManager.getInstance().invalidate(invalidate);
-			if(setBitmapDataCallBK == null)
-			{
-				return;
-			}
+			resizeIfNeed();
 
-			setBitmapDataCallBK();
+			innerCallBK && innerCallBK();
+
+			setBitmapDataCallBK && setBitmapDataCallBK();
 		}
 
 		override protected function sizeChanged():void
@@ -298,7 +305,8 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 
-			if(w < (rect.width +rect.x + 1) || h < (rect.height +rect.y + 1)){
+			if(w < (rect.width + rect.x + 1) || h < (rect.height + rect.y + 1))
+			{
 				return;
 			}
 
