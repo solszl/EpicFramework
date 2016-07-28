@@ -73,5 +73,16 @@ package com.vhall.framework.ui.controls
 		{
 			return _tf.backgroundColor;
 		}
+
+		override protected function sizeChanged():void
+		{
+			if(_textformmatChanged)
+			{
+				this._tf.setTextFormat(this._formmat);
+				_textformmatChanged = false;
+			}
+
+			_tf.height = Math.max(_tf.textHeight + 4, 20);
+		}
 	}
 }

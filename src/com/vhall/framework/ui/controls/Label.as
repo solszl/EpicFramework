@@ -20,9 +20,9 @@ package com.vhall.framework.ui.controls
 		/**	默认承载文本的容器*/
 		protected var _tf:TextField;
 		/**	文本格式化*/
-		private var _formmat:TextFormat;
+		protected var _formmat:TextFormat;
 		/**	文本格式发生变化的变量*/
-		private var _textformmatChanged:Boolean = false;
+		protected var _textformmatChanged:Boolean = false;
 
 		public var html:Boolean = false;
 
@@ -314,8 +314,7 @@ package com.vhall.framework.ui.controls
 			}
 
 			_tf.height = Math.max(_tf.textHeight + 4, 20);
-			// fix unrecongized width
-//			_tf.width = _tf.textWidth + 4 + _formmat.indent;
+			_tf.width = _tf.textWidth + 4 + _formmat.indent;
 		}
 
 		override protected function updateDisplay():void
