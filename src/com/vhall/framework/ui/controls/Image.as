@@ -47,8 +47,6 @@ package com.vhall.framework.ui.controls
 			super.createChildren();
 			bitmap = new Bitmap();
 			addChildAt(bitmap, 0);
-			bitmap.bitmapData.dispose();
-			bitmap.bitmapData = null;
 		}
 
 		override public function destory():void
@@ -56,6 +54,8 @@ package com.vhall.framework.ui.controls
 			super.destory();
 			setBitmapDataCallBK = null;
 			innerCallBK = null;
+			bitmap.bitmapData.dispose();
+			bitmap.bitmapData = null;
 		}
 
 		/**
