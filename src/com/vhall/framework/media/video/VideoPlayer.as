@@ -42,6 +42,7 @@ package com.vhall.framework.media.video
 
 		private var _viewPort:Rectangle;
 
+		public var bgVisble:Boolean = true;
 		private var _backgroundColor:int = 0x000000;
 		/** 图像保真 默认关闭*/
 		private var _eyefidelity:Boolean = false;
@@ -310,6 +311,8 @@ package com.vhall.framework.media.video
 		 */
 		private function drawBackground(alpha:Number = 1):void
 		{
+			if(!bgVisble)
+				return;
 			this.graphics.clear();
 			this.graphics.beginFill(_backgroundColor, alpha);
 			this.graphics.drawRect(_viewPort.left, _viewPort.top, _viewPort.width, _viewPort.height);
