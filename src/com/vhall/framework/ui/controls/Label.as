@@ -314,23 +314,15 @@ package com.vhall.framework.ui.controls
 			}
 
 			_tf.height = Math.max(_tf.textHeight + 4, 20);
-			_tf.width = _tf.textWidth + 4 + _formmat.indent;
+			if(align == "left")
+			{
+				_tf.width = _tf.textWidth + 4 + _formmat.indent;
+			}
 		}
 
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
-			switch(align)
-			{
-				case "center":
-					_tf.x = _width - _tf.width >> 1;
-					break;
-				case "right":
-					_tf.x = _width - _tf.width;
-					break;
-				default:
-					break;
-			}
 			_tf.y = height - _tf.height >> 1;
 		}
 	}

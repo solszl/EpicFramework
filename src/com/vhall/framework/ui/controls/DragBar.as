@@ -119,6 +119,20 @@ package com.vhall.framework.ui.controls
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
+		public function set backgroundSkin(value:Object):void
+		{
+			_bg.source = value;
+			_quadChanged = true;
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+
+		public function set finishSkin(value:Object):void
+		{
+			_finished.source = value;
+			_quadChanged = true;
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+
 		/**	步长 默认 0.1*/
 		public function get step():Number
 		{

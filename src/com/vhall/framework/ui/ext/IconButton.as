@@ -16,7 +16,7 @@ package com.vhall.framework.ui.ext
 		/**	@default (0,0)*/
 		private var _position:Point;
 
-		private var _iconAlign:String;
+		private var _iconAlign:String = ICONAlign.CENTER;
 
 		private var _icon:Image;
 
@@ -34,9 +34,9 @@ package com.vhall.framework.ui.ext
 
 		override protected function updateDisplay():void
 		{
-			super.updateDisplay();
-
 			layoutICON();
+
+			super.updateDisplay();
 		}
 
 		public function get icon():Image

@@ -226,7 +226,7 @@ package com.vhall.framework.ui.controls
 			graphics.beginFill(0x00DEFF, 0.3);
 			graphics.drawRect(0, 0, 5, 5);
 			graphics.endFill();
-			trace(msg);
+			trace(msg, item.url);
 		}
 
 		/**

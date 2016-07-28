@@ -1,6 +1,9 @@
 package com.vhall.framework.app.manager
 {
 	import flash.display.BlendMode;
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.display.StageAlign;
@@ -10,6 +13,7 @@ package com.vhall.framework.app.manager
 	import flash.events.ErrorEvent;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.system.ApplicationDomain;
 
 	/**
@@ -92,10 +96,53 @@ package com.vhall.framework.app.manager
 			var content:String = "【Error】:\n It's probably a bug, please contact Sol::<a herf ='mailto:zhenliang.sun@vhall.com'</a>" + msg;
 			trace(content);
 		}
-		
+
 		public static function toggleFullscreen(e:MouseEvent = null):void
 		{
-			stage.displayState = stage.displayState == StageDisplayState.NORMAL ? StageDisplayState.FULL_SCREEN :StageDisplayState.NORMAL;
+			stage.displayState = stage.displayState == StageDisplayState.NORMAL ? StageDisplayState.FULL_SCREEN : StageDisplayState.NORMAL;
+		}
+
+		public static function perpareCheckObjectsUnderPoint():void
+		{
+			var arr:Array = [];
+			stage.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void
+			{
+				arr = [];
+				var p:Point = new Point(e.stageX, e.stageY);
+				check(stage, p, arr);
+				trace(arr.join(","));
+			});
+		}
+
+		private static function check(obj:DisplayObject, pt:Point, arr:Array):void
+		{
+			if(!obj.visible)
+				return;
+			if(obj is Stage || obj.hitTestPoint(pt.x, pt.y, true))
+			{
+				if(obj is InteractiveObject && InteractiveObject(obj).mouseEnabled)
+					arr.push(obj);
+				if(obj is DisplayObjectContainer)
+				{
+					var doc:DisplayObjectContainer = obj as DisplayObjectContainer;
+					if(doc.mouseChildren && doc.numChildren)
+					{
+						var n:int = doc.numChildren;
+						for(var i:int = 0; i < n; i++)
+						{
+							try
+							{
+								var child:DisplayObject = doc.getChildAt(i);
+								check(child, pt, arr);
+							}
+							catch(e:Error)
+							{
+								//another sandbox?
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
