@@ -15,6 +15,7 @@ package com.vhall.framework.ui.controls
 	 */
 	public class Label extends UIComponent
 	{
+		protected var htmlFormat:String = "<font align='{2}' color='#{0}' size='{4}' face='{3}'>{1}</font>";
 		/**	文本内容*/
 		protected var _text:String;
 		/**	默认承载文本的容器*/
@@ -50,6 +51,19 @@ package com.vhall.framework.ui.controls
 			_tf.width = value;
 		}
 
+		override public function set height(value:Number):void
+		{
+			super.height = value;
+			_tf.height = value;
+		}
+
+		override public function setSize(w:Number, h:Number):void
+		{
+			super.setSize(w, h);
+			_tf.width = w;
+			_tf.height = h;
+		}
+
 		/**	@private*/
 		public function set text(value:String):void
 		{
@@ -67,7 +81,7 @@ package com.vhall.framework.ui.controls
 
 			if(html)
 			{
-				this._tf.htmlText = text;
+				this._tf.htmlText = StringUtil.substitute(htmlFormat, color, _text, align, font, fontSize);
 			}
 			else
 			{
@@ -307,17 +321,22 @@ package com.vhall.framework.ui.controls
 		{
 			super.sizeChanged();
 
-			if(_textformmatChanged)
+			_tf.height = Math.max(_tf.textHeight + 4, 20);
+
+			if(!html)
 			{
-				this._tf.setTextFormat(this._formmat);
-				_textformmatChanged = false;
+				if(align == "left")
+				{
+					_tf.width = _tf.textWidth + 4 + _formmat.indent;
+				}
+
+				if(_textformmatChanged)
+				{
+					this._tf.setTextFormat(this._formmat);
+					_textformmatChanged = false;
+				}
 			}
 
-			_tf.height = Math.max(_tf.textHeight + 4, 20);
-			if(align == "left")
-			{
-				_tf.width = _tf.textWidth + 4 + _formmat.indent;
-			}
 		}
 
 		override protected function updateDisplay():void
