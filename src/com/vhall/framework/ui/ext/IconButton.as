@@ -20,6 +20,12 @@ package com.vhall.framework.ui.ext
 
 		private var _icon:Image;
 
+		private var _align:String = "h";
+
+		public var useUnifiedLayout:Boolean = true;
+
+		public var gap:int = 2;
+
 		public function IconButton(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
 			super(parent, xpos, ypos);
@@ -34,7 +40,31 @@ package com.vhall.framework.ui.ext
 
 		override protected function updateDisplay():void
 		{
-			layoutICON();
+			if(useUnifiedLayout)
+			{
+				switch(align)
+				{
+					case "h":
+						icon.x = (width - (icon.width + btnLabel.width + gap)) >> 1;
+						btnLabel.x = icon.x + icon.width + gap;
+						var maxH:int = Math.max(icon.height, btnLabel.height);
+						icon.y = btnLabel.y = height - maxH >> 1;
+						break;
+					case "v":
+						icon.y = (height - (icon.height + btnLabel.height + gap)) >> 1;
+						btnLabel.y = icon.y + icon.height + gap;
+						icon.x = width - icon.width >> 1;
+						btnLabel.x = width - btnLabel.width >> 1;
+						break;
+					default:
+						layoutICON();
+						break;
+				}
+			}
+			else
+			{
+				layoutICON();
+			}
 
 			super.updateDisplay();
 		}
@@ -70,6 +100,15 @@ package com.vhall.framework.ui.ext
 			this._position = p;
 		}
 
+		public function set align(value:String):void
+		{
+			this._align = value;
+		}
+
+		public function get align():String
+		{
+			return this._align;
+		}
 
 		private function layoutICON():void
 		{

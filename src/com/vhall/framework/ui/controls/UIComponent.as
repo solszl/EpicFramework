@@ -181,14 +181,12 @@ package com.vhall.framework.ui.controls
 		/**显示边框*/
 		public function showBorder(color:uint = 0xff0000):void
 		{
-			RenderManager.getInstance().validateNow();
+//			RenderManager.getInstance().validateNow();
 
-			with(this)
-			{
-				graphics.clear();
-				graphics.lineStyle(1, color);
-				graphics.drawRect(0, 0, width, height);
-			}
+			graphics.clear();
+			graphics.lineStyle(1, color);
+			graphics.drawRect(-1, -1, width + 1, height + 1);
+			graphics.endFill();
 		}
 
 		private static const info:String = "[{0}] width: {1} , height: {2} , x: {3} , y: {4} , haveParent, {5}, onStage: {6}";

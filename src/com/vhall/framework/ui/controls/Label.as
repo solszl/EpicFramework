@@ -29,6 +29,7 @@ package com.vhall.framework.ui.controls
 
 		public function Label(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
+			_text = "";
 			super(parent, xpos, ypos);
 		}
 
@@ -37,7 +38,7 @@ package com.vhall.framework.ui.controls
 			super.createChildren();
 
 			_tf = new TextField();
-			_tf.defaultTextFormat = new TextFormat("Microsoft YaHei", 12);
+			_tf.defaultTextFormat = new TextFormat("Microsoft YaHei", 12, 0x383838);
 			_tf.selectable = false;
 			_formmat = _tf.defaultTextFormat;
 			addChild(_tf);
@@ -85,7 +86,7 @@ package com.vhall.framework.ui.controls
 			}
 			else
 			{
-				this._tf.text = text;
+				this._tf.text = _text;
 			}
 
 			RenderManager.getInstance().invalidate(invalidate);

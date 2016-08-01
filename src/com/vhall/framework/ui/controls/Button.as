@@ -18,7 +18,7 @@ package com.vhall.framework.ui.controls
 		private var bg:Image;
 
 		/**	文本*/
-		private var btnLabel:Label;
+		protected var btnLabel:Label;
 
 		private var _skin:Object;
 		private var _label:String;
