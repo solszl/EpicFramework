@@ -19,7 +19,7 @@ package com.vhall.framework.ui.controls
 
 		private var tf:TextField;
 
-		private static const PADDING:Number = 6;
+		private static const PADDING:Number = 4;
 
 		private static const MSG:String = "<font color='#FFFFFF' font-family='Microsoft YaHei'>{0}</font>";
 

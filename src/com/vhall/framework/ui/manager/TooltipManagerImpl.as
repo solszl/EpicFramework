@@ -2,7 +2,7 @@ package com.vhall.framework.ui.manager
 {
 	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.controls.ToolTip;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -30,7 +30,7 @@ package com.vhall.framework.ui.manager
 
 		public static function getInstance():TooltipManagerImpl
 		{
-			if (!instance)
+			if(!instance)
 			{
 				instance = new TooltipManagerImpl();
 			}
@@ -40,7 +40,7 @@ package com.vhall.framework.ui.manager
 
 		public function TooltipManagerImpl()
 		{
-			if (instance)
+			if(instance)
 			{
 				throw new IllegalOperationError("TooltipManagerImpl is singlton");
 			}
@@ -67,7 +67,7 @@ package com.vhall.framework.ui.manager
 		public function registTooltip(target:DisplayObject, tooltip:Object):void
 		{
 			// 新旧tooltip一样的时候。 返回
-			if (this.tooltip == tooltip)
+			if(this.tooltip == tooltip)
 			{
 				return;
 			}
@@ -75,7 +75,7 @@ package com.vhall.framework.ui.manager
 			// 将tooltip缓存到 tooltip对象池中
 			targetMap[target] = tooltip;
 
-			if (tooltip)
+			if(tooltip)
 			{
 				// 添加tooltip
 				addTooltip(target);
@@ -98,7 +98,7 @@ package com.vhall.framework.ui.manager
 			target.addEventListener(MouseEvent.MOUSE_OUT, onMouseOutHandler);
 			target.addEventListener(Event.REMOVED_FROM_STAGE, onMouseOutHandler);
 
-			if (checkIfOver(target))
+			if(checkIfOver(target))
 			{
 				this.previousTarget = null;
 				showHideTip(target);
@@ -115,12 +115,12 @@ package com.vhall.framework.ui.manager
 			target.removeEventListener(MouseEvent.MOUSE_OUT, onMouseOutHandler);
 			target.removeEventListener(Event.REMOVED_FROM_STAGE, onMouseOutHandler);
 
-			if (target in targetMap)
+			if(target in targetMap)
 			{
 				delete targetMap[target]
 			}
 
-			if (checkIfOver(target))
+			if(checkIfOver(target))
 			{
 				showHideTip();
 			}
@@ -134,17 +134,17 @@ package com.vhall.framework.ui.manager
 		 */
 		private function checkIfOver(target:DisplayObject):Boolean
 		{
-			if (!target)
+			if(!target)
 			{
 				return false;
 			}
 
-			if (target.stage == null)
+			if(target.stage == null)
 			{
 				return false;
 			}
 
-			if (target.stage.mouseX == 0 && target.stage.mouseY == 0)
+			if(target.stage.mouseX == 0 && target.stage.mouseY == 0)
 			{
 				return false;
 			}
@@ -160,7 +160,7 @@ package com.vhall.framework.ui.manager
 		private function showHideTip(target:DisplayObject = null):void
 		{
 			this.currentTarget = target;
-			if (target == null)
+			if(target == null)
 			{
 				stage.removeEventListener(MouseEvent.MOUSE_MOVE, onStageMoveHandler);
 				previousTarget = null;
@@ -169,12 +169,12 @@ package com.vhall.framework.ui.manager
 				return;
 			}
 
-			if (target.stage == null || target.visible == false)
+			if(target.stage == null || target.visible == false)
 			{
 				return;
 			}
 
-			if (previousTarget != target)
+			if(previousTarget != target)
 			{
 				previousTarget = target;
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, onStageMoveHandler);
@@ -204,7 +204,7 @@ package com.vhall.framework.ui.manager
 		private function targetChanged():void
 		{
 			// 把tips容器放到舞台的最上方，或者修改为跟target.parent 一个层级
-			if (holder.parent == null)
+			if(holder.parent == null)
 			{
 				holder.mouseChildren = holder.mouseEnabled = false;
 				stage.addChild(holder);
@@ -214,7 +214,7 @@ package com.vhall.framework.ui.manager
 			holder.parent.setChildIndex(holder, holder.parent.numChildren - 1);
 			var content:Object = targetMap[currentTarget];
 
-			while (holder.numChildren)
+			while(holder.numChildren)
 			{
 				tipsPool.push(holder.removeChildAt(0));
 			}
@@ -227,7 +227,7 @@ package com.vhall.framework.ui.manager
 
 		private function updatePosition():void
 		{
-			if (!currentTarget.hasOwnProperty("callOut"))
+			if(!currentTarget.hasOwnProperty("callOut"))
 			{
 				showHideTip();
 				return;
@@ -235,23 +235,23 @@ package com.vhall.framework.ui.manager
 
 			// stage point
 			var sp:Point = currentTarget.localToGlobal(new Point());
-			switch (currentTarget["callOut"])
+			switch(currentTarget["callOut"])
 			{
 				case "left":
-					holder.x = sp.x - holder.width - 2;
+					holder.x = sp.x - holder.width - 4;
 					holder.y = sp.y + (currentTarget.height - holder.height >> 1);
 					break;
 				case "right":
-					holder.x = sp.x + currentTarget.width + 2;
+					holder.x = sp.x + currentTarget.width + 4;
 					holder.y = sp.y + (currentTarget.height - holder.height >> 1);
 					break;
 				case "top":
 					holder.x = sp.x + (currentTarget.width - holder.width >> 1);
-					holder.y = sp.y - holder.height;
+					holder.y = sp.y - holder.height - 4;
 					break;
 				case "bottom":
 					holder.x = sp.x + (currentTarget.width - holder.width >> 1);
-					holder.y = sp.y + currentTarget.height + 2;
+					holder.y = sp.y + currentTarget.height + 4;
 					break;
 				default:
 					useStageMousePosition();
@@ -265,11 +265,11 @@ package com.vhall.framework.ui.manager
 			var x:int = stage.mouseX + 20; //point.x;
 			var y:int = stage.mouseY + 20; //point.y;
 			//边界检测
-			if (x + holder.width > stage.stageWidth)
+			if(x + holder.width > stage.stageWidth)
 			{
 				x = stage.mouseX - holder.width;
 			}
-			if (y + holder.height > stage.stageHeight)
+			if(y + holder.height > stage.stageHeight)
 			{
 				y = stage.mouseY - holder.height;
 			}
