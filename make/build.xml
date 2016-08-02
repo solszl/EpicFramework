@@ -1,0 +1,42 @@
+<project basedir="../" default="build">
+ 
+	<!-- load configuration properties -->
+	<property file="make/build.properties" />
+	
+	<!-- load globleMacro -->
+	<import file="../../builder/make/ant_globalsDef.xml" />
+	
+	<target name="build" depends="init,compileLibrary"/>
+	
+	<!-- delete the DEPLOY dir and tr_lib.swc-->
+	<target name="init">
+		<!---->
+		<echo>${src.dir}</echo>
+		<echo>${bin.dir}</echo>
+		<delete>
+	         <fileset dir="${bin.dir}" includes="EpicFramework.swc"/>
+	     </delete>
+	    <delete>
+			<fileset dir="${src.dir}">
+			    <include name="mainifest.xml"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	
+	<!--编译 tr_lib  -->
+	<target name="createMainifest">
+		<java classname="GenerateClassList" failonerror="false" fork="true">
+		  <classpath>
+		    <path location="${lib.dir}/GenerateClassList.jar" />
+		  </classpath>
+			<arg value="${src.dir}"/>
+			<arg value=".as"/>
+		</java>
+		<sleep seconds="1"/>
+	</target>
+	<target name="compileLibrary" depends="createMainifest">
+		<compile_swc out="${bin.dir}/EpicFramework.swc" src.dir="${src.dir}" nameSpace="${nameSpace}" libs="${localLibs.dir}"/>
+	</target>
+	
+</project>
