@@ -55,10 +55,10 @@ package com.vhall.framework.ui.controls
 			imgBackground = new Image(this);
 			imgBackground.mouseEnabled = true;
 			imgBackground.rect = new Rectangle(2, 2, 2, 2);
-			backgroundSkin = ComponentUtils.genInteractiveRect(width, height, null, 0, 0, 0xFFFFFF);
+			backgroundSkin = ComponentUtils.genInteractiveRect(width, height, null, 0, 0, 0x535353, 0.6);
 
 			imgQuad = new Button(this);
-			quadSkin = ComponentUtils.genInteractiveRect(10, 10, null, 0, 0, 0xFF0000);
+			quadSkin = ComponentUtils.genInteractiveRect(10, 10, null, 0, 0, 0xE7E7E7);
 			imgQuad.addEventListener(MouseEvent.MOUSE_DOWN, onDrag);
 		}
 
@@ -211,6 +211,7 @@ package com.vhall.framework.ui.controls
 			if(min == value)
 				return;
 
+			_min = value;
 			validValue();
 			adjustQuadPosition();
 		}
@@ -226,6 +227,7 @@ package com.vhall.framework.ui.controls
 			if(max == value)
 				return;
 
+			_max = value;
 			validValue();
 			adjustQuadPosition();
 		}

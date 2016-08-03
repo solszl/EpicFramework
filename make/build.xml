@@ -24,7 +24,7 @@
 	</target>
 	
 	
-	<!--编译 tr_lib  -->
+	<!--编译 EpicFramework.swc  -->
 	<target name="createMainifest">
 		<java classname="GenerateClassList" failonerror="false" fork="true">
 		  <classpath>
