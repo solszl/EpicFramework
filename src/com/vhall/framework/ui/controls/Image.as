@@ -27,13 +27,15 @@ package com.vhall.framework.ui.controls
 
 		/**	九宫格矩形*/
 		private var _rect:Rectangle;
+
 		/**	是否使用九宫格*/
 		private var _useScale9Rect:Boolean;
 
 		private var bitmap:Bitmap;
 
-		private var _w:Number;
-		private var _h:Number;
+		private var _w:Number = 0;
+
+		private var _h:Number = 0;
 
 		public var setBitmapDataCallBK:Function = null;
 
@@ -59,7 +61,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	九宫格的矩形
+		 * 九宫格的矩形
 		 * @param value
 		 *
 		 */
@@ -146,15 +148,17 @@ package com.vhall.framework.ui.controls
 			}
 		}
 
-		/**根据字符串去加载图片，获取bmd 填充给bitmap，2种方式
+		/**
+		 * 根据字符串去加载图片，获取bmd 填充给bitmap，2种方式
 		 * <li/> 1：字符串为导出类，并且已经加载到当前作用域内
 		 * <li/> 2：字符串为URL地址，需要加载回调显示
-		 **/
+		 */
 		private function fillBySring(value:String):void
 		{
 			if(value.indexOf("assets/") == 0)
 			{
 				setBitmapData(ResourceLibrary.getBitmapData(String(value)));
+
 				if(bitmap.bitmapData == null)
 				{
 					failed(null, "");
@@ -186,6 +190,7 @@ package com.vhall.framework.ui.controls
 		private function fillByClass(value:Class):void
 		{
 			var bmd:BitmapData;
+
 			if(getQualifiedSuperclassName(value) == getQualifiedClassName(BitmapData))
 			{
 				bmd = new value(1, 1);
@@ -214,9 +219,13 @@ package com.vhall.framework.ui.controls
 			var bmd:BitmapData = (content as Bitmap).bitmapData;
 
 			innerCallBK = parentInvalidate;
+
+			if(!_useScale9Rect)
+			{
+				_w = bmd.width;
+				_h = bmd.height;
+			}
 			setBitmapData(bmd);
-			_w = bmd.width;
-			_h = bmd.height;
 			ResourceItems.addToCache(item.url, content as DisplayObject);
 		}
 
@@ -236,6 +245,7 @@ package com.vhall.framework.ui.controls
 		private function resizeIfNeed():void
 		{
 			var sizeChange:Boolean = false;
+
 			if(isNaN(_w) || _w == 0)
 			{
 				_w = bitmap.bitmapData.width;
@@ -318,6 +328,7 @@ package com.vhall.framework.ui.controls
 			var cols:Array = [0, rect.left, rect.right, bitmap.width];
 			var newRows:Array = [0, rect.top, h - (bitmap.height - rect.bottom), h];
 			var newCols:Array = [0, rect.left, w - (bitmap.width - rect.right), w];
+
 			for(var cx:int = 0; cx < 3; cx++)
 			{
 				for(var cy:int = 0; cy < 3; cy++)
