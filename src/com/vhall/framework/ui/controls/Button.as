@@ -21,8 +21,11 @@ package com.vhall.framework.ui.controls
 		protected var btnLabel:Label;
 
 		private var _skin:Object;
+
 		private var _label:String;
+
 		private var _labelColor:Object;
+
 		private var _labelSize:Object;
 
 		private var _labelChanged:Boolean = false;
@@ -61,8 +64,11 @@ package com.vhall.framework.ui.controls
 		}
 
 		protected var stateMap:Object = {"rollOver":1, "rollOut":0, "mouseDown":2, "mouseUp":1, "selected":2};
+
 		private var _state:int = -1;
+
 		private var _stateChanged:Boolean = false;
+
 		private var lastState:int = -1;
 
 		public function set state(value:int):void
@@ -232,7 +238,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	拿到属性
+		 * 拿到属性
 		 * @param name
 		 * @param index
 		 * @return
@@ -274,10 +280,13 @@ package com.vhall.framework.ui.controls
 				_labelChanged = false;
 			}
 
-			width = bg.width;
-			height = bg.height;
-			btnLabel.width = width;
-			btnLabel.height = height;
+			if(bg.width != width || bg.height != height)
+			{
+				width = bg.width;
+				height = bg.height;
+				btnLabel.width = width;
+				btnLabel.height = height;
+			}
 		}
 
 	}
