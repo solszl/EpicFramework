@@ -333,6 +333,7 @@ package com.vhall.framework.ui.controls
 
 				if(_textformmatChanged)
 				{
+					this._tf.defaultTextFormat = this._formmat;
 					this._tf.setTextFormat(this._formmat);
 					_textformmatChanged = false;
 				}
