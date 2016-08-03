@@ -89,7 +89,7 @@ package com.vhall.framework.ui.ext
 		 */
 		private function format(ms:int):String
 		{
-			if(ms <= 0)
+			if(ms < 0)
 			{
 				return "";
 			}
