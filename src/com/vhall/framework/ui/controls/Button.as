@@ -280,13 +280,13 @@ package com.vhall.framework.ui.controls
 				_labelChanged = false;
 			}
 
-			if(bg.width != width || bg.height != height)
-			{
-				width = bg.width;
-				height = bg.height;
-				btnLabel.width = width;
-				btnLabel.height = height;
-			}
+//			if(bg.width != width || bg.height != height)
+//			{
+			width = bg.width;
+			height = bg.height;
+			btnLabel.width = width;
+			btnLabel.height = height;
+//			}
 		}
 
 	}
