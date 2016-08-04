@@ -246,13 +246,13 @@ package com.vhall.framework.ui.controls
 		{
 			var sizeChange:Boolean = false;
 
-			if(isNaN(_w) || _w == 0)
+			if(isNaN(_w) || _w == 0 || _w < bitmap.bitmapData.width)
 			{
 				_w = bitmap.bitmapData.width;
 				sizeChange = true;
 			}
 
-			if(isNaN(_h) || _h == 0)
+			if(isNaN(_h) || _h == 0 || _h < bitmap.bitmapData.height)
 			{
 				_h = bitmap.bitmapData.height;
 				sizeChange = true;
@@ -322,9 +322,14 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 
-			if(w < (rect.width + rect.x + 1) || h < (rect.height + rect.y + 1))
+			if(w < (rect.width + rect.x + 1))
 			{
-				return;
+				w = rect.width + rect.x;
+			}
+
+			if(h < (rect.height + rect.y + 1))
+			{
+				h = rect.height + rect.top
 			}
 
 			var m:Matrix = new Matrix();
