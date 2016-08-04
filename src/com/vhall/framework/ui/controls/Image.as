@@ -278,8 +278,15 @@ package com.vhall.framework.ui.controls
 		{
 			super.sizeChanged();
 
-			if(_w == 0 || _h == 0)
+			if(_w == 0)
 			{
+				_w = bitmap.width;
+				return;
+			}
+
+			if(_h == 0)
+			{
+				_h = bitmap.height;
 				return;
 			}
 
