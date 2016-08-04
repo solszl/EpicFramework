@@ -50,7 +50,10 @@ package com.vhall.framework.ui.controls
 			bg = new Image(this);
 			// 文本
 			btnLabel = new Label(this);
+			btnLabel.multiline = false;
+			btnLabel.wordWrap = false;
 			btnLabel.align = "center";
+			btnLabel.height = 24;
 
 			mouseChildren = false;
 			buttonMode = true;
@@ -206,7 +209,7 @@ package com.vhall.framework.ui.controls
 			}
 
 			_labelSize = value;
-			btnLabel.fontSize = value;
+			btnLabel.fontSize = labelSize;
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -280,13 +283,15 @@ package com.vhall.framework.ui.controls
 				_labelChanged = false;
 			}
 
-//			if(bg.width != width || bg.height != height)
-//			{
 			width = bg.width;
 			height = bg.height;
 			btnLabel.width = width;
-			btnLabel.height = height;
-//			}
+		}
+
+		override protected function updateDisplay():void
+		{
+			super.updateDisplay();
+			btnLabel.y = bg.height - btnLabel.height >> 1;
 		}
 
 	}

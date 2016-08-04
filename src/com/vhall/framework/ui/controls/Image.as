@@ -222,8 +222,8 @@ package com.vhall.framework.ui.controls
 
 			if(!_useScale9Rect)
 			{
-				_w = bmd.width;
-				_h = bmd.height;
+				width = bmd.width;
+				height = bmd.height;
 			}
 			setBitmapData(bmd);
 			ResourceItems.addToCache(item.url, content as DisplayObject);
