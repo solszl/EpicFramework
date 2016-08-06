@@ -220,7 +220,7 @@ package com.vhall.framework.ui.controls
 
 			innerCallBK = parentInvalidate;
 
-			if(!_useScale9Rect)
+			if(!_useScale9Rect && (width == 0 || height == 0))
 			{
 				width = bmd.width;
 				height = bmd.height;
@@ -246,16 +246,31 @@ package com.vhall.framework.ui.controls
 		{
 			var sizeChange:Boolean = false;
 
-			if(isNaN(_w) || _w == 0 || _w < bitmap.bitmapData.width)
+			if(isNaN(_w) || _w == 0)
 			{
 				_w = bitmap.bitmapData.width;
 				sizeChange = true;
 			}
 
-			if(isNaN(_h) || _h == 0 || _h < bitmap.bitmapData.height)
+			if(isNaN(_h) || _h == 0)
 			{
 				_h = bitmap.bitmapData.height;
 				sizeChange = true;
+			}
+
+			if(_useScale9Rect)
+			{
+				if(_w <= bitmap.bitmapData.width)
+				{
+					_w = bitmap.bitmapData.width;
+					sizeChange = true;
+				}
+
+				if(_h < bitmap.bitmapData.height)
+				{
+					_h = bitmap.bitmapData.height;
+					sizeChange = true;
+				}
 			}
 
 			if(sizeChange && (!isNaN(_w) && !isNaN(_h)))
@@ -300,6 +315,10 @@ package com.vhall.framework.ui.controls
 				bitmap.height = _h;
 			}
 
+			if(bitmap.width == 0 || bitmap.height == 0)
+			{
+				return;
+			}
 			width = bitmap.width;
 			height = bitmap.height;
 		}
