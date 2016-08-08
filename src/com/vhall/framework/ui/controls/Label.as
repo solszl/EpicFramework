@@ -16,12 +16,16 @@ package com.vhall.framework.ui.controls
 	public class Label extends UIComponent
 	{
 		protected var htmlFormat:String = "<font align='{2}' color='#{0}' size='{4}' face='{3}'>{1}</font>";
+
 		/**	文本内容*/
 		protected var _text:String;
+
 		/**	默认承载文本的容器*/
 		protected var _tf:TextField;
+
 		/**	文本格式化*/
 		protected var _formmat:TextFormat;
+
 		/**	文本格式发生变化的变量*/
 		protected var _textformmatChanged:Boolean = false;
 
@@ -93,7 +97,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取文本内容
+		 * 获取文本内容
 		 * @return
 		 *
 		 */
@@ -103,7 +107,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取textfield
+		 * 获取textfield
 		 * @return
 		 *
 		 */
@@ -149,7 +153,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取当前Label的字体
+		 * 获取当前Label的字体
 		 * @return
 		 *
 		 */
@@ -173,7 +177,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取当前Label字号
+		 * 获取当前Label字号
 		 * @return
 		 *
 		 */
@@ -194,7 +198,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取当前Label的对其方式
+		 * 获取当前Label的对其方式
 		 * @return
 		 *
 		 */
@@ -217,7 +221,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取当前Label是否为粗体
+		 * 获取当前Label是否为粗体
 		 * @return
 		 *
 		 */
@@ -240,7 +244,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取当前Label是否有下划线
+		 * 获取当前Label是否有下划线
 		 * @return
 		 *
 		 */
@@ -263,7 +267,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取当前Label是否为多行
+		 * 获取当前Label是否为多行
 		 * @return
 		 *
 		 */
@@ -286,7 +290,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取当前Label是否自动换行
+		 * 获取当前Label是否自动换行
 		 * @return
 		 *
 		 */
@@ -309,7 +313,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	获取当前Label是否可选择
+		 * 获取当前Label是否可选择
 		 * @return
 		 *
 		 */
@@ -322,23 +326,22 @@ package com.vhall.framework.ui.controls
 		{
 			super.sizeChanged();
 
-			_tf.height = Math.max(_tf.textHeight + 4, 20);
 
 			if(!html)
 			{
-				if(align == "left")
-				{
-					_tf.width = _tf.textWidth + 4 + _formmat.indent;
-				}
-
 				if(_textformmatChanged)
 				{
 					this._tf.defaultTextFormat = this._formmat;
 					this._tf.setTextFormat(this._formmat);
 					_textformmatChanged = false;
 				}
-			}
 
+				if(align == "left")
+				{
+					_tf.width = _tf.textWidth + 4 + _formmat.indent;
+				}
+			}
+			_tf.height = Math.max(_tf.textHeight + 4, 20);
 		}
 
 		override protected function updateDisplay():void
