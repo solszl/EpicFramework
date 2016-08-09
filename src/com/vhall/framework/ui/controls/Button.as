@@ -283,6 +283,8 @@ package com.vhall.framework.ui.controls
 				_labelChanged = false;
 			}
 
+			bg.width = _width;
+			bg.height = _height;
 			width = bg.width;
 			height = bg.height;
 			btnLabel.width = width;

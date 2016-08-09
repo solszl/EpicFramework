@@ -59,5 +59,10 @@ package com.vhall.framework.ui.controls
 			validValue();
 			quadButton.x = (_value - _min) / (_max - _min) * (width - quadButton.width);
 		}
+
+		public function set quadWidth(value:Number):void
+		{
+			quadButton.width = value;
+		}
 	}
 }
