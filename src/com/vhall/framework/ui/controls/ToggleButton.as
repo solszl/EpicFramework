@@ -31,12 +31,12 @@ package com.vhall.framework.ui.controls
 		{
 			return _selected;
 		}
-		
+
 		/**
-		 * 不派发选中事件的选择 
+		 * 不派发选中事件的选择
 		 * @param value
-		 * 
-		 */		
+		 *
+		 */
 		public function setSelected(value:Boolean):void
 		{
 			this._selected = value;
@@ -47,7 +47,8 @@ package com.vhall.framework.ui.controls
 		{
 			if(e.type == MouseEvent.CLICK)
 			{
-				this.selected = !this.selected;
+//				this.selected = !this.selected;
+				this.setSelected(!this.selected);
 				//根据选中当前选中状态设定按钮点按的状态
 				// 若此时为选中状态，点击过后，鼠标仍然在按钮内，则将状态设置为 划过状态，否则设置为移出状态
 				//	若为未选中状态，点击过后，鼠标状态设置为按下状态

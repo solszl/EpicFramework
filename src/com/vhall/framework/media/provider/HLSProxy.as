@@ -39,24 +39,24 @@ package com.vhall.framework.media.provider
 
 		private var _loadMetrics:HLSLoadMetrics;
 
-		private var _durationReady:Boolean=false;
+		private var _durationReady:Boolean = false;
 
 		public function HLSProxy()
 		{
 			super(MediaProxyType.HLS);
 
-			HLSSettings.maxBufferLength=30;
+			HLSSettings.maxBufferLength = 30;
 			//HLSSettings.manifestLoadMaxRetryTimeout = 2000;
-			HLSSettings.flushLiveURLCache=true;
-			HLSSettings.minBufferLength=0;
-			HLSSettings.seekMode=HLSSeekMode.ACCURATE_SEEK;
+			HLSSettings.flushLiveURLCache = true;
+			HLSSettings.minBufferLength = 0;
+			HLSSettings.seekMode = HLSSeekMode.ACCURATE_SEEK;
 		}
 
-		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true, startPostion:Number=0):void
+		override public function connect(uri:String, streamUrl:String = null, handler:Function = null, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
 			super.connect(uri, streamUrl, handler, autoPlay, startPostion);
 
-			_hls||=new HLS();
+			_hls ||= new HLS();
 			_hls.addEventListener(HLSEvent.MANIFEST_LOADED, onHLSHandler);
 			_hls.addEventListener(HLSEvent.MEDIA_TIME, onHLSHandler);
 			_hls.addEventListener(HLSEvent.PLAYBACK_COMPLETE, onHLSHandler);
@@ -76,8 +76,8 @@ package com.vhall.framework.media.provider
 			//_hls.addEventListener(HLSEvent.WARNING,onHLSHandler);
 			_hls.addEventListener(HLSEvent.ERROR, onHLSHandler);
 
-			bufferTime=1;
-			bufferTimeMax=2;
+			bufferTime = 1;
+			bufferTimeMax = 2;
 			stream.addEventListener(NetStatusEvent.NET_STATUS, streamNetStatusEventHandler);
 			_hls.load(_uri);
 		}
@@ -85,7 +85,7 @@ package com.vhall.framework.media.provider
 		protected function streamNetStatusEventHandler(event:NetStatusEvent):void
 		{
 			// TODO Auto-generated method stub
-			switch (event.info.code)
+			switch(event.info.code)
 			{
 				case InfoCode.NetStream_Buffer_Empty:
 					excute(MediaProxyStates.STREAM_LOADING, true);
@@ -96,13 +96,13 @@ package com.vhall.framework.media.provider
 			}
 		}
 
-		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true, startPostion:Number=0):void
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
 			super.changeVideoUrl(uri, streamUrl, autoPlay, startPostion);
 
-			_durationReady=false;
-			this._playMetrics=null;
-			this._loadMetrics=null;
+			_durationReady = false;
+			this._playMetrics = null;
+			this._loadMetrics = null;
 
 			_hls.load(uri);
 		}
@@ -110,18 +110,18 @@ package com.vhall.framework.media.provider
 		override public function start():void
 		{
 			super.start();
-			if (stream)
+			if(stream)
 			{
-				stage=_stage;
+				stage = _stage;
 				stream.play();
-				time=_startPostion;
+				time = _startPostion;
 			}
 		}
 
 		override public function set stage(value:Stage):void
 		{
-			super.stage=value;
-			_hls && (_hls.stage=value);
+			super.stage = value;
+			_hls && (_hls.stage = value);
 		}
 
 		override public function stop():void
@@ -160,7 +160,7 @@ package com.vhall.framework.media.provider
 			{
 				Log.info(e.duration + " " + e.type + " " + e.state);
 			}
-			switch (e.type)
+			switch(e.type)
 			{
 				case HLSEvent.MANIFEST_LOADED:
 					break;
@@ -169,8 +169,8 @@ package com.vhall.framework.media.provider
 				{
 					Log.info(e);
 				}
-					volume=_volume;
-					mute=_mute;
+					volume = _volume;
+					mute = _mute;
 					excute(MediaProxyStates.CONNECT_NOTIFY);
 					_autoPlay && start();
 					break;
@@ -179,7 +179,7 @@ package com.vhall.framework.media.provider
 				{
 					Log.info("HLS state:" + e.state)
 				}
-					switch (e.state)
+					switch(e.state)
 					{
 						case HLSPlayStates.PAUSED:
 						case HLSPlayStates.PLAYING:
@@ -196,7 +196,7 @@ package com.vhall.framework.media.provider
 				//case HLSEvent.FRAGMENT_LOAD_EMERGENCY_ABORTED:
 				case HLSEvent.LEVEL_LOADED:
 					//case HLSEvent.AUDIO_LEVEL_LOADED:
-					loadMetrics=e.loadMetrics;
+					loadMetrics = e.loadMetrics;
 					break;
 				case HLSEvent.MEDIA_TIME:
 					//_time = e.mediatime.position;
@@ -210,20 +210,20 @@ package com.vhall.framework.media.provider
 					setDuration(e.duration);
 					break;
 				case HLSEvent.FRAGMENT_PLAYING:
-					playMetrics=e.playMetrics;
+					playMetrics = e.playMetrics;
 					break;
 				case HLSEvent.FRAGMENT_LOADED:
-					loadMetrics=e.loadMetrics;
+					loadMetrics = e.loadMetrics;
 					break;
 				case HLSEvent.SEEK_STATE:
-					switch (e.state)
+					switch(e.state)
 					{
 						case "SEEKING":
 							excute(MediaProxyStates.SEEK_NOTIFY);
 							break;
 						case "SEEKED":
+							_playing = true;
 							excute(MediaProxyStates.SEEK_COMPLETE);
-							_playing=true;
 							break;
 					}
 					CONFIG::LOGGING
@@ -250,7 +250,7 @@ package com.vhall.framework.media.provider
 			{
 				Log.error(e.error.code + ":" + e.error.msg);
 			}
-			if ([HLSError.MANIFEST_LOADING_CROSSDOMAIN_ERROR, HLSError.MANIFEST_LOADING_IO_ERROR, HLSError.MANIFEST_PARSING_ERROR, HLSError.FRAGMENT_LOADING_CROSSDOMAIN_ERROR, HLSError.FRAGMENT_LOADING_ERROR, HLSError.FRAGMENT_PARSING_ERROR, HLSError.KEY_LOADING_CROSSDOMAIN_ERROR, HLSError.KEY_LOADING_ERROR, HLSError.KEY_PARSING_ERROR, HLSError.TAG_APPENDING_ERROR].indexOf(e.error.code) != -1)
+			if([HLSError.MANIFEST_LOADING_CROSSDOMAIN_ERROR, HLSError.MANIFEST_LOADING_IO_ERROR, HLSError.MANIFEST_PARSING_ERROR, HLSError.FRAGMENT_LOADING_CROSSDOMAIN_ERROR, HLSError.FRAGMENT_LOADING_ERROR, HLSError.FRAGMENT_PARSING_ERROR, HLSError.KEY_LOADING_CROSSDOMAIN_ERROR, HLSError.KEY_LOADING_ERROR, HLSError.KEY_PARSING_ERROR, HLSError.TAG_APPENDING_ERROR].indexOf(e.error.code) != -1)
 			{
 				excute(MediaProxyStates.CONNECT_FAILED, e.error.msg);
 			}
@@ -259,7 +259,7 @@ package com.vhall.framework.media.provider
 		override protected function gc():void
 		{
 			super.gc();
-			if (_hls)
+			if(_hls)
 			{
 				_hls.removeEventListener(HLSEvent.MANIFEST_LOADED, onHLSHandler);
 				_hls.removeEventListener(HLSEvent.MEDIA_TIME, onHLSHandler);
@@ -281,12 +281,12 @@ package com.vhall.framework.media.provider
 				_hls.removeEventListener(HLSEvent.ERROR, onHLSHandler);
 
 				_hls.dispose();
-				_hls=null;
+				_hls = null;
 			}
 
-			_durationReady=false;
-			this._playMetrics=null;
-			this._loadMetrics=null;
+			_durationReady = false;
+			this._playMetrics = null;
+			this._loadMetrics = null;
 		}
 
 		/**
@@ -294,24 +294,24 @@ package com.vhall.framework.media.provider
 		 */
 		private function setDuration(value:Number):void
 		{
-			if (!_durationReady)
+			if(!_durationReady)
 			{
-				_duration=value;
-				_durationReady=true;
+				_duration = value;
+				_durationReady = true;
 				excute(MediaProxyStates.DURATION_NOTIFY, _duration);
 			}
 		}
 
 		override public function get time():Number
 		{
-			if (_hls)
+			if(_hls)
 				return _hls.position;
 			return 0;
 		}
 
 		override public function set time(value:Number):void
 		{
-			if (stream)
+			if(stream)
 				stream.seek(value);
 		}
 
@@ -320,7 +320,7 @@ package com.vhall.framework.media.provider
 		 */
 		private function set loadMetrics(value:HLSLoadMetrics):void
 		{
-			_loadMetrics=value;
+			_loadMetrics = value;
 		}
 
 		/**
@@ -328,44 +328,44 @@ package com.vhall.framework.media.provider
 		 */
 		private function set playMetrics(value:HLSPlayMetrics):void
 		{
-			if (!_playMetrics)
+			if(!_playMetrics)
 				excute(MediaProxyStates.STREAM_START);
-			_playMetrics=value;
+			_playMetrics = value;
 			//trace("视频宽高：",_playMetrics.duration,_playMetrics.video_width,_playMetrics.video_height);
 		}
 
 		override public function set volume(value:Number):void
 		{
-			super.volume=value;
-			if (stream)
+			super.volume = value;
+			if(stream)
 			{
-				var st:SoundTransform=stream.soundTransform;
-				st.volume=_volume;
-				stream.soundTransform=st;
+				var st:SoundTransform = stream.soundTransform;
+				st.volume = _volume;
+				stream.soundTransform = st;
 			}
 		}
 
 		override public function set mute(bool:Boolean):void
 		{
-			super.mute=bool;
-			if (stream)
+			super.mute = bool;
+			if(stream)
 			{
-				var st:SoundTransform=stream.soundTransform;
-				st.volume=bool ? 0 : _volume;
-				stream.soundTransform=st;
+				var st:SoundTransform = stream.soundTransform;
+				st.volume = bool ? 0 : _volume;
+				stream.soundTransform = st;
 			}
 		}
 
 		override public function get stream():NetStream
 		{
-			if (!_hls)
+			if(!_hls)
 				return null;
 			return _hls.stream;
 		}
 
 		override public function get loaded():Number
 		{
-			if (stream)
+			if(stream)
 				return _hls.position + stream.bufferLength / duration;
 			return 0;
 		}
