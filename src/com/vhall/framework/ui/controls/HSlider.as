@@ -62,7 +62,7 @@ package com.vhall.framework.ui.controls
 
 		public function set quadWidth(value:Number):void
 		{
-			quadButton.width = value;
+			quadButton.width = Math.max(value, 10);
 		}
 	}
 }
