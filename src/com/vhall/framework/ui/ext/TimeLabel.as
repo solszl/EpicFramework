@@ -28,7 +28,9 @@ package com.vhall.framework.ui.ext
 
 		private var _ms:int;
 		private var _autoStart:Boolean;
-		private var _fillZero:Boolean = true;
+
+		/**	小于10的时候是否补全0，00:02:04 2:4*/
+		private static var fillZero:Boolean = true;
 
 		private var timer:Timer;
 		private var _delay:Number = 1000;
@@ -87,7 +89,7 @@ package com.vhall.framework.ui.ext
 		 *
 		 * @param ms 毫秒时间
 		 */
-		private function format(ms:int):String
+		public static function format(ms:int):String
 		{
 			if(ms < 0)
 			{
@@ -134,17 +136,6 @@ package com.vhall.framework.ui.ext
 		public function set autoStart(value:Boolean):void
 		{
 			_autoStart = value;
-		}
-
-		/**	小于10的时候是否补全0，00:02:04 2:4*/
-		public function get fillZero():Boolean
-		{
-			return _fillZero;
-		}
-
-		public function set fillZero(value:Boolean):void
-		{
-			_fillZero = value;
 		}
 
 		/**	timer的延迟*/
