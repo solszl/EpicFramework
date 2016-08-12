@@ -2,12 +2,12 @@ package com.vhall.framework.ui.manager
 {
 	import com.vhall.framework.app.App;
 	import com.vhall.framework.app.vhall_internal;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.Stage;
-	
+
 	import flashx.textLayout.events.ModelChange;
 
 	/**
@@ -89,7 +89,7 @@ package com.vhall.framework.ui.manager
 				App.app.mouseChildren = App.app.mouseEnabled = true;
 				modal.removeModal();
 			}
-			
+
 			return obj;
 		}
 
@@ -123,7 +123,7 @@ package com.vhall.framework.ui.manager
 		vhall_internal function addPopup(obj:DisplayObject, parent:DisplayObjectContainer = null, center:Boolean = true, useModal:Boolean = true):DisplayObject
 		{
 			// 判断当前是否有容器承载内容
-			holder = parent == null ? createHolder() : parent;
+			holder = parent == null ? holder == null ? createHolder() : holder : parent;
 
 			if(holder.contains(obj))
 			{
