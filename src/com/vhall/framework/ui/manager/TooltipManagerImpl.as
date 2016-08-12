@@ -2,6 +2,7 @@ package com.vhall.framework.ui.manager
 {
 	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.controls.ToolTip;
+	import com.vhall.framework.utils.MathUtil;
 
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -246,7 +247,9 @@ package com.vhall.framework.ui.manager
 					holder.y = sp.y + (currentTarget.height - holder.height >> 1);
 					break;
 				case "top":
-					holder.x = sp.x + (currentTarget.width - holder.width >> 1);
+					var temp:Number = sp.x + (currentTarget.width - holder.width >> 1);
+					// 限定tips显示在舞台区域内
+					holder.x = MathUtil.limitIn(temp, 0, StageManager.stageWidth - holder.width);
 					holder.y = sp.y - holder.height - 4;
 					break;
 				case "bottom":
