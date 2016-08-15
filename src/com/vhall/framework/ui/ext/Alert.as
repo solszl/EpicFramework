@@ -1,13 +1,12 @@
 package com.vhall.framework.ui.ext
 {
-	import com.shrimp.ext.events.CloseEvent;
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.container.Box;
 	import com.vhall.framework.ui.controls.Button;
 	import com.vhall.framework.ui.controls.Image;
 	import com.vhall.framework.ui.controls.Label;
-	import com.vhall.framework.ui.controls.UIComponent;
+	import com.vhall.framework.ui.event.CloseEvent;
 	import com.vhall.framework.ui.manager.PopupManager;
 	import com.vhall.framework.ui.utils.ComponentUtils;
 
