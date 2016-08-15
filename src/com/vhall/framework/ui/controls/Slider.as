@@ -181,7 +181,8 @@ package com.vhall.framework.ui.controls
 		/**	取整的value*/
 		public function get value():Number
 		{
-			return Math.round(_value / _tick) * _tick;
+
+			return Math.round(isNaN(_value) ? 0 : _value / _tick) * _tick;
 		}
 
 		public function set value(value:Number):void
