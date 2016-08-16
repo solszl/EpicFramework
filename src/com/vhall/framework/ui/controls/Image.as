@@ -39,6 +39,12 @@ package com.vhall.framework.ui.controls
 
 		public var setBitmapDataCallBK:Function = null;
 
+		/**	加载动态资源的时候，是否需要向上冒泡，重新刷新全部显示列表*/
+		public var needInvalidateParentWhileLoadDynamicResource:Boolean = false;
+
+		/**	默认冒泡等级，配合needInvalidateParentWhileLoadDynamicResource属性。如果全部冒到最上级再全部刷新列表，性能会有所下降。*/
+		public var defaultBubblesLevel:int = 3;
+
 		public function Image(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
 			super(parent, xpos, ypos);
@@ -58,6 +64,8 @@ package com.vhall.framework.ui.controls
 			innerCallBK = null;
 			bitmap.bitmapData.dispose();
 			bitmap.bitmapData = null;
+			needInvalidateParentWhileLoadDynamicResource = false;
+			defaultBubblesLevel = 3;
 		}
 
 		/**
@@ -100,6 +108,18 @@ package com.vhall.framework.ui.controls
 			super.setSize(w, h);
 			_w = w;
 			_h = h;
+		}
+
+		override protected function parentInvalidate():void
+		{
+			var p:UIComponent = parent as UIComponent;
+			var level:int = defaultBubblesLevel;
+			while(p.parent != null && p.parent is UIComponent && level >= 0)
+			{
+				p = p.parent as UIComponent;
+				level--;
+			}
+			p.validateNow();
 		}
 
 		/**	图像源*/
@@ -218,7 +238,10 @@ package com.vhall.framework.ui.controls
 			}
 			var bmd:BitmapData = (content as Bitmap).bitmapData;
 
-			innerCallBK = parentInvalidate;
+			if(needInvalidateParentWhileLoadDynamicResource)
+			{
+				innerCallBK = parentInvalidate;
+			}
 
 			if(!_useScale9Rect && (width == 0 || height == 0))
 			{
