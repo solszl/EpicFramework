@@ -73,9 +73,14 @@ package com.vhall.framework.ui.manager
 		 */
 		public function removePopup(obj:DisplayObject):DisplayObject
 		{
-			if(holder && holder.contains(obj))
+//			if(holder && holder.contains(obj))
+//			{
+//				holder.removeChild(obj);
+//			}
+
+			if(obj && obj.parent)
 			{
-				holder.removeChild(obj);
+				obj.parent.removeChild(obj);
 			}
 
 			var idx:int = modalList.indexOf(obj)
