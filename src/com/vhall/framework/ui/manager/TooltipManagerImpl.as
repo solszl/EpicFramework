@@ -236,6 +236,7 @@ package com.vhall.framework.ui.manager
 
 			// stage point
 			var sp:Point = currentTarget.localToGlobal(new Point());
+			var temp:Number = 0;
 			switch(currentTarget["callOut"])
 			{
 				case "left":
@@ -247,13 +248,13 @@ package com.vhall.framework.ui.manager
 					holder.y = sp.y + (currentTarget.height - holder.height >> 1);
 					break;
 				case "top":
-					var temp:Number = sp.x + (currentTarget.width - holder.width >> 1);
-					// 限定tips显示在舞台区域内
+					temp = sp.x + (currentTarget.width - holder.width >> 1);
 					holder.x = MathUtil.limitIn(temp, 0, StageManager.stageWidth - holder.width);
 					holder.y = sp.y - holder.height - 4;
 					break;
 				case "bottom":
-					holder.x = sp.x + (currentTarget.width - holder.width >> 1);
+					temp = sp.x + (currentTarget.width - holder.width >> 1);
+					holder.x = MathUtil.limitIn(temp, 0, StageManager.stageWidth - holder.width);
 					holder.y = sp.y + currentTarget.height + 4;
 					break;
 				default:
