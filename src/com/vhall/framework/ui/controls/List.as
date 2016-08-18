@@ -16,8 +16,8 @@ package com.vhall.framework.ui.controls
 	 * @author Sol
 	 * @date 2016-06-03 16:49:45
 	 */
-	[Event(name="select", type="flash.events.Event")]
-	public class List extends UIComponent
+	[Event(name = "select", type = "flash.events.Event")]
+	public class List extends Box
 	{
 		/**	水平*/
 		public static const HORIZONTAL:String = "horizontal";
@@ -237,12 +237,12 @@ package com.vhall.framework.ui.controls
 		/**	当前选中数据*/
 		public function get selectData():Object
 		{
-			if(_dataProvider == null) 
+			if(_dataProvider == null)
 			{
 				return null;
 			}
 
-			if (selectIndex >= 0 && selectIndex < _dataProvider.length)
+			if(selectIndex >= 0 && selectIndex < _dataProvider.length)
 			{
 				return _dataProvider[selectIndex];
 			}
@@ -251,7 +251,7 @@ package com.vhall.framework.ui.controls
 
 		public function set selectData(value:Object):void
 		{
-			var index:int=_dataProvider.indexOf(value);
+			var index:int = _dataProvider.indexOf(value);
 			selectIndex = index;
 			fireEvent(ListEvent.DataChanged);
 		}
@@ -259,12 +259,12 @@ package com.vhall.framework.ui.controls
 		/**	当前选中渲染器*/
 		public function get selectItem():ItemRender
 		{
-			if(_dataProvider == null) 
+			if(_dataProvider == null)
 			{
 				return null;
 			}
 
-			if (selectIndex >= 0 && selectIndex < _dataProvider.length)
+			if(selectIndex >= 0 && selectIndex < _dataProvider.length)
 			{
 				return con.getChildAt(selectIndex) as ItemRender;
 			}

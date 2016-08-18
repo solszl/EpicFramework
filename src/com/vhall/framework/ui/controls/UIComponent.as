@@ -355,6 +355,14 @@ package com.vhall.framework.ui.controls
 		{
 			return this._guideName;
 		}
+
+		public function set backgroundColor(value:uint):void
+		{
+			graphics.clear();
+			graphics.beginFill(value);
+			graphics.drawRect(0, 0, width, height);
+			graphics.endFill();
+		}
 	}
 }
 

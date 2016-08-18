@@ -1,8 +1,12 @@
 package com.vhall.framework.keyboard
 {
+	import com.vhall.framework.app.vhall_internal;
+
 	import flash.display.DisplayObject;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+
+	use namespace vhall_internal;
 
 	/**
 	 * @author Sol
@@ -84,15 +88,32 @@ package com.vhall.framework.keyboard
 			{
 				keys[i] = toKeys[i];
 			}
-			keys = keys.sort(compareInt);
 
-			_listeners.push(new KeyMap(listener, keys.join()));
+			var str:String = vhall_internal::normalized(keys);
+			_listeners.push(new KeyMap(listener, str));
 		}
 
 		public function destroy():void
 		{
 			_keyboardFocus.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			_keyboardFocus.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		}
+
+		public function normalized(... toKeys):String
+		{
+			var keys:Vector.<int> = new Vector.<int>(toKeys.length);
+			for(var i:int = 0; i < keys.length; i++)
+			{
+				keys[i] = toKeys[i];
+			}
+
+			return vhall_internal::normalized(keys);
+		}
+
+		vhall_internal function normalized(keys:Vector.<int>):String
+		{
+			keys = keys.sort(compareInt);
+			return keys.join();
 		}
 	}
 }

@@ -64,7 +64,7 @@ package com.vhall.framework.ui.controls
 			return _tf.displayAsPassword;
 		}
 
-		public function set backgroundColor(value:uint):void
+		override public function set backgroundColor(value:uint):void
 		{
 			_tf.backgroundColor = value;
 		}
