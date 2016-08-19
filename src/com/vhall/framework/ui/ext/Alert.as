@@ -135,6 +135,17 @@ package com.vhall.framework.ui.ext
 			buttonContainer.y = height - 30 - 15;
 
 			lblContent.y = height - lblContent.height >> 1;
+			if(imgIcon.source == null)
+			{
+				lblContent.width = width;
+				lblContent.align = "center";
+				lblContent.x = width - lblContent.width >> 1;
+			}
+			else
+			{
+				lblContent.move(90, 54);
+				lblContent.align = "left";
+			}
 			//			imgIcon.setSize(32, 32);
 		}
 
