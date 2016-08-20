@@ -60,12 +60,12 @@ package com.vhall.framework.ui.ext
 			this._iconAlign = align;
 		}
 
-		public function get position():Point
+		public function get iconPosition():Point
 		{
 			return this._position;
 		}
 
-		public function set position(p:Point):void
+		public function set iconPosition(p:Point):void
 		{
 			this._position = p;
 		}

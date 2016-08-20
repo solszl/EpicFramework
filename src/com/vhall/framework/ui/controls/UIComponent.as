@@ -10,6 +10,7 @@ package com.vhall.framework.ui.controls
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.geom.Point;
 	import flash.utils.getQualifiedClassName;
 
 	/**
@@ -223,6 +224,8 @@ package com.vhall.framework.ui.controls
 
 		private var _guideName:String = "";
 
+		private var _scale:Number = 1;
+
 		/**
 		 * tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
 		 */
@@ -362,6 +365,23 @@ package com.vhall.framework.ui.controls
 			graphics.beginFill(value);
 			graphics.drawRect(0, 0, width, height);
 			graphics.endFill();
+		}
+
+		public function set scale(value:Number):void
+		{
+			_scale = value;
+			this.scaleX = _scale;
+			this.scaleY = _scale;
+		}
+
+		public function get scale():Number
+		{
+			return this._scale;
+		}
+
+		public function get position():Point
+		{
+			return new Point(this.x, this.y);
 		}
 	}
 }

@@ -312,6 +312,16 @@ package com.vhall.framework.ui.controls
 			setBitmapDataCallBK && setBitmapDataCallBK();
 		}
 
+		public function getBitmapData():BitmapData
+		{
+			if(bitmap.bitmapData == null)
+			{
+				return null;
+			}
+
+			return bitmap.bitmapData;
+		}
+
 		override protected function sizeChanged():void
 		{
 			super.sizeChanged();
