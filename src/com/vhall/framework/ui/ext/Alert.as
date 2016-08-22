@@ -135,6 +135,7 @@ package com.vhall.framework.ui.ext
 			buttonContainer.y = height - 30 - 15;
 
 			lblContent.y = height - lblContent.height >> 1;
+
 			if(imgIcon.source == null)
 			{
 				lblContent.width = width;
@@ -143,10 +144,11 @@ package com.vhall.framework.ui.ext
 			}
 			else
 			{
-				lblContent.move(90, 54);
+				lblContent.width = 200;
 				lblContent.align = "left";
+				lblContent.x = 90;
 			}
-			//			imgIcon.setSize(32, 32);
+			imgIcon.setSize(32, 32);
 		}
 
 		private function generateButtons():void

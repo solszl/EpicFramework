@@ -68,6 +68,13 @@ package com.vhall.framework.ui.controls
 		/**	渲染显示列表*/
 		protected function updateDisplay():void
 		{
+			if(scaleChanged || pivotChanged)
+			{
+				scaleChanged = false;
+				pivotChanged = false;
+				this.x = originX;
+				this.y = originY;
+			}
 		}
 
 		/**	尺寸变更函数*/
@@ -130,6 +137,52 @@ package com.vhall.framework.ui.controls
 			return _height == 0 ? super.height : _height;
 		}
 
+		protected var realXPos:Number = 0;
+
+		protected var originX:Number = 0;
+
+		override public function set x(value:Number):void
+		{
+			originX = value;
+			realXPos = value - _pivot.x * scaleX
+			super.x = realXPos;
+		}
+
+		override public function get x():Number
+		{
+			return originX;
+		}
+
+		protected var realYPos:Number = 0;
+
+		protected var originY:Number = 0;
+
+		override public function set y(value:Number):void
+		{
+			originY = value;
+			realYPos = value - _pivot.y * scaleY;
+			super.y = realYPos;
+		}
+
+		override public function get y():Number
+		{
+			return originY;
+		}
+
+		override public function set scaleX(value:Number):void
+		{
+			super.scaleX = value;
+			scaleChanged = true;
+			RenderManager.getInstance().invalidate(sizeChanged);
+		}
+
+		override public function set scaleY(value:Number):void
+		{
+			super.scaleY = value;
+			scaleChanged = true;
+			RenderManager.getInstance().invalidate(sizeChanged);
+		}
+
 		/**
 		 * 移动
 		 * @param xpos 横坐标
@@ -140,7 +193,7 @@ package com.vhall.framework.ui.controls
 		{
 			this.x = Math.round(xpos);
 			this.y = Math.round(ypos);
-			RenderManager.getInstance().invalidate(invalidate);
+			RenderManager.getInstance().invalidate(updateDisplay);
 		}
 
 		/**
@@ -182,8 +235,6 @@ package com.vhall.framework.ui.controls
 		/**显示边框*/
 		public function showBorder(color:uint = 0xff0000):void
 		{
-//			RenderManager.getInstance().validateNow();
-
 			graphics.clear();
 			graphics.lineStyle(1, color);
 			graphics.drawRect(-1, -1, width + 1, height + 1);
@@ -225,6 +276,8 @@ package com.vhall.framework.ui.controls
 		private var _guideName:String = "";
 
 		private var _scale:Number = 1;
+
+		private var _pivot:Point = new Point();
 
 		/**
 		 * tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
@@ -349,6 +402,7 @@ package com.vhall.framework.ui.controls
 			}
 		}
 
+		/**	引导名字*/
 		public function set guideName(name:String):void
 		{
 			this._guideName = name;
@@ -359,6 +413,7 @@ package com.vhall.framework.ui.controls
 			return this._guideName;
 		}
 
+		/**	设置背景色*/
 		public function set backgroundColor(value:uint):void
 		{
 			graphics.clear();
@@ -374,15 +429,34 @@ package com.vhall.framework.ui.controls
 			this.scaleY = _scale;
 		}
 
+		/**	设置缩放比*/
 		public function get scale():Number
 		{
 			return this._scale;
 		}
 
+		/**	获取当前组件的位置*/
 		public function get position():Point
 		{
 			return new Point(this.x, this.y);
 		}
+
+		/**	获取注册点*/
+		public function get pivot():Point
+		{
+			return _pivot;
+		}
+
+		public function set pivot(p:Point):void
+		{
+			_pivot = p;
+			pivotChanged = true;
+			invalidate();
+		}
+
+		protected var pivotChanged:Boolean = false;
+
+		protected var scaleChanged:Boolean = false;
 	}
 }
 
