@@ -14,7 +14,7 @@ package com.vhall.framework.ui.manager
 		 * 注册光标
 		 * @param id
 		 * @param bmd
-		 *
+		 * @param hotSpot offset
 		 */
 		public static function registCursor(id:String, bmd:BitmapData, hotSpot:Point = null):void
 		{
