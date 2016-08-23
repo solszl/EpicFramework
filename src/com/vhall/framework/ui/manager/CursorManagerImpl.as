@@ -2,6 +2,7 @@ package com.vhall.framework.ui.manager
 {
 	import flash.display.BitmapData;
 	import flash.errors.IllegalOperationError;
+	import flash.geom.Point;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 	import flash.ui.MouseCursorData;
@@ -39,13 +40,14 @@ package com.vhall.framework.ui.manager
 			dic = new Dictionary(true);
 		}
 
-		public function registCursor(id:String, bmd:BitmapData):void
+		public function registCursor(id:String, bmd:BitmapData, hotSpot:Point = null):void
 		{
 			dic[id] = bmd;
 			var mcd:MouseCursorData = new MouseCursorData();
 			var vec:Vector.<BitmapData> = new Vector.<BitmapData>;
 			vec.push(bmd);
 			mcd.data = vec;
+			mcd.hotSpot = hotSpot == null ? new Point() : hotSpot;
 			Mouse.registerCursor(id, mcd);
 		}
 

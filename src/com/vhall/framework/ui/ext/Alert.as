@@ -36,7 +36,7 @@ package com.vhall.framework.ui.ext
 
 		private static var alertPool:Array = [];
 
-		private static var closeHandler:Function;
+		private static var closeHandle:Function;
 
 		private var buttonContainer:Sprite;
 
@@ -84,7 +84,7 @@ package com.vhall.framework.ui.ext
 
 		public static function show(title:String = "", content:String = "", flag:uint = Alert.OK, closeHandler:Function = null, icon:Object = null):Alert
 		{
-			closeHandler = closeHandler;
+			closeHandle = closeHandler;
 			flags = flag;
 			var alert:Alert = alertPool.length > 0 ? alertPool.pop() : new Alert();
 			alert.title = title;
@@ -187,10 +187,10 @@ package com.vhall.framework.ui.ext
 			var button:Button = Button(event.currentTarget);
 			PopupManager.removePopup(this);
 
-			if(closeHandler != null)
+			if(closeHandle != null)
 			{
 				var closeEvent:CloseEvent = new CloseEvent(CloseEvent.CLOSE, false, false, getDetailBy(button));
-				closeHandler(closeEvent);
+				closeHandle(closeEvent);
 			}
 
 			alertPool.push(this);

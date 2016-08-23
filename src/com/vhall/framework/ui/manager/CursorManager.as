@@ -1,6 +1,7 @@
 package com.vhall.framework.ui.manager
 {
 	import flash.display.BitmapData;
+	import flash.geom.Point;
 
 	/**
 	 * 光标管理器
@@ -15,9 +16,9 @@ package com.vhall.framework.ui.manager
 		 * @param bmd
 		 *
 		 */
-		public static function registCursor(id:String, bmd:BitmapData):void
+		public static function registCursor(id:String, bmd:BitmapData, hotSpot:Point = null):void
 		{
-			CursorManagerImpl.getInstance().registCursor(id, bmd);
+			CursorManagerImpl.getInstance().registCursor(id, bmd, hotSpot);
 		}
 
 		/**
