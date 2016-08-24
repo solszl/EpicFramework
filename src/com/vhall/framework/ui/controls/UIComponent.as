@@ -146,6 +146,7 @@ package com.vhall.framework.ui.controls
 			originX = value;
 			realXPos = value - _pivot.x * scaleX
 			super.x = realXPos;
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override public function get x():Number
@@ -162,6 +163,7 @@ package com.vhall.framework.ui.controls
 			originY = value;
 			realYPos = value - _pivot.y * scaleY;
 			super.y = realYPos;
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override public function get y():Number

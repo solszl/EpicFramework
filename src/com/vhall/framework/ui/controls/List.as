@@ -6,6 +6,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.container.VBox;
 	import com.vhall.framework.ui.event.ListEvent;
 
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -117,6 +118,12 @@ package com.vhall.framework.ui.controls
 			_selectItem = null;
 		}
 
+		override public function getChildren():Vector.<DisplayObject>
+		{
+			var childs:Vector.<DisplayObject> = con.getChildren();
+			return childs;
+		}
+
 		/**	鼠标事件集合*/
 		protected function onMouseHandler(e:MouseEvent):void
 		{
@@ -192,6 +199,7 @@ package com.vhall.framework.ui.controls
 		{
 			var item:ItemRender = itemPool.length > 0 ? itemPool.pop() : itemClass == null ? new ItemRender() : new itemClass();
 			item.data = data;
+			item.showDefaultLabel = showDefaultLabel;
 			addEvents(item);
 			// 如果设定了渲染设置数据的回调
 			if(renderCall != null)
@@ -277,6 +285,18 @@ package com.vhall.framework.ui.controls
 			var idx:int = con.getChildIndex(value);
 			selectIndex = idx;
 			fireEvent(ListEvent.ItemChanged);
+		}
+
+		private var _showDefaultLabel:Boolean = false;
+
+		public function set showDefaultLabel(value:Boolean):void
+		{
+			_showDefaultLabel = value;
+		}
+
+		public function get showDefaultLabel():Boolean
+		{
+			return _showDefaultLabel;
 		}
 
 		public function fireEvent(type:String):void

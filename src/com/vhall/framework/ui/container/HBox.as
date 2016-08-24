@@ -21,7 +21,7 @@ package com.vhall.framework.ui.container
 
 		private var maxHeight:Number = 0;
 
-		private var _verticalAlign:String = "top";
+		private var _verticalAlign:String = "center";
 
 		private var _horizontalAlign:String = "left";
 
@@ -29,8 +29,8 @@ package com.vhall.framework.ui.container
 
 		public function HBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
-			super(parent, xpos, ypos);
 			gap = 5;
+			super(parent, xpos, ypos);
 		}
 
 		override protected function updateDisplay():void

@@ -253,6 +253,25 @@ package com.vhall.framework.ui.controls
 			return this._formmat.underline;
 		}
 
+		/**@private*/
+		public function set italic(value:Boolean):void
+		{
+			if(italic == value)
+			{
+				return;
+			}
+
+			this._formmat.italic = value;
+			_textformmatChanged = true;
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+
+		/** 是否是斜体*/
+		public function get italic():Boolean
+		{
+			return this._formmat.italic;
+		}
+
 		/**	@private*/
 		public function set multiline(value:Boolean):void
 		{

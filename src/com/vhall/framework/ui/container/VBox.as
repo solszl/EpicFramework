@@ -1,7 +1,7 @@
 package com.vhall.framework.ui.container
 {
 	import com.vhall.framework.ui.controls.UIComponent;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
@@ -25,16 +25,17 @@ package com.vhall.framework.ui.container
 		public var marginBottom:Number = 0;
 
 		private var calcH:Number = 0;
+
 		public function VBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
-			super(parent, xpos, ypos);
 			gap = 5;
+			super(parent, xpos, ypos);
 		}
 
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
-			
+
 			layoutHorizontal();
 		}
 
@@ -42,24 +43,24 @@ package com.vhall.framework.ui.container
 		{
 //			super.layoutChildren();
 			calcH = 0;
-			
+
 			var numChild:int = this.numChildren;
 			var child:DisplayObject;
 			var ypos:Number = marginTop;
 			for(var i:int = 0; i < numChild; i++)
 			{
 				child = getChildAt(i);
-				
+
 				if(child is UIComponent && (child as UIComponent).visible == false)
 				{
 					continue;
 				}
-				
+
 				child.y = ypos;
 				ypos += child.height;
 				ypos += gap;
 				calcH += child.height;
-				
+
 				maxWidth = child.width > maxWidth ? child.width : maxWidth;
 			}
 
