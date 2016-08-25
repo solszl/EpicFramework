@@ -143,6 +143,10 @@ package com.vhall.framework.ui.controls
 
 		override public function set x(value:Number):void
 		{
+			if(originX == value)
+			{
+				return;
+			}
 			originX = value;
 			realXPos = value - _pivot.x * scaleX
 			super.x = realXPos;
@@ -160,6 +164,10 @@ package com.vhall.framework.ui.controls
 
 		override public function set y(value:Number):void
 		{
+			if(originY == value)
+			{
+				return;
+			}
 			originY = value;
 			realYPos = value - _pivot.y * scaleY;
 			super.y = realYPos;
