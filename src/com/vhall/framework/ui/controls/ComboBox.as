@@ -173,8 +173,7 @@ package com.vhall.framework.ui.controls
 			super.updateDisplay();
 			if(open)
 			{
-				var p:Point = this.localToGlobal(new Point(0, height));
-				list.move(p.x, p.y);
+				setListPosition();
 				StageManager.stage.addChild(list);
 			}
 			else
@@ -183,6 +182,22 @@ package com.vhall.framework.ui.controls
 			}
 
 			lbl.y = height - lbl.height >> 1;
+		}
+
+		private function setListPosition():void
+		{
+			var p:Point = this.localToGlobal(new Point());
+
+			if((p.y + height + list.height) > StageManager.stageHeight)
+			{
+				_listDirection = 0;
+				list.move(p.x, p.y - list.height);
+			}
+			else
+			{
+				_listDirection = 1;
+				list.move(p.x, p.y + height);
+			}
 		}
 
 		/**	显示列表的时候， 给舞台添加点击事件，控制显隐逻辑*/
@@ -205,6 +220,14 @@ package com.vhall.framework.ui.controls
 			{
 				item.width = value;
 			}
+		}
+
+		private var _listDirection:int = 1;
+
+		/**	0 向上，1向下*/
+		public function get listDirection():int
+		{
+			return _listDirection;
 		}
 	}
 }
