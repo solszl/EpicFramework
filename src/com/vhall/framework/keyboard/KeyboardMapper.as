@@ -60,6 +60,7 @@ package com.vhall.framework.keyboard
 			var hits:Vector.<KeyMap> = _listeners.filter(onFilter);
 			for each(var map:KeyMap in hits)
 			{
+				_combo = map.toString();
 				map.execute();
 			}
 		}
@@ -114,6 +115,13 @@ package com.vhall.framework.keyboard
 		{
 			keys = keys.sort(compareInt);
 			return keys.join();
+		}
+
+		private var _combo:String = "";
+
+		public function get comboString():String
+		{
+			return _combo;
 		}
 	}
 }

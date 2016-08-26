@@ -5,6 +5,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.interfaces.IItemRenderer;
 
 	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 
 	/**
 	 * 渲染项
@@ -84,6 +85,7 @@ package com.vhall.framework.ui.controls
 		public function setSelected(value:Boolean):void
 		{
 			this._selected = value;
+			backgroundColor = value ? downColor : normalColor;
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -118,6 +120,10 @@ package com.vhall.framework.ui.controls
 			this._selected = value;
 			backgroundColor = value ? downColor : normalColor;
 			RenderManager.getInstance().invalidate(invalidate);
+			if(hasEventListener(Event.SELECT))
+			{
+				dispatchEvent(new Event(Event.SELECT));
+			}
 		}
 
 		public function get selected():Boolean
