@@ -42,6 +42,8 @@ package com.vhall.framework.ui.controls
 
 		public var itemClass:Class;
 
+		public var isSelectSame:Boolean = false;
+
 		public var renderCall:Function = null;
 
 		/**	列表项间距*/
@@ -139,7 +141,7 @@ package com.vhall.framework.ui.controls
 						ItemRender(e.target).onMouseOut();
 						break;
 					case MouseEvent.CLICK:
-						if(ItemRender(e.target).selected)
+						if(ItemRender(e.target).selected && !isSelectSame)
 						{
 							return;
 						}
