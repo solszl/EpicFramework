@@ -1,6 +1,7 @@
 package com.vhall.framework.app.net
 {
 	import com.vhall.framework.log.Logger;
+
 	import flash.utils.Dictionary;
 
 	/**
@@ -30,6 +31,7 @@ package com.vhall.framework.app.net
 		 */
 		public function handle(msg:*, msg_body:*):void
 		{
+
 			if(!(msg in handleMap))
 			{
 				Logger.getLogger("MSG").info("no msg: " + msg + " in handleMap");
@@ -37,8 +39,22 @@ package com.vhall.framework.app.net
 			}
 
 
-			var obj:Object = JSON.parse(String(msg_body)); //JSON.decode(msg_body);
-			handleMap[msg](obj);
+			try
+			{
+				if(msg_body is String)
+				{
+					var obj:Object = JSON.parse(String(msg_body)); //JSON.decode(msg_body);
+					handleMap[msg](obj);
+				}
+				else
+				{
+					handleMap[msg](msg_body);
+				}
+			}
+			catch(e:Error)
+			{
+				Logger.getLogger("AbsBridge").info("ERROR " + e.errorID + ":" + e.message);
+			}
 		}
 
 		/**
