@@ -98,8 +98,8 @@ package com.vhall.framework.ui.controls
 					{
 						item = createItem(dataProvider[i]);
 						item.index = i;
-						item.selected = false;
 						con.addChild(item);
+						item.selected = false;
 					}
 				}
 				dataProviderChanged = false;

@@ -6,7 +6,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.container.VBox;
 	import com.vhall.framework.ui.event.ListEvent;
 	import com.vhall.framework.ui.interfaces.IItemRenderer;
-	
+
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -58,7 +58,6 @@ package com.vhall.framework.ui.controls
 		{
 			this._dataProvider = value;
 			con.dataProvider = value;
-			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		public function get dataProvider():Array
@@ -100,13 +99,13 @@ package com.vhall.framework.ui.controls
 		{
 			item.addEventListener(Event.SELECT, onSelectHandler);
 		}
-		
+
 		public function set selectedIndex(value:int):void
 		{
 			con.selectIndex = value;
 			RenderManager.getInstance().invalidate(invalidate);
 		}
-		
+
 		private function onListEventHandler(e:ListEvent):void
 		{
 			if(hasEventListener(e.type))
