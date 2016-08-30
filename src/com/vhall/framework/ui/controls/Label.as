@@ -48,17 +48,20 @@ package com.vhall.framework.ui.controls
 			addChild(_tf);
 
 			font = "Microsoft YaHei";
+			sizeChanged();
 		}
 
 		override public function set width(value:Number):void
 		{
 			super.width = value;
+			_width = value;
 			_tf.width = value;
 		}
 
 		override public function set height(value:Number):void
 		{
 			super.height = value;
+			_height = value;
 			_tf.height = value;
 		}
 
@@ -358,9 +361,11 @@ package com.vhall.framework.ui.controls
 				if(align == "left")
 				{
 					_tf.width = _tf.textWidth + 4 + _formmat.indent;
+					_width = _tf.width;
 				}
 			}
 			_tf.height = Math.max(_tf.textHeight + 4, 20);
+			_height = _tf.height;
 		}
 
 		override protected function updateDisplay():void
