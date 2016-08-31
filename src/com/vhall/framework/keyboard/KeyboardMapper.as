@@ -4,6 +4,7 @@ package com.vhall.framework.keyboard
 
 	import flash.display.DisplayObject;
 	import flash.events.KeyboardEvent;
+	import flash.text.TextField;
 	import flash.ui.Keyboard;
 
 	use namespace vhall_internal;
@@ -37,6 +38,13 @@ package com.vhall.framework.keyboard
 
 		private function onKeyDown(e:KeyboardEvent):void
 		{
+			// 如果当前正在输入文本，不相应快捷键检测
+			if(e.target is TextField)
+			{
+				trace("检测当前target为输入框", e.keyCode);
+				return;
+			}
+
 			if(_combination.indexOf(e.keyCode) == -1)
 			{
 				_combination.push(e.keyCode);
@@ -76,6 +84,11 @@ package com.vhall.framework.keyboard
 
 		private function onKeyUp(e:KeyboardEvent):void
 		{
+			// 如果当前正在输入文本，不相应快捷键检测
+			if(e.target is TextField)
+			{
+				return;
+			}
 			checkCombo();
 			var position:int = _combination.indexOf(e.keyCode);
 			_combination.splice(position, 1);
