@@ -25,7 +25,7 @@ package com.vhall.framework.ui.controls
 		/**	背景*/
 		protected var bg:Image;
 		/**	列表项*/
-		protected var list:List;
+		protected var _list:List;
 
 		protected var container:Box;
 
@@ -52,9 +52,9 @@ package com.vhall.framework.ui.controls
 			container.mouseEnabled = false;
 			container.mouseChildren = false;
 
-			list = new List(List.VERTICAL, null, 0);
-			list.addEventListener(ListEvent.SelectChanged, onItemSelected);
-			list.renderCall = itemRenderCall;
+			_list = new List(List.VERTICAL, null, 0);
+			_list.addEventListener(ListEvent.SelectChanged, onItemSelected);
+			_list.renderCall = itemRenderCall;
 			initDisplay();
 		}
 
@@ -70,7 +70,7 @@ package com.vhall.framework.ui.controls
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
-		protected function hideList():void
+		public function hideList():void
 		{
 			open = false;
 			StageManager.stage.removeEventListener(MouseEvent.CLICK, onStageClick);
@@ -79,17 +79,17 @@ package com.vhall.framework.ui.controls
 
 		protected function onItemSelected(event:ListEvent):void
 		{
-			lbl.text = list.selectData + "";
+			lbl.text = _list.selectData + "";
 			if(_content)
 			{
-				_content.data = list.selectData;
+				_content.data = _list.selectData;
 			}
 			dispatchEvent(event);
 		}
 
 		protected function initDisplay():void
 		{
-			list.itemClass = ItemRender;
+			_list.itemClass = ItemRender;
 
 			lbl = new Label(container, 2);
 			lbl.text = "text";
@@ -97,33 +97,38 @@ package com.vhall.framework.ui.controls
 
 		public function set itemRender(value:Class):void
 		{
-			list.itemClass = value;
+			_list.itemClass = value;
 		}
 
 
 		public function set data(value:*):void
 		{
-			list.dataProvider = value as Array;
+			_list.dataProvider = value as Array;
 		}
 
 		public function get data():*
 		{
-			return list.dataProvider;
+			return _list.dataProvider;
 		}
 
 		public function get selectData():Object
 		{
-			return list.selectData;
+			return _list.selectData;
 		}
 
 		public function get selectItem():ItemRender
 		{
-			return list.selectItem;
+			return _list.selectItem;
 		}
 
 		public function get selectIndex():int
 		{
-			return list.selectIndex;
+			return _list.selectIndex;
+		}
+
+		public function get list():List
+		{
+			return _list;
 		}
 
 		public function set buttonBackground(value:*):void
@@ -160,7 +165,7 @@ package com.vhall.framework.ui.controls
 
 		public function set showDefaultLabel(value:Boolean):void
 		{
-			list.showDefaultLabel = value;
+			_list.showDefaultLabel = value;
 		}
 
 		protected function itemRenderCall(item:ItemRender, data:*):void
@@ -174,11 +179,11 @@ package com.vhall.framework.ui.controls
 			if(open)
 			{
 				setListPosition();
-				StageManager.stage.addChild(list);
+				StageManager.stage.addChild(_list);
 			}
 			else
 			{
-				list.removeFromParent();
+				_list.removeFromParent();
 			}
 
 			lbl.y = height - lbl.height >> 1;
@@ -188,15 +193,15 @@ package com.vhall.framework.ui.controls
 		{
 			var p:Point = this.localToGlobal(new Point());
 
-			if((p.y + height + list.height) > StageManager.stageHeight)
+			if((p.y + height + _list.height) > StageManager.stageHeight)
 			{
 				_listDirection = 0;
-				list.move(p.x, p.y - list.height);
+				_list.move(p.x, p.y - _list.height);
 			}
 			else
 			{
 				_listDirection = 1;
-				list.move(p.x, p.y + height);
+				_list.move(p.x, p.y + height);
 			}
 		}
 
@@ -205,7 +210,7 @@ package com.vhall.framework.ui.controls
 		{
 			if(this.hitTestPoint(e.stageX, e.stageY))
 				return;
-			if(new Rectangle(list.x, list.y, list.width, list.height).contains(e.stageX, e.stageY))
+			if(new Rectangle(_list.x, _list.y, _list.width, _list.height).contains(e.stageX, e.stageY))
 				return;
 
 			hideList();
@@ -216,7 +221,7 @@ package com.vhall.framework.ui.controls
 		public function set itemWidth(value:Number):void
 		{
 			_itemWidth = value;
-			for each(var item:ItemRender in list.getChildren())
+			for each(var item:ItemRender in _list.getChildren())
 			{
 				item.width = value;
 			}
