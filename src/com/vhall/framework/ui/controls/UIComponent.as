@@ -143,19 +143,22 @@ package com.vhall.framework.ui.controls
 
 		override public function set x(value:Number):void
 		{
-			if(originX == value)
-			{
-				return;
-			}
 			originX = value;
-			realXPos = value - _pivot.x * scaleX
+			if(_pivot.x == 0)
+			{
+				realXPos = value;
+			}
+			else
+			{
+				realXPos = value - _pivot.x * scaleX
+			}
 			super.x = realXPos;
 			RenderManager.getInstance().invalidate(updateDisplay);
 		}
 
 		override public function get x():Number
 		{
-			return originX;
+			return _pivot.x == 0 ? super.x : originX;
 		}
 
 		protected var realYPos:Number = 0;
@@ -164,19 +167,22 @@ package com.vhall.framework.ui.controls
 
 		override public function set y(value:Number):void
 		{
-			if(originY == value)
-			{
-				return;
-			}
 			originY = value;
-			realYPos = value - _pivot.y * scaleY;
+			if(_pivot.y == 0)
+			{
+				realYPos = value;
+			}
+			else
+			{
+				realYPos = value - _pivot.y * scaleY;
+			}
 			super.y = realYPos;
 			RenderManager.getInstance().invalidate(updateDisplay);
 		}
 
 		override public function get y():Number
 		{
-			return originY;
+			return _pivot.y == 0 ? super.y : originY;
 		}
 
 		override public function set scaleX(value:Number):void
