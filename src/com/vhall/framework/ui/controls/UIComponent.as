@@ -143,6 +143,10 @@ package com.vhall.framework.ui.controls
 
 		override public function set x(value:Number):void
 		{
+			if(x == value)
+			{
+				return;
+			}
 			originX = value;
 			if(_pivot.x == 0)
 			{
@@ -167,6 +171,10 @@ package com.vhall.framework.ui.controls
 
 		override public function set y(value:Number):void
 		{
+			if(y == value)
+			{
+				return;
+			}
 			originY = value;
 			if(_pivot.y == 0)
 			{
