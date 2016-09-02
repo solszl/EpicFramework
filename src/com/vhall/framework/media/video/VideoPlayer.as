@@ -487,7 +487,6 @@ package com.vhall.framework.media.video
 		 */
 		public function set transition(tran:String):void
 		{
-			_proxy.transition = tran;
 			_videoOption.transition = tran;
 		}
 
