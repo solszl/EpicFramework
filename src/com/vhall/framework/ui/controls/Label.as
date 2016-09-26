@@ -358,6 +358,11 @@ package com.vhall.framework.ui.controls
 					_textformmatChanged = false;
 				}
 
+				if(italic)
+				{
+					_tf.appendText(' ');
+				}
+
 				if(align == "left")
 				{
 					_tf.width = _tf.textWidth + 4 + _formmat.indent;
