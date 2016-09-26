@@ -85,7 +85,7 @@ package com.vhall.framework.log
 			}
 			this.curLines++;
 			var today_date:Date = new Date();
-			var date_str:String = today_date.getHours() + ":" + today_date.getMinutes() + ":" + today_date.getSeconds() + "." +today_date.milliseconds;
+			var date_str:String = today_date.getHours() + ":" + today_date.getMinutes() + ":" + today_date.getSeconds() + "." + today_date.milliseconds;
 			this.mcOutput.htmlText += "</br><font color='#FFFFFF'>" + date_str + " " + msg + "</font>";
 			this.mcOutput.scrollV = this.mcOutput.maxScrollV;
 			if(hasEventListener(LogEvent.Changed))
@@ -114,13 +114,13 @@ package com.vhall.framework.log
 			graphics.clear();
 			graphics.lineStyle(2, 0);
 			graphics.beginFill(0, .6);
-			graphics.drawRoundRect(0, 0, _stage.stageWidth, _stage.stageHeight, 5);
+			graphics.drawRoundRect(0, 0, _stage.stageWidth, _stage.stageHeight - 100, 5);
 			graphics.endFill();
 
 			mcOutput.width = _stage.stageWidth - 20;
-			mcOutput.height = _stage.stageHeight - 20;
+			mcOutput.height = _stage.stageHeight - 120;
 			mcOutput.x = (_stage.stageWidth - mcOutput.width) >> 1;
-			mcOutput.y = (_stage.stageHeight - mcOutput.height) >> 1;
+			mcOutput.y = 20; //(_stage.stageHeight - mcOutput.height) >> 1 ;
 
 			closeBtn.x = mcOutput.width - closeBtn.textWidth;
 			closeBtn.y = 5;
