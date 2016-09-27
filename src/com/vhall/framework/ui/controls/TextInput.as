@@ -93,7 +93,7 @@ package com.vhall.framework.ui.controls
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
-			_tf.y = _height - _tf.height >> 1;
+			_tf.y = height - _tf.height >> 1;
 		}
 	}
 }
