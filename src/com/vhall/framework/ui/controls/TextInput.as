@@ -82,7 +82,18 @@ package com.vhall.framework.ui.controls
 				_textformmatChanged = false;
 			}
 
+			if(italic)
+			{
+				_tf.appendText(" ");
+			}
+
 			_tf.height = Math.max(_tf.textHeight + 4, 20);
+		}
+
+		override protected function updateDisplay():void
+		{
+			super.updateDisplay();
+			_tf.y = _height - _tf.height >> 1;
 		}
 	}
 }
