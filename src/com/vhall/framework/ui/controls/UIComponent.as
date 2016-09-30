@@ -197,6 +197,7 @@ package com.vhall.framework.ui.controls
 		{
 			super.scaleX = value;
 			scaleChanged = true;
+			_width = width * scaleX;
 			RenderManager.getInstance().invalidate(sizeChanged);
 		}
 
@@ -204,6 +205,7 @@ package com.vhall.framework.ui.controls
 		{
 			super.scaleY = value;
 			scaleChanged = true;
+			_height = height * scaleY;
 			RenderManager.getInstance().invalidate(sizeChanged);
 		}
 
@@ -448,6 +450,10 @@ package com.vhall.framework.ui.controls
 
 		public function set scale(value:Number):void
 		{
+			if(_scale == value)
+			{
+				return;
+			}
 			_scale = value;
 			this.scaleX = _scale;
 			this.scaleY = _scale;
