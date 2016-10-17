@@ -24,7 +24,6 @@ package com.vhall.framework.media.provider
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.net.NetStreamPlayOptions;
-	import flash.net.ObjectEncoding;
 
 	CONFIG::LOGGING
 	{
@@ -41,18 +40,18 @@ package com.vhall.framework.media.provider
 		public function RtmpProxy()
 		{
 			super(MediaProxyType.RTMP);
-
+			connFailTime = 1000 * 5;
 			createNet();
 		}
 
 		/** 创建NetConnection链接*/
 		protected function createNet():void
 		{
-			_conn||=new NetConnection();
-			_conn.client=client;
+			_conn ||= new NetConnection();
+			_conn.client = client;
 		}
 
-		override public function connect(uri:String, streamUrl:String=null, handler:Function=null, autoPlay:Boolean=true, startPostion:Number=0):void
+		override public function connect(uri:String, streamUrl:String = null, handler:Function = null, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
 			super.connect(uri, streamUrl, handler, autoPlay, startPostion);
 
@@ -63,8 +62,9 @@ package com.vhall.framework.media.provider
 			try
 			{
 				_conn.connect(this._uri);
+				startConnFailTime();
 			}
-			catch (e:Error)
+			catch(e:Error)
 			{
 				CONFIG::LOGGING
 				{
@@ -75,7 +75,7 @@ package com.vhall.framework.media.provider
 
 		protected function addListeners():void
 		{
-			if (!_conn.hasEventListener(NetStatusEvent.NET_STATUS))
+			if(!_conn.hasEventListener(NetStatusEvent.NET_STATUS))
 			{
 				_conn.addEventListener(NetStatusEvent.NET_STATUS, statusHandler);
 				_conn.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
@@ -88,27 +88,27 @@ package com.vhall.framework.media.provider
 		/** 通道连接建立成功，创建流对象*/
 		override protected function createStream():void
 		{
-			_ns=new NetStream(_conn);
-			_ns.client=client;
+			_ns = new NetStream(_conn);
+			_ns.client = client;
 
 //			//取消硬件解码
-			_ns.useHardwareDecoder=false;
+			_ns.useHardwareDecoder = false;
 
-			if (FPUtil.vaild(11))
+			if(FPUtil.vaild(11))
 			{
-				_ns.videoStreamSettings=h264Video;
+				_ns.videoStreamSettings = h264Video;
 			}
 
-			bufferTime=1;
-			bufferTimeMax=2;
+			bufferTime = 1;
+			bufferTimeMax = 2;
 
 			_ns.addEventListener(NetStatusEvent.NET_STATUS, statusHandler);
 			_ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR, errorHandler);
 			_ns.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 			_ns.addEventListener(NetDataEvent.MEDIA_TYPE_DATA, mediaHandler);
 
-			volume=_volume;
-			mute=_mute;
+			volume = _volume;
+			mute = _mute;
 
 			excute(MediaProxyStates.CONNECT_NOTIFY);
 
@@ -117,24 +117,24 @@ package com.vhall.framework.media.provider
 			_conn.call("checkBandwidth", null);
 		}
 
-		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true, startPostion:Number=0):void
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
-			var oldUri:String=this._uri;
-			var oldStreamUrl:String=this._streamUrl;
+			var oldUri:String = this._uri;
+			var oldStreamUrl:String = this._streamUrl;
 
 			super.changeVideoUrl(uri, streamUrl, autoPlay, startPostion);
-
-			if (_conn && _conn.connected && oldUri == uri && _transition)
+			startConnFailTime();
+			if(_conn && _conn.connected && oldUri == uri && _transition)
 			{
-				if (oldStreamUrl == streamUrl)
+				if(oldStreamUrl == streamUrl)
 					return;
-				var nspo:NetStreamPlayOptions=new NetStreamPlayOptions();
-				nspo.oldStreamName=oldStreamUrl;
-				nspo.streamName=streamUrl;
-				nspo.transition=_transition;
-				if (_autoPlay)
+				var nspo:NetStreamPlayOptions = new NetStreamPlayOptions();
+				nspo.oldStreamName = oldStreamUrl;
+				nspo.streamName = streamUrl;
+				nspo.transition = _transition;
+				if(_autoPlay)
 				{
-					if (!_ns)
+					if(!_ns)
 					{
 						CONFIG::LOGGING
 						{
@@ -161,7 +161,7 @@ package com.vhall.framework.media.provider
 		 */
 		protected function get h264Video():H264VideoStreamSettings
 		{
-			var h264:H264VideoStreamSettings=new H264VideoStreamSettings();
+			var h264:H264VideoStreamSettings = new H264VideoStreamSettings();
 
 			/*
 			*	设置视频编码的配置文件和级别
@@ -181,7 +181,7 @@ package com.vhall.framework.media.provider
 		override public function start():void
 		{
 			super.start();
-			if (_ns)
+			if(_ns)
 			{
 				_ns.play(_streamUrl);
 			}
@@ -225,9 +225,11 @@ package com.vhall.framework.media.provider
 			{
 				Log.info("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : "") + "类型：" + _type);
 			}
-			switch (e.info.code)
+			switch(e.info.code)
 			{
 				case InfoCode.NetConnection_Connect_Success:
+					stopConnFailTime();
+					onBufferEmpty();
 					createStream();
 					break;
 				case InfoCode.NetConnection_Connect_Closed:
@@ -239,9 +241,11 @@ package com.vhall.framework.media.provider
 					break;
 				case InfoCode.NetStream_Buffer_Empty:
 					excute(MediaProxyStates.STREAM_LOADING);
+					onBufferEmpty();
 					break;
 				case InfoCode.NetStream_Buffer_Full:
 					excute(MediaProxyStates.STREAM_FULL);
+					onBufferFull();
 					break;
 				case InfoCode.NetStream_Play_Start:
 					excute(MediaProxyStates.STREAM_START);
@@ -260,7 +264,7 @@ package com.vhall.framework.media.provider
 					excute(MediaProxyStates.SEEK_NOTIFY);
 					break;
 				case InfoCode.NetStream_Seek_Complete:
-					_playing=true;
+					_playing = true;
 					excute(MediaProxyStates.SEEK_COMPLETE);
 					break;
 				case InfoCode.NetStream_Video_DimensionChange:
@@ -286,13 +290,27 @@ package com.vhall.framework.media.provider
 			}
 		}
 
+		override protected function onEmptyTime():void
+		{
+			// TODO Auto Generated method stub
+			super.onEmptyTime();
+			excute(MediaProxyStates.STREAM_EMPTY_4CHANGELINE);
+		}
+
+		override protected function onConnFail():void
+		{
+			// TODO Auto Generated method stub
+			super.onConnFail();
+			excute(MediaProxyStates.STREAM_CONN_TIMEOUT);
+		}
+
 		/**
 		 * netConnection,netstream回调client
 		 * @return
 		 */
 		protected function get client():Object
 		{
-			return {"onPublishData": onPublishData, "onBWCheck": onBWCheck, "onBWDone": onBWDone, "onCuePoint": onCurePoint, "onImageData": onImageData, "onMetaData": onMetaData, "onPlayStatus": onPlayStatus, "onSeekPoint": onSeekPoint, "onTextData": onTextData};
+			return {"onPublishData":onPublishData, "onBWCheck":onBWCheck, "onBWDone":onBWDone, "onCuePoint":onCurePoint, "onImageData":onImageData, "onMetaData":onMetaData, "onPlayStatus":onPlayStatus, "onSeekPoint":onSeekPoint, "onTextData":onTextData};
 		}
 
 		/**
@@ -337,11 +355,11 @@ package com.vhall.framework.media.provider
 			}
 		}
 
-		protected function onMetaData(value:*=null):void
+		protected function onMetaData(value:* = null):void
 		{
-			if (value && value["duration"])
+			if(value && value["duration"])
 			{
-				_duration=value["duration"];
+				_duration = value["duration"];
 				excute(MediaProxyStates.DURATION_NOTIFY, _duration);
 			}
 
@@ -377,7 +395,7 @@ package com.vhall.framework.media.provider
 
 		protected function mediaHandler(e:NetDataEvent):void
 		{
-			if (!this.client.hasOwnProperty(e.info["handler"]))
+			if(!this.client.hasOwnProperty(e.info["handler"]))
 			{
 				CONFIG::LOGGING
 				{
@@ -389,7 +407,7 @@ package com.vhall.framework.media.provider
 		//清除netstream的监听
 		protected function clearNsListeners():void
 		{
-			if (_ns)
+			if(_ns)
 			{
 				_ns.removeEventListener(NetStatusEvent.NET_STATUS, statusHandler);
 				_ns.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, errorHandler);
@@ -399,7 +417,7 @@ package com.vhall.framework.media.provider
 				_ns.attachAudio(null);
 				_ns.close();
 				_ns.dispose();
-				_ns=null;
+				_ns = null;
 			}
 		}
 
@@ -407,14 +425,14 @@ package com.vhall.framework.media.provider
 		//清除netconnection的监听,会导致无法播放
 		protected function clearCnListeners():void
 		{
-			if (_conn)
+			if(_conn)
 			{
 				_conn.removeEventListener(NetStatusEvent.NET_STATUS, statusHandler);
 				_conn.removeEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 				_conn.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
 				_conn.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, errorHandler);
 				_conn.close();
-				_conn=null;
+				_conn = null;
 			}
 		}
 
@@ -422,6 +440,7 @@ package com.vhall.framework.media.provider
 		{
 			clearNsListeners();
 			clearCnListeners();
+			stopConnFailTime();
 			super.gc();
 		}
 
@@ -435,7 +454,7 @@ package com.vhall.framework.media.provider
 
 		override public function get time():Number
 		{
-			if (stream)
+			if(stream)
 				return stream.time;
 			return 0;
 		}
@@ -453,36 +472,36 @@ package com.vhall.framework.media.provider
 
 		override public function get loaded():Number
 		{
-			if (_ns)
+			if(_ns)
 				return (_ns.time + _ns.bufferLength) / _duration;
 			return 0;
 		}
 
 		override public function set volume(value:Number):void
 		{
-			super.volume=value;
-			if (_ns)
+			super.volume = value;
+			if(_ns)
 			{
-				var st:SoundTransform=_ns.soundTransform;
-				st.volume=_volume;
-				_ns.soundTransform=st;
+				var st:SoundTransform = _ns.soundTransform;
+				st.volume = _volume;
+				_ns.soundTransform = st;
 			}
 		}
 
 		override public function set mute(bool:Boolean):void
 		{
-			super.mute=bool;
-			if (_ns)
+			super.mute = bool;
+			if(_ns)
 			{
-				var st:SoundTransform=_ns.soundTransform;
-				st.volume=bool ? 0 : _volume;
-				_ns.soundTransform=st;
+				var st:SoundTransform = _ns.soundTransform;
+				st.volume = bool ? 0 : _volume;
+				_ns.soundTransform = st;
 			}
 		}
 
 		private function get bytesPerSecond():Number
 		{
-			if (stream)
+			if(stream)
 				return stream.info.dataBytesPerSecond / 1024;
 			return 0;
 		}

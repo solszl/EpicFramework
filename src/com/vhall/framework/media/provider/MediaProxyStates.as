@@ -9,16 +9,26 @@
 
 package com.vhall.framework.media.provider
 {
+
 	/** 代理外发状态码*/
 	public class MediaProxyStates
 	{
-		/**	通道链接成功，stream创建完成派发*/		
+		/**	通道链接成功，stream创建完成派发*/
 		public static const CONNECT_NOTIFY:String = "connectNotify";
 
-		/** 通道创建失败，可选参数为失败状态码*/		
+		/** 通道创建失败，可选参数为失败状态码*/
 		public static const CONNECT_FAILED:String = "connectFailed";
+		/**
+		 *因为长时间empty 所以进行切线处理
+		 */
+		public static const STREAM_EMPTY_4CHANGELINE:String = "stream_empty_4changeline";
 
-		/** seek通知，禁止操作*/		
+		/**
+		 *因为长时间没连接上 所以进行切线处理
+		 */
+		public static const STREAM_CONN_TIMEOUT:String = "stream_conn_timeout";
+
+		/** seek通知，禁止操作*/
 		public static const SEEK_NOTIFY:String = "seekNotify";
 
 		/** seek跳转失败*/
@@ -71,7 +81,7 @@ package com.vhall.framework.media.provider
 
 		public static const STREAM_TRANSITION:String = "streamTransition";
 
-		/** 未找到硬件设备,参数为字符串说明 */		
+		/** 未找到硬件设备,参数为字符串说明 */
 		public static const NO_HARD_WARE:String = "noHardWare";
 
 		/** 推流摄像头被占用请检查设备*/

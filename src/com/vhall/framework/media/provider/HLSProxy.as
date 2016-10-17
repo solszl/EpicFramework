@@ -80,6 +80,7 @@ package com.vhall.framework.media.provider
 			bufferTimeMax = 2;
 			stream.addEventListener(NetStatusEvent.NET_STATUS, streamNetStatusEventHandler);
 			_hls.load(_uri);
+			startConnFailTime();
 		}
 
 		protected function streamNetStatusEventHandler(event:NetStatusEvent):void
@@ -89,9 +90,11 @@ package com.vhall.framework.media.provider
 			{
 				case InfoCode.NetStream_Buffer_Empty:
 					excute(MediaProxyStates.STREAM_LOADING, true);
+					onBufferEmpty();
 					break;
 				case InfoCode.NetStream_Buffer_Full:
 					excute(MediaProxyStates.STREAM_FULL, true);
+					onBufferFull();
 					break;
 			}
 		}
@@ -105,6 +108,7 @@ package com.vhall.framework.media.provider
 			this._loadMetrics = null;
 
 			_hls.load(uri);
+			startConnFailTime();
 		}
 
 		override public function start():void
@@ -117,6 +121,21 @@ package com.vhall.framework.media.provider
 				time = _startPostion;
 			}
 		}
+
+		override protected function onEmptyTime():void
+		{
+			// TODO Auto Generated method stub
+			super.onEmptyTime();
+			excute(MediaProxyStates.STREAM_EMPTY_4CHANGELINE);
+		}
+
+		override protected function onConnFail():void
+		{
+			// TODO Auto Generated method stub
+			super.onConnFail();
+			excute(MediaProxyStates.STREAM_CONN_TIMEOUT);
+		}
+
 
 		override public function set stage(value:Stage):void
 		{
@@ -163,6 +182,8 @@ package com.vhall.framework.media.provider
 			switch(e.type)
 			{
 				case HLSEvent.MANIFEST_LOADED:
+					stopConnFailTime();
+					onBufferEmpty()
 					break;
 				case HLSEvent.MANIFEST_PARSED:
 					CONFIG::LOGGING
@@ -283,7 +304,7 @@ package com.vhall.framework.media.provider
 				_hls.dispose();
 				_hls = null;
 			}
-
+			stopConnFailTime();
 			_durationReady = false;
 			this._playMetrics = null;
 			this._loadMetrics = null;
