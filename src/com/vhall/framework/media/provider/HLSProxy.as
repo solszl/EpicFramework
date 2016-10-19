@@ -74,7 +74,11 @@ package com.vhall.framework.media.provider
 			//_hls.addEventListener(HLSEvent.WARNING,onHLSHandler);
 			_hls.addEventListener(HLSEvent.ERROR, onHLSHandler);
 
+			bufferTime = ProxyConfig.BufferTime + 5;
+
 			stream.addEventListener(NetStatusEvent.NET_STATUS, streamNetStatusEventHandler);
+
+
 			_hls.load(_uri);
 			startConnFailTime();
 		}

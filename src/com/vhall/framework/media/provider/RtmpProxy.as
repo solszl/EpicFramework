@@ -99,6 +99,9 @@ package com.vhall.framework.media.provider
 				_ns.videoStreamSettings = h264Video;
 			}
 
+
+			bufferTime = ProxyConfig.BufferTime
+
 			_ns.addEventListener(NetStatusEvent.NET_STATUS, statusHandler);
 			_ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR, errorHandler);
 			_ns.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
