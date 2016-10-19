@@ -19,7 +19,6 @@ package com.vhall.framework.media.provider
 	import org.mangui.hls.HLS;
 	import org.mangui.hls.HLSSettings;
 	import org.mangui.hls.constant.HLSPlayStates;
-	import org.mangui.hls.constant.HLSSeekMode;
 	import org.mangui.hls.event.HLSError;
 	import org.mangui.hls.event.HLSEvent;
 	import org.mangui.hls.event.HLSLoadMetrics;
@@ -46,10 +45,9 @@ package com.vhall.framework.media.provider
 			super(MediaProxyType.HLS);
 
 			HLSSettings.maxBufferLength = 30;
-			//HLSSettings.manifestLoadMaxRetryTimeout = 2000;
+			HLSSettings.manifestLoadMaxRetryTimeout = 2000;
 			HLSSettings.flushLiveURLCache = true;
-			HLSSettings.minBufferLength = 0;
-			HLSSettings.seekMode = HLSSeekMode.ACCURATE_SEEK;
+//			HLSSettings.seekMode = HLSSeekMode.ACCURATE_SEEK;
 		}
 
 		override public function connect(uri:String, streamUrl:String = null, handler:Function = null, autoPlay:Boolean = true, startPostion:Number = 0):void
@@ -76,8 +74,6 @@ package com.vhall.framework.media.provider
 			//_hls.addEventListener(HLSEvent.WARNING,onHLSHandler);
 			_hls.addEventListener(HLSEvent.ERROR, onHLSHandler);
 
-			bufferTime = 1;
-			bufferTimeMax = 2;
 			stream.addEventListener(NetStatusEvent.NET_STATUS, streamNetStatusEventHandler);
 			_hls.load(_uri);
 			startConnFailTime();
@@ -300,7 +296,6 @@ package com.vhall.framework.media.provider
 
 				//_hls.removeEventListener(HLSEvent.WARNING,onHLSHandler);
 				_hls.removeEventListener(HLSEvent.ERROR, onHLSHandler);
-
 				_hls.dispose();
 				_hls = null;
 			}

@@ -15,6 +15,7 @@ package com.vhall.framework.media.video
 	import com.vhall.framework.media.provider.MediaProxyFactory;
 	import com.vhall.framework.media.provider.MediaProxyStates;
 	import com.vhall.framework.media.provider.MediaProxyType;
+	import com.vhall.framework.media.provider.ProxyConfig;
 
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -122,7 +123,7 @@ package com.vhall.framework.media.video
 			_proxy = MediaProxyFactory.create(type);
 			_handler = handler;
 			_type = type;
-
+			_proxy.bufferTime = ProxyConfig.BufferTime;
 			//推流之外的播放器，启用图像增强
 			eyefidelity = _eyefidelity;
 
