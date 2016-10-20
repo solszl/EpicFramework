@@ -74,8 +74,7 @@ package com.vhall.framework.media.provider
 			//_hls.addEventListener(HLSEvent.WARNING,onHLSHandler);
 			_hls.addEventListener(HLSEvent.ERROR, onHLSHandler);
 
-			bufferTime = ProxyConfig.BufferTime + 5;
-
+			bufferTime = ProxyConfig.BufferTime;
 			stream.addEventListener(NetStatusEvent.NET_STATUS, streamNetStatusEventHandler);
 
 
@@ -282,6 +281,7 @@ package com.vhall.framework.media.provider
 			super.gc();
 			if(_hls)
 			{
+
 				_hls.removeEventListener(HLSEvent.MANIFEST_LOADED, onHLSHandler);
 				_hls.removeEventListener(HLSEvent.MEDIA_TIME, onHLSHandler);
 				_hls.removeEventListener(HLSEvent.PLAYBACK_COMPLETE, onHLSHandler);
