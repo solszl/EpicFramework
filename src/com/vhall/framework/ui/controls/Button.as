@@ -2,6 +2,7 @@ package com.vhall.framework.ui.controls
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.ui.interfaces.IState;
+	import com.vhall.framework.utils.ColorUtil;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
@@ -288,6 +289,18 @@ package com.vhall.framework.ui.controls
 			width = bg.width;
 			height = bg.height;
 			btnLabel.width = width;
+			switch(state)
+			{
+				case 0:
+					ColorUtil.removeAllFilter(bg);
+					break;
+				case 1:
+					ColorUtil.addColor(bg, 10, 0, 20);
+					break;
+				case 2:
+					ColorUtil.addColor(bg, -34, 0, -20);
+					break;
+			}
 		}
 
 		override protected function updateDisplay():void

@@ -35,6 +35,8 @@ package com.vhall.framework.ui.event
 		 */
 		public static const UP:String = "dragbar_up";
 
+		public static const HOVER_WHILE_DRAGING:String = "dragbar_hover_while_draging";
+
 		public function DragEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false)
 		{
 			super(type, bubbles, cancelable);
