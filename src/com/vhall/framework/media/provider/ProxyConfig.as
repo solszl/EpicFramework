@@ -14,6 +14,6 @@ package com.vhall.framework.media.provider
 		/**
 		 *缓冲时间
 		 */
-		public static var BufferTime:int = 5;
+		public static var BufferTime:Number = 5;
 	}
 }
