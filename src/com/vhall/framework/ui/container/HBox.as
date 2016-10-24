@@ -49,6 +49,8 @@ package com.vhall.framework.ui.container
 			var numChild:int = this.numChildren;
 			var child:DisplayObject;
 			var xpos:Number = marginLeft;
+			// hbox内，显示的元素总数
+			var showChildrenCount:int = 0;
 			for(var i:int = 0; i < numChild; i++)
 			{
 				child = getChildAt(i);
@@ -62,12 +64,13 @@ package com.vhall.framework.ui.container
 				xpos += child.width;
 				xpos += gap;
 				calcW += child.width;
+				showChildrenCount++;
 				//取出来最高的，以便纵向布局使用
 				maxHeight = child.height > maxHeight ? child.height : maxHeight;
 			}
 
 			maxHeight = maxHeight > _height ? maxHeight : _height;
-			calcW += (numChild - 1) * gap;
+			calcW += (showChildrenCount - 1) * gap;
 			width = calcW + marginRight;
 		}
 
@@ -84,7 +87,7 @@ package com.vhall.framework.ui.container
 						child.y = 0;
 						break;
 					case "center":
-						child.y = maxHeight - child.height >> 1;
+						child.y = (maxHeight - child.height) / 2;
 						break;
 					case "bottom":
 						child.y = maxHeight - child.height;

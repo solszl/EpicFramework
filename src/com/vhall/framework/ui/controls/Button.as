@@ -295,7 +295,7 @@ package com.vhall.framework.ui.controls
 					ColorUtil.removeAllFilter(bg);
 					break;
 				case 1:
-					ColorUtil.addColor(bg, 10, 0, 20);
+					ColorUtil.addColor(bg, 50, 0, 20);
 					break;
 				case 2:
 					ColorUtil.addColor(bg, -34, 0, -20);
