@@ -191,7 +191,7 @@ package com.vhall.framework.ui.container
 //				calcW = w > calcW ? w : calcW;
 //				calcH = h > calcH ? h : calcH;
 //			}
-
+//
 //			var explicitw:Number = _width > calcW ? _width : calcW;
 //			var explicith:Number = _height > calcH ? _height : calcH;
 
