@@ -430,7 +430,7 @@ package com.vhall.framework.ui.controls
 
 		public function get explicitHeight():Number
 		{
-			return this._explicitWidth;
+			return this._explicitHeight;
 		}
 	}
 }

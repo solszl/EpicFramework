@@ -12,8 +12,11 @@ package com.vhall.framework.ui.layout
 	public class VerticalLayout extends HorizontalLayout
 	{
 		private var calcH:Number = 0;
+
 		public var marginTop:Number = 0;
+
 		public var marginBottom:Number = 0;
+
 		private var maxWidth:Number = 0;
 
 		public function VerticalLayout()
@@ -30,6 +33,7 @@ package com.vhall.framework.ui.layout
 			var ypos:Number = marginTop;
 			// vbox内，显示的元素总数
 			var showChildrenCount:int = 0;
+
 			for(var i:int = 0; i < numChild; i++)
 			{
 				child = target.getChildAt(i);
@@ -55,24 +59,25 @@ package com.vhall.framework.ui.layout
 
 		override protected function layoutVertical():void
 		{
-			var numChild:int = target.numChildren;
+			if(_verticalAlign == "top")
+				return;
+
+			var acH:Number = isNaN(target.explicitHeight) ? _measureHeight : target.explicitHeight;
+			var deltaX:Number = acH - calcH;
 			var child:DisplayObject;
-			for(var i:int = 0; i < numChild; i++)
+			var i:int = 0;
+
+			for(i = 0; i < target.numChildren; i++)
 			{
 				child = target.getChildAt(i);
-				switch(verticalAlign)
+
+				switch(_verticalAlign)
 				{
-					case "top":
-						child.y = 0;
-						break;
 					case "middle":
-						child.y = (maxWidth - child.width) / 2;
+						child.y += deltaX / 2;
 						break;
 					case "bottom":
-						child.y = maxWidth - child.width;
-						break;
-					default:
-						child.y = 0;
+						child.y += deltaX;
 						break;
 				}
 			}
@@ -82,15 +87,17 @@ package com.vhall.framework.ui.layout
 		{
 			var numChild:int = target.numChildren;
 			var child:DisplayObject;
+
 			for(var i:int = 0; i < numChild; i++)
 			{
 				child = target.getChildAt(i);
-				switch(horizontalAlign)
+
+				switch(_horizontalAlign)
 				{
 					case "left":
 						child.x = 0;
 						break;
-					case "middle":
+					case "center":
 						child.x = maxWidth - child.width >> 1;
 						break;
 					case "right":
