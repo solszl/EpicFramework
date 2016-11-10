@@ -19,6 +19,8 @@ package com.vhall.framework.ui.layout
 
 		protected var _measureWidth:Number;
 
+		protected var target:Box;
+
 		public function Layout()
 		{
 			type = "Layout";
@@ -26,6 +28,7 @@ package com.vhall.framework.ui.layout
 
 		public function doLayout(target:Box):void
 		{
+			this.target = target;
 			var child:DisplayObject;
 			var num:int = target.numChildren;
 			var comp:UIComponent;

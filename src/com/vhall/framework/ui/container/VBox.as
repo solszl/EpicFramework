@@ -1,6 +1,7 @@
 package com.vhall.framework.ui.container
 {
 	import com.vhall.framework.ui.controls.UIComponent;
+	import com.vhall.framework.ui.layout.VerticalLayout;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -15,7 +16,7 @@ package com.vhall.framework.ui.container
 		/**
 		 *	每项的间隔
 		 */
-		public var gap:Number = 0;
+		protected var _gap:Number = 0;
 
 		private var maxWidth:Number = 0;
 
@@ -28,70 +29,20 @@ package com.vhall.framework.ui.container
 
 		public function VBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
-			gap = 5;
+
 			super(parent, xpos, ypos);
+			_layout = new VerticalLayout();
+			gap = 5;
 		}
 
-		override protected function updateDisplay():void
+		public function set gap(value:Number):void
 		{
-			super.updateDisplay();
-
-			layoutHorizontal();
+			VerticalLayout(_layout).gap = value;
 		}
 
-		override protected function layoutChildren():void
+		public function get gap():Number
 		{
-//			super.layoutChildren();
-			calcH = 0;
-
-			var numChild:int = this.numChildren;
-			var child:DisplayObject;
-			var ypos:Number = marginTop;
-			for(var i:int = 0; i < numChild; i++)
-			{
-				child = getChildAt(i);
-
-				if(child is UIComponent && (child as UIComponent).visible == false)
-				{
-					continue;
-				}
-
-				child.y = ypos;
-				ypos += child.height;
-				ypos += gap;
-				calcH += child.height;
-
-				maxWidth = child.width > maxWidth ? child.width : maxWidth;
-			}
-
-			maxWidth = maxWidth > _width ? maxWidth : _width;
-			calcH += (numChild - 1) * gap;
-			height = calcH + marginBottom;
-		}
-
-		protected function layoutHorizontal():void
-		{
-			var numChild:int = this.numChildren;
-			var child:DisplayObject;
-			for(var i:int = 0; i < numChild; i++)
-			{
-				child = getChildAt(i);
-				switch(horizontalAlign)
-				{
-					case "left":
-						child.x = 0;
-						break;
-					case "middle":
-						child.x = maxWidth - child.width >> 1;
-						break;
-					case "right":
-						child.x = maxWidth - child.width;
-						break;
-					default:
-						child.x = 0;
-						break;
-				}
-			}
+			return VerticalLayout(_layout).gap;
 		}
 
 		/**
@@ -100,15 +51,30 @@ package com.vhall.framework.ui.container
 		 * <li/><b> middle </b> 中间对齐</br>
 		 * <li/><b> right </b> 底部对其</br>
 		 */
-		[Inspectable(category = "General", enumeration = "left, middle, right", defaultValue = "left")]
+		[Inspectable(category = "General", enumeration = "left,right,center", defaultValue = "left")]
 		public function get horizontalAlign():String
 		{
-			return _horizontalAlign;
+			return VerticalLayout(_layout).horizontalAlign;
 		}
 
+		/**
+		 *  @private
+		 */
 		public function set horizontalAlign(value:String):void
 		{
-			_horizontalAlign = value;
+			VerticalLayout(_layout).horizontalAlign = value;
+		}
+
+		[Inspectable(category = "General", enumeration = "top,middle,bottom", defaultValue = "top")]
+		public function get verticalAlign():String
+		{
+			return VerticalLayout(_layout).verticalAlign;
+			;
+		}
+
+		public function set verticalAlign(value:String):void
+		{
+			VerticalLayout(_layout).verticalAlign = value;
 		}
 
 	}

@@ -152,8 +152,8 @@ package com.vhall.framework.ui.container
 			}
 
 			this.layout.doLayout(this);
-			this._width = this.layout.measureWidth;
-			this._height = this.layout.measureHeight;
+//			this._width = this.layout.measureWidth;
+//			this._height = this.layout.measureHeight;
 		}
 
 		public function addChildAbove(target:DisplayObject, child:DisplayObject):void
@@ -197,14 +197,14 @@ package com.vhall.framework.ui.container
 			return this._layout;
 		}
 
-		override public function get width():Number
-		{
-			return this._layout.measureWidth;
-		}
-
-		override public function get height():Number
-		{
-			return this._layout.measureHeight;
-		}
+//		override public function get width():Number
+//		{
+//			return this._layout.measureWidth;
+//		}
+//
+//		override public function get height():Number
+//		{
+//			return this._layout.measureHeight;
+//		}
 	}
 }
