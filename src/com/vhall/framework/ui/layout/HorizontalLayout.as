@@ -37,6 +37,7 @@ package com.vhall.framework.ui.layout
 			}
 
 			_gap = s;
+
 			if(target)
 			{
 				doLayout(target);
@@ -49,6 +50,7 @@ package com.vhall.framework.ui.layout
 		}
 
 		protected var _horizontalAlign:String = "left";
+
 		protected var _verticalAlign:String = "top";
 
 		/**
@@ -64,7 +66,7 @@ package com.vhall.framework.ui.layout
 		}
 
 		/**
-		 *  @private
+		 * @private
 		 */
 		public function set horizontalAlign(value:String):void
 		{
@@ -121,6 +123,7 @@ package com.vhall.framework.ui.layout
 			var xpos:Number = marginLeft;
 			// hbox内，显示的元素总数
 			var showChildrenCount:int = 0;
+
 			for(var i:int = 0; i < numChild; i++)
 			{
 				child = target.getChildAt(i);
@@ -149,9 +152,11 @@ package com.vhall.framework.ui.layout
 		{
 			var numChild:int = target.numChildren;
 			var child:DisplayObject;
+
 			for(var i:int = 0; i < numChild; i++)
 			{
 				child = target.getChildAt(i);
+
 				switch(verticalAlign)
 				{
 					case "top":
@@ -176,17 +181,19 @@ package com.vhall.framework.ui.layout
 			{
 				return;
 			}
-			var acH:Number = isNaN(target.explicitHeight) ? _measureHeight : target.explicitHeight;
-			var deltaX:Number = acH - calcW;
+			var acW:Number = isNaN(target.explicitWidth) ? _measureWidth : target.explicitWidth;
+			var deltaX:Number = acW - calcW;
 			var child:DisplayObject;
 			var i:int = 0;
+
 			for(i = 0; i < target.numChildren; i++)
 			{
 				child = target.getChildAt(i);
+
 				switch(_horizontalAlign)
 				{
 					case "center":
-						child.x += deltaX >> 1;
+						child.x += deltaX / 2;
 						break;
 					case "right":
 						child.x += deltaX;

@@ -14,18 +14,17 @@ package com.vhall.framework.ui.container
 	public class VBox extends Box
 	{
 		/**
-		 *	每项的间隔
+		 * 每项的间隔
 		 */
 		protected var _gap:Number = 0;
 
-		private var maxWidth:Number = 0;
-
 		private var _horizontalAlign:String = "left";
 
-		public var marginTop:Number = 0;
-		public var marginBottom:Number = 0;
+		private var _verticalAlign:String = "top";
 
-		private var calcH:Number = 0;
+		public var marginTop:Number = 0;
+
+		public var marginBottom:Number = 0;
 
 		public function VBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
@@ -58,7 +57,7 @@ package com.vhall.framework.ui.container
 		}
 
 		/**
-		 *  @private
+		 * @private
 		 */
 		public function set horizontalAlign(value:String):void
 		{
