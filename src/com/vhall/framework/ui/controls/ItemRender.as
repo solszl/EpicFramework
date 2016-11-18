@@ -62,7 +62,10 @@ package com.vhall.framework.ui.controls
 			if(selected)
 				return;
 
-			backgroundColor = overColor;
+			if(useBackgroundColor)
+			{
+				backgroundColor = overColor;
+			}
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -78,14 +81,20 @@ package com.vhall.framework.ui.controls
 			if(selected)
 				return;
 
-			backgroundColor = normalColor;
+			if(useBackgroundColor)
+			{
+				backgroundColor = normalColor;
+			}
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		public function setSelected(value:Boolean):void
 		{
 			this._selected = value;
-			backgroundColor = value ? downColor : normalColor;
+			if(useBackgroundColor)
+			{
+				backgroundColor = value ? downColor : normalColor;
+			}
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -118,7 +127,10 @@ package com.vhall.framework.ui.controls
 		public function set selected(value:Boolean):void
 		{
 			this._selected = value;
-			backgroundColor = value ? downColor : normalColor;
+			if(useBackgroundColor)
+			{
+				backgroundColor = value ? downColor : normalColor;
+			}
 			RenderManager.getInstance().invalidate(invalidate);
 			if(hasEventListener(Event.SELECT))
 			{
@@ -151,5 +163,7 @@ package com.vhall.framework.ui.controls
 		public var overColor:uint = 0xDCDCDC;
 		public var normalColor:uint = 0xEDEDED;
 		public var downColor:uint = 0xDCDCDC;
+
+		public var useBackgroundColor:Boolean = true;
 	}
 }

@@ -439,10 +439,15 @@ package com.vhall.framework.ui.controls
 			return this._guideName;
 		}
 
-		/**	设置背景色*/
+		/**	设置背景色
+		 * @param 正常为16进制数<br/>如果传入数据为 ‘-1’， 则清空背景色*/
 		public function set backgroundColor(value:uint):void
 		{
 			graphics.clear();
+			if(value == -1)
+			{
+				return;
+			}
 			graphics.beginFill(value);
 			graphics.drawRect(0, 0, width, height);
 			graphics.endFill();

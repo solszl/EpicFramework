@@ -129,7 +129,7 @@ package com.vhall.framework.log
 			clearBtn.y = 5;
 
 			x = (_stage.stageWidth - this.width) >> 1;
-			y = (_stage.stageHeight - this.height) >> 1;
+			y = 5;
 		}
 	}
 }

@@ -7,6 +7,7 @@ package com.vhall.framework.load
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
+	import flash.net.URLRequestMethod;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
@@ -40,7 +41,7 @@ package com.vhall.framework.load
 		{
 			initLoaders();
 
-			this.loadList = loadList;
+			this.loadList = this.loadList.concat(loadList);
 			this.onItemCompleteCallBack = onItemComplete;
 			this.onAllCompleteCallBack = onAllComplete;
 			this.onProgressCallBack = onProgress;
@@ -78,6 +79,7 @@ package com.vhall.framework.load
 				currentItem.type = 1;
 			}
 			var request:URLRequest = new URLRequest(currentItem.url);
+			request.method = URLRequestMethod.GET;
 			urlLoader.load(request);
 		}
 
@@ -106,7 +108,7 @@ package com.vhall.framework.load
 				default:
 					break;
 			}
-			
+
 		}
 
 		private function progressHandler(e:ProgressEvent):void
@@ -149,10 +151,10 @@ package com.vhall.framework.load
 			}
 			loadNext();
 		}
-		
+
 		private function onLoaderLoaded(e:Event):void
 		{
-			if (e.target is URLLoader)
+			if(e.target is URLLoader)
 			{
 				var data:ByteArray = urlLoader.data;
 				onComplete(currentItem, data, null);

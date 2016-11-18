@@ -96,8 +96,7 @@ package com.vhall.framework.ui.controls
 					var len:int = dataProvider.length;
 					for(var i:int = 0; i < len; i++)
 					{
-						item = createItem(dataProvider[i]);
-						item.index = i;
+						item = createItem(dataProvider, i);
 						con.addChild(item);
 						item.selected = false;
 					}
@@ -197,16 +196,17 @@ package com.vhall.framework.ui.controls
 			item.addEventListener(MouseEvent.CLICK, onMouseHandler);
 		}
 
-		private function createItem(data:*):ItemRender
+		private function createItem(datas:Array, idx:int):ItemRender
 		{
 			var item:ItemRender = itemPool.length > 0 ? itemPool.pop() : itemClass == null ? new ItemRender() : new itemClass();
-			item.data = data;
+			item.index = idx;
+			item.data = datas[idx];
 			item.showDefaultLabel = showDefaultLabel;
 			addEvents(item);
 			// 如果设定了渲染设置数据的回调
 			if(renderCall != null)
 			{
-				renderCall(item, data);
+				renderCall(item, datas[idx]);
 			}
 
 			return item;
@@ -299,6 +299,15 @@ package com.vhall.framework.ui.controls
 		public function get showDefaultLabel():Boolean
 		{
 			return _showDefaultLabel;
+		}
+
+		public function getItemAt(idx:int):ItemRender
+		{
+			if(idx < 0 || idx >= con.numChildren)
+			{
+				return null;
+			}
+			return con.getChildAt(idx) as ItemRender;
 		}
 
 		public function fireEvent(type:String):void

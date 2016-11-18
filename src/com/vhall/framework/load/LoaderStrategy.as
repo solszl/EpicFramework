@@ -1,5 +1,6 @@
 package com.vhall.framework.load
 {
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
@@ -19,7 +20,7 @@ package com.vhall.framework.load
 	{
 		/**	加载器*/
 		private var loader:Loader;
-		private var _loaderContext:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+		private var _loaderContext:LoaderContext = new LoaderContext(false, new ApplicationDomain(ApplicationDomain.currentDomain));
 
 		public function LoaderStrategy()
 		{
@@ -70,8 +71,9 @@ package com.vhall.framework.load
 				return;
 			}
 
-			var content:* = loader.content;
-			this.complete(currentItem, content, loader.contentLoaderInfo.applicationDomain);
+			var content:DisplayObject = event.target.content;
+			var domain:ApplicationDomain = loader.contentLoaderInfo.applicationDomain;
+			this.complete(currentItem, content, domain);
 
 			if(cache)
 			{
