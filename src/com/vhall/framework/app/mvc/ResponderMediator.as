@@ -26,7 +26,7 @@ package com.vhall.framework.app.mvc
 		 *	收集关心的事件
 		 *
 		 */
-		private function collectCares():void
+		public function collectCares():void
 		{
 			var msgs:Array = (this._self as IResponder).careList();
 			for each(var msg:String in msgs)
