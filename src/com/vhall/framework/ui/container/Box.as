@@ -55,7 +55,7 @@ package com.vhall.framework.ui.container
 
 		override public function removeChild(child:DisplayObject):DisplayObject
 		{
-			var chIndex:int = children.indexOf(child)
+			var chIndex:int = children.indexOf(child);
 			if(chIndex > -1)
 			{
 				children.splice(chIndex, 1);
@@ -64,8 +64,13 @@ package com.vhall.framework.ui.container
 			{
 				return null;
 			}
+			var obj:DisplayObject;
 
-			var obj:DisplayObject = super.removeChild(child);
+			if(super.contains(child))
+			{
+				obj = super.removeChild(child);
+			}
+
 			RenderManager.getInstance().invalidate(invalidate);
 
 			if(obj is UIComponent)
