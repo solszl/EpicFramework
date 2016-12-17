@@ -5,6 +5,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.container.Box;
 	import com.vhall.framework.ui.event.ListEvent;
 	import com.vhall.framework.ui.interfaces.IData;
+	import com.vhall.framework.ui.layout.VerticalLayout;
 	import com.vhall.framework.ui.utils.ComponentUtils;
 
 	import flash.display.DisplayObject;
@@ -24,6 +25,7 @@ package com.vhall.framework.ui.controls
 	{
 		/**	背景*/
 		protected var bg:Image;
+
 		/**	列表项*/
 		protected var _list:List;
 
@@ -52,9 +54,12 @@ package com.vhall.framework.ui.controls
 			container.mouseEnabled = false;
 			container.mouseChildren = false;
 
-			_list = new List(List.VERTICAL, null, 0);
+			_list = new List(null);
 			_list.addEventListener(ListEvent.SelectChanged, onItemSelected);
 			_list.renderCall = itemRenderCall;
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.gap = 0;
+			_list.layout = layout;
 			initDisplay();
 		}
 
@@ -80,6 +85,7 @@ package com.vhall.framework.ui.controls
 		protected function onItemSelected(event:ListEvent):void
 		{
 			lbl.text = _list.selectData + "";
+
 			if(_content)
 			{
 				_content.data = _list.selectData;
@@ -156,6 +162,7 @@ package com.vhall.framework.ui.controls
 		public function set contentOffset(value:Point):void
 		{
 			_offset = value;
+
 			if(_content)
 			{
 				DisplayObject(_content).x = value.x;
@@ -176,6 +183,7 @@ package com.vhall.framework.ui.controls
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
+
 			if(open)
 			{
 				setListPosition();
@@ -210,6 +218,7 @@ package com.vhall.framework.ui.controls
 		{
 			if(this.hitTestPoint(e.stageX, e.stageY))
 				return;
+
 			if(new Rectangle(_list.x, _list.y, _list.width, _list.height).contains(e.stageX, e.stageY))
 				return;
 
@@ -221,6 +230,7 @@ package com.vhall.framework.ui.controls
 		public function set itemWidth(value:Number):void
 		{
 			_itemWidth = value;
+
 			for each(var item:ItemRender in _list.getChildren())
 			{
 				item.width = value;
