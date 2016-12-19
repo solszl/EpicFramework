@@ -6,6 +6,8 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.container.VBox;
 	import com.vhall.framework.ui.event.ListEvent;
 	import com.vhall.framework.ui.interfaces.IItemRenderer;
+	import com.vhall.framework.ui.interfaces.ILayout;
+	import com.vhall.framework.ui.layout.HorizontalLayout;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -17,28 +19,16 @@ package com.vhall.framework.ui.controls
 	 * @date 2016-06-20 11:52:16
 	 *
 	 */
-	public class TabBar extends UIComponent
+	public class TabBar extends Box
 	{
-		/**	水平*/
-		public static const HORIZONTAL:String = "horizontal";
-
-		/**	纵向*/
-		public static const VERTICAL:String = "vertical";
-
-		private var direction:String = HORIZONTAL;
-
-		private var gap:Number = 5;
-
 		private var con:List;
 
 		private var _itemRender:Class;
 
 		private var _dataProvider:Array;
 
-		public function TabBar(direction:String = HORIZONTAL, parent:DisplayObjectContainer = null, gap:Number = 2, xpos:Number = 0, ypos:Number = 0)
+		public function TabBar(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
-			this.direction = direction;
-			this.gap = gap
 			super(parent, xpos, ypos);
 		}
 
@@ -46,12 +36,23 @@ package com.vhall.framework.ui.controls
 		{
 			super.createChildren();
 			// 容器
-			con = new List(this.direction, this, this.gap);
+			con = new List(this);
 			con.renderCall = itemRenderCall;
 			con.addEventListener(ListEvent.SelectChanged, onListEventHandler);
 			con.addEventListener(ListEvent.DataChanged, onListEventHandler);
 			con.addEventListener(ListEvent.ItemChanged, onListEventHandler);
 			con.addEventListener(ListEvent.IndexChanged, onListEventHandler);
+		}
+
+		override public function set layout(value:ILayout):void
+		{
+			super.layout = value;
+			con.layout = value;
+		}
+
+		override public function get layout():ILayout
+		{
+			return con.layout;
 		}
 
 		public function set dataProvider(value:Array):void
