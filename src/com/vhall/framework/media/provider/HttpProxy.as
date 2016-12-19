@@ -120,7 +120,7 @@ package com.vhall.framework.media.provider
 
 			if(_ns)
 			{
-				_ns.seek(startPostion);
+				_ns.seek(_startPostion);
 				_ns.play(_uri);
 			}
 		}
