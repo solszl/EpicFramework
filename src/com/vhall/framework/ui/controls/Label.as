@@ -360,6 +360,7 @@ package com.vhall.framework.ui.controls
 
 				if(italic)
 				{
+					_tf.text = StringUtil.rtrim(_tf.text);
 					_tf.appendText(' ');
 				}
 

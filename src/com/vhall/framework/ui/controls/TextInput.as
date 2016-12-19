@@ -1,5 +1,7 @@
 package com.vhall.framework.ui.controls
 {
+	import com.vhall.framework.utils.StringUtil;
+
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.text.TextFieldType;
@@ -84,6 +86,7 @@ package com.vhall.framework.ui.controls
 
 			if(italic)
 			{
+				_tf.text = StringUtil.rtrim(_tf.text);
 				_tf.appendText(" ");
 			}
 
