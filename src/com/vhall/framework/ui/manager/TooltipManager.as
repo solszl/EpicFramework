@@ -15,7 +15,7 @@ package com.vhall.framework.ui.manager
 
 		public static function getInstance():TooltipManager
 		{
-			if (!instance)
+			if(!instance)
 			{
 				instance = new TooltipManager();
 			}
@@ -25,7 +25,7 @@ package com.vhall.framework.ui.manager
 
 		public function TooltipManager()
 		{
-			if (instance)
+			if(instance)
 			{
 				throw new IllegalOperationError("Tooltip Manager is singlton");
 			}
@@ -36,6 +36,12 @@ package com.vhall.framework.ui.manager
 		public function registTooltip(target:DisplayObject, tooltip:Object):void
 		{
 			TooltipManagerImpl.getInstance().registTooltip(target, tooltip);
+		}
+
+		public function showHideTooltips(target:DisplayObject, value:Boolean):void
+		{
+			target = value ? target : null;
+			TooltipManagerImpl.getInstance().showHideTip(target);
 		}
 	}
 }

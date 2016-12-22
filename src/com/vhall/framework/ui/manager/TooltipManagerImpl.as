@@ -158,7 +158,7 @@ package com.vhall.framework.ui.manager
 		 * @param target
 		 *
 		 */
-		private function showHideTip(target:DisplayObject = null):void
+		public function showHideTip(target:DisplayObject = null):void
 		{
 			this.currentTarget = target;
 			if(target == null)

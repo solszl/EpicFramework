@@ -54,6 +54,7 @@ package com.vhall.framework.ui.controls
 		{
 			super.createChildren();
 			bitmap = new Bitmap();
+			bitmap.smoothing = true;
 			addChildAt(bitmap, 0);
 		}
 
