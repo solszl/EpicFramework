@@ -261,6 +261,10 @@ package com.vhall.framework.ui.controls
 
 		public function set selectData(value:Object):void
 		{
+			if(_selectData == value)
+				return;
+
+			_selectData = value;
 			var index:int = _dataProvider.indexOf(value);
 			selectIndex = index;
 			fireEvent(ListEvent.DataChanged);

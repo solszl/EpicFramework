@@ -48,7 +48,7 @@ package com.vhall.framework.ui.controls
 			addChild(_tf);
 
 			font = "Microsoft YaHei";
-			sizeChanged();
+//			sizeChanged();
 		}
 
 		override public function set width(value:Number):void

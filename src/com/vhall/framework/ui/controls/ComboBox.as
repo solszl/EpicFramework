@@ -116,6 +116,12 @@ package com.vhall.framework.ui.controls
 			return _list.selectData;
 		}
 
+		public function set selectData(value:Object):void
+		{
+			if(_list.initialized)
+				_list.selectData = value;
+		}
+
 		public function get selectItem():ItemRender
 		{
 			return _list.selectItem;

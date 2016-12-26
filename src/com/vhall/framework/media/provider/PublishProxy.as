@@ -43,11 +43,11 @@ package com.vhall.framework.media.provider
 		 */
 		private var _id:int;
 
-		private var _useStrategy:Boolean=false;
+		private var _useStrategy:Boolean = false;
 
-		private var _published:Boolean=false;
+		private var _published:Boolean = false;
 
-		private var _bandwidth:int=0;
+		private var _bandwidth:int = 0;
 
 		private var _camUsedCheck:int;
 
@@ -55,7 +55,7 @@ package com.vhall.framework.media.provider
 		{
 			super();
 
-			_type=MediaProxyType.PUBLISH;
+			_type = MediaProxyType.PUBLISH;
 
 			scanHardware();
 		}
@@ -64,19 +64,19 @@ package com.vhall.framework.media.provider
 		{
 			super.statusHandler(e);
 
-			switch (e.info.code)
+			switch(e.info.code)
 			{
 				case InfoCode.NetStream_Publish_Start:
 					sendMetadata();
-					_published=true;
+					_published = true;
 					excute(MediaProxyStates.PUBLISH_START, [_bandwidth]);
 					break;
 				case InfoCode.NetStream_Publish_BadName:
-					_published=false;
+					_published = false;
 					excute(MediaProxyStates.PUBLISH_BAD_NAME, _streamUrl);
 					break;
 				case InfoCode.NetStream_Unpublish_Success:
-					_published=false;
+					_published = false;
 					excute(MediaProxyStates.UN_PUBLISH_SUCCESS);
 					break;
 			}
@@ -88,25 +88,24 @@ package com.vhall.framework.media.provider
 		private function sendMetadata():void
 		{
 			//发送头信息
-			var metaData:Object={};
-			metaData.server="http://www.vhall.com";
-			metaData.camera=_cam ? _cam.name : "未找到";
-			metaData.microphone=_mic ? _mic.name : "未找到";
-			if (_cam)
+			var metaData:Object = {};
+			metaData.server = "http://www.vhall.com";
+			metaData.camera = _cam ? _cam.name : "未找到";
+			metaData.microphone = _mic ? _mic.name : "未找到";
+			metaData.copyright = "vhall";
+			if(_cam)
 			{
-				metaData.width=_cam.width;
-				metaData.height=_cam.height;
-				metaData.framerate=15;
-				metaData.videocodecid=7 //h.264;
+				metaData.width = _cam.width;
+				metaData.height = _cam.height;
+				metaData.framerate = 15;
+				metaData.videocodecid = 7 //h.264;
 			}
-			else
+
+			if(_mic)
 			{
-				metaData.width=0;
-				metaData.height=0;
-				metaData.framerate=0;
-				metaData.videocodecid=8 //"null";
+				metaData.audiocodecid = 11;
 			}
-			metaData.audiocodecid=11 //speex;
+
 			stream && stream.send("@setDataFrame", "onMetaData", metaData);
 
 
@@ -122,29 +121,29 @@ package com.vhall.framework.media.provider
 //			}, 10000);
 		}
 
-		public function publish(cam:*, mic:*, camWidth:uint=320, camHeight:uint=280):void
+		public function publish(cam:*, mic:*, camWidth:uint = 320, camHeight:uint = 280):void
 		{
 			clearInterval(_camUsedCheck);
 
-			if (cam is Camera)
+			if(cam is Camera)
 			{
-				_cam=cam as Camera;
+				_cam = cam as Camera;
 			}
 			else
 			{
-				_cam=getCameraByName(cam, camWidth, camHeight);
+				_cam = getCameraByName(cam, camWidth, camHeight);
 			}
 
-			if (mic is Microphone)
+			if(mic is Microphone)
 			{
-				_mic=mic as Microphone;
+				_mic = mic as Microphone;
 			}
 			else
 			{
-				_mic=getMicrophoneByName(mic);
+				_mic = getMicrophoneByName(mic);
 			}
 
-			if (_cam && _cam.muted)
+			if(_cam && _cam.muted)
 			{
 				flash.system.Security.showSettings(flash.system.SecurityPanel.PRIVACY);
 				_cam.addEventListener(StatusEvent.STATUS, hardwareHandler);
@@ -157,7 +156,7 @@ package com.vhall.framework.media.provider
 
 		private function hardwareHandler(e:StatusEvent):void
 		{
-			if (e.code == "Camera.Unmuted")
+			if(e.code == "Camera.Unmuted")
 				attach();
 		}
 
@@ -173,19 +172,19 @@ package com.vhall.framework.media.provider
 			_mic && _ns.attachAudio(_mic);
 			_ns.publish(_streamUrl);
 
-			if (_cam)
+			if(_cam)
 			{
-				var checkTimes:uint=0;
-				_camUsedCheck=setInterval(function():void
+				var checkTimes:uint = 0;
+				_camUsedCheck = setInterval(function():void
 				{
 					++checkTimes;
-					if (_cam.currentFPS > 0)
+					if(_cam.currentFPS > 0)
 					{
 						clearInterval(_camUsedCheck);
 					}
 					else
 					{
-						if (checkTimes == 5)
+						if(checkTimes == 5)
 						{
 							CONFIG::LOGGING
 							{
@@ -204,39 +203,39 @@ package com.vhall.framework.media.provider
 
 		public function set cameraMuted(bool:Boolean):void
 		{
-			if (_ns && _cam)
+			if(_ns && _cam)
 			{
-				var catchCam:Camera=bool ? null : _cam;
+				var catchCam:Camera = bool ? null : _cam;
 				_ns.attachCamera(catchCam);
 			}
 		}
 
 		public function set microphoneMuted(bool:Boolean):void
 		{
-			if (_ns && _mic)
+			if(_ns && _mic)
 			{
-				var catchMic:Microphone=bool ? null : _mic;
+				var catchMic:Microphone = bool ? null : _mic;
 				_ns.attachAudio(catchMic);
 			}
 		}
 
-		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean=true, startPostion:Number=0):void
+		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
-			var oldUri:String=this._uri;
-			var oldStreamUrl:String=this._streamUrl;
+			var oldUri:String = this._uri;
+			var oldStreamUrl:String = this._streamUrl;
 
-			_autoPlay=autoPlay;
-			_uri=uri;
-			_streamUrl=streamUrl;
-			_startPostion=startPostion;
+			_autoPlay = autoPlay;
+			_uri = uri;
+			_streamUrl = streamUrl;
+			_startPostion = startPostion;
 
 			valid();
 
-			if (_conn && _conn.connected && oldUri == uri)
+			if(_conn && _conn.connected && oldUri == uri)
 			{
-				if (oldStreamUrl == streamUrl)
+				if(oldStreamUrl == streamUrl)
 					return;
-				if (!_ns)
+				if(!_ns)
 				{
 					CONFIG::LOGGING
 					{
@@ -258,8 +257,8 @@ package com.vhall.framework.media.provider
 
 		public function set useStrategy(bool:Boolean):void
 		{
-			_useStrategy=bool;
-			if (bool)
+			_useStrategy = bool;
+			if(bool)
 				Strategy.get().blance(_ns, _cam, _mic);
 			else
 				Strategy.get().unBlance();
@@ -273,17 +272,17 @@ package com.vhall.framework.media.provider
 
 		override protected function gc():void
 		{
-			cameraMuted=microphoneMuted=true;
+			cameraMuted = microphoneMuted = true;
 
 			clearInterval(_id);
 			clearInterval(_camUsedCheck);
-			if (_cam && _cam.hasEventListener(StatusEvent.STATUS))
+			if(_cam && _cam.hasEventListener(StatusEvent.STATUS))
 			{
 				_cam.removeEventListener(StatusEvent.STATUS, hardwareHandler);
 			}
-			_cam=null;
-			_mic=null;
-			_published=false;
+			_cam = null;
+			_mic = null;
+			_published = false;
 
 			super.gc();
 		}
@@ -291,82 +290,82 @@ package com.vhall.framework.media.provider
 		override public function start():void
 		{
 			//推流取消播放功能
-			_playing=true;
-			if (_published)
+			_playing = true;
+			if(_published)
 			{
-				cameraMuted=microphoneMuted=!_playing;
+				cameraMuted = microphoneMuted = !_playing;
 				_ns.publish(_streamUrl);
 			}
 		}
 
 		override public function stop():void
 		{
-			_playing=false;
-			if (_published)
+			_playing = false;
+			if(_published)
 			{
-				cameraMuted=microphoneMuted=!_playing;
+				cameraMuted = microphoneMuted = !_playing;
 			}
 			super.stop();
 		}
 
 		override public function pause():void
 		{
-			_playing=false;
-			if (_published)
+			_playing = false;
+			if(_published)
 			{
-				cameraMuted=microphoneMuted=!_playing;
+				cameraMuted = microphoneMuted = !_playing;
 			}
 		}
 
 		override public function resume():void
 		{
-			_playing=true;
-			if (_published)
+			_playing = true;
+			if(_published)
 			{
-				cameraMuted=microphoneMuted=!_playing;
+				cameraMuted = microphoneMuted = !_playing;
 			}
 		}
 
 		override public function toggle():void
 		{
-			_playing=!_playing;
-			if (_published)
+			_playing = !_playing;
+			if(_published)
 			{
-				cameraMuted=microphoneMuted=!_playing;
+				cameraMuted = microphoneMuted = !_playing;
 			}
 		}
 
 		private function calcBandwidth(w:Number, h:Number):int
 		{
-			if (w == 0 || h == 0)
+			if(w == 0 || h == 0)
 				return 0;
 
-			var level1:Number=176 * 144;
-			var level2:Number=320 * 240;
-			var level3:Number=640 * 480;
-			var level4:Number=1280 * 720;
+			var level1:Number = 176 * 144;
+			var level2:Number = 320 * 240;
+			var level3:Number = 640 * 480;
+			var level4:Number = 1280 * 720;
 
-			var t:Number=w * h;
+			var t:Number = w * h;
 			var bw:Number;
 
-			if (t <= level1)
+			if(t <= level1)
 			{
-				bw=70;
+				bw = 70;
 			}
-			else if (t <= level2)
+			else if(t <= level2)
 			{
 				//bw = 160 * (t / level2);
-				bw=400 * (t / level2);
+				bw = 400 * (t / level2);
 			}
-			else if (t <= level3)
+			else if(t <= level3)
 			{
 				//bw = 320 * (t / level3) * 1.2;
-				bw=600 * (t / level3) * 1.2;
+				bw = 600 * (t / level3) * 1.2;
 			}
 			else
 			{
 				//bw = 700 * (t / level4) * 1.3;
-				bw=860 * (t / level4) * 1.3;
+				bw = 860 * (t / level4) * 1.3;
 			}
 			return bw + 60; //加上音频传输所需要的带宽
 		}
@@ -378,16 +377,16 @@ package com.vhall.framework.media.provider
 		 * @param camHeight 采集视频高度
 		 * @return
 		 */
-		private function getCameraByName(name:String, camWidth:uint=320, camHeight:uint=280):Camera
+		private function getCameraByName(name:String, camWidth:uint = 320, camHeight:uint = 280):Camera
 		{
-			if (name == null)
+			if(name == null)
 				return null;
-			if (Camera.isSupported)
+			if(Camera.isSupported)
 			{
-				var index:int=Camera.names.indexOf(name);
-				var cam:Camera=Camera.getCamera(name == "" || name == null || index == -1 ? null : Camera.names.indexOf(name).toString());
+				var index:int = Camera.names.indexOf(name);
+				var cam:Camera = Camera.getCamera(name == "" || name == null || index == -1 ? null : Camera.names.indexOf(name).toString());
 
-				if (cam)
+				if(cam)
 				{
 					cam.setMode(camWidth, camHeight, 15);
 					//设置带宽会耗费网速256000/8.0
@@ -410,41 +409,41 @@ package com.vhall.framework.media.provider
 		 */
 		private function getMicrophoneByName(name:String):Microphone
 		{
-			if (name == null)
+			if(name == null)
 				return null;
-			if (Microphone.isSupported)
+			if(Microphone.isSupported)
 			{
-				var index:int=Microphone.names.indexOf(name);
-				var useMic:*=name == "" || name == null || index == -1 ? -1 : Microphone.names.indexOf(name)
-				var mic:Microphone=Microphone.getEnhancedMicrophone(useMic);
+				var index:int = Microphone.names.indexOf(name);
+				var useMic:* = name == "" || name == null || index == -1 ? -1 : Microphone.names.indexOf(name)
+				var mic:Microphone = Microphone.getEnhancedMicrophone(useMic);
 
-				if (mic)
+				if(mic)
 				{
-					var micEnopt:MicrophoneEnhancedOptions=new MicrophoneEnhancedOptions();
-					micEnopt.mode=MicrophoneEnhancedMode.FULL_DUPLEX;
-					micEnopt.autoGain=false;
-					micEnopt.echoPath=128;
-					micEnopt.nonLinearProcessing=true;
-					mic["enhancedOptions"]=micEnopt;
+					var micEnopt:MicrophoneEnhancedOptions = new MicrophoneEnhancedOptions();
+					micEnopt.mode = MicrophoneEnhancedMode.FULL_DUPLEX;
+					micEnopt.autoGain = false;
+					micEnopt.echoPath = 128;
+					micEnopt.nonLinearProcessing = true;
+					mic["enhancedOptions"] = micEnopt;
 					mic.setUseEchoSuppression(true); //是否使用回音抑制功能
 				}
 				else
 				{
-					mic=Microphone.getMicrophone(useMic);
+					mic = Microphone.getMicrophone(useMic);
 				}
 
-				if (mic)
+				if(mic)
 				{
-					mic.codec=SoundCodec.SPEEX;
+					mic.codec = SoundCodec.SPEEX;
 					mic.setSilenceLevel(0);
 					mic.setLoopBack(false); //麦克声音不在本地回放
-					mic.encodeQuality=8;
+					mic.encodeQuality = 8;
 					//噪音过滤分贝
-					mic.noiseSuppressionLevel=10;
-					mic.rate=22;
+					mic.noiseSuppressionLevel = 10;
+					mic.rate = 22;
 
-					volume=_volume;
-					mute=_mute;
+					volume = _volume;
+					mute = _mute;
 
 					return mic;
 				}
@@ -469,14 +468,14 @@ package com.vhall.framework.media.provider
 
 		public function get micActivityLevel():Number
 		{
-			if (_cam)
+			if(_cam)
 				return _cam.activityLevel;
 			return 0;
 		}
 
 		public function get camActivityLevel():Number
 		{
-			if (_mic)
+			if(_mic)
 				return _mic.activityLevel;
 			return 0;
 		}
@@ -502,21 +501,21 @@ package com.vhall.framework.media.provider
 		 */
 		override public function set volume(value:Number):void
 		{
-			super.volume=value;
-			if (_mic)
+			super.volume = value;
+			if(_mic)
 			{
 				//gain 0--100
-				_mic.gain=value * 100;
+				_mic.gain = value * 100;
 			}
 		}
 
 		override public function set mute(bool:Boolean):void
 		{
-			_mute=bool;
-			if (_mic)
+			_mute = bool;
+			if(_mic)
 			{
 				//gain 0--100
-				_mic.gain=bool ? 0 : _volume * 100;
+				_mic.gain = bool ? 0 : _volume * 100;
 			}
 		}
 
@@ -526,7 +525,7 @@ package com.vhall.framework.media.provider
 		 */
 		private function get latency():Number
 		{
-			if (stream)
+			if(stream)
 				return Number((stream.info.videoBufferByteLength + stream.info.audioBufferByteLength) / stream.info.maxBytesPerSecond);
 			return 0;
 		}
