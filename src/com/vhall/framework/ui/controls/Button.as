@@ -7,6 +7,7 @@ package com.vhall.framework.ui.controls
 	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
 
 	/**
 	 * 按钮类
@@ -59,7 +60,7 @@ package com.vhall.framework.ui.controls
 			mouseChildren = false;
 			buttonMode = true;
 			useHandCursor = true;
-
+			addEventListener(MouseEvent.CLICK, onIntercept, false, 999);
 			addEventListener(MouseEvent.ROLL_OVER, onMouse);
 			addEventListener(MouseEvent.ROLL_OUT, onMouse);
 			addEventListener(MouseEvent.MOUSE_DOWN, onMouse);
@@ -309,5 +310,49 @@ package com.vhall.framework.ui.controls
 			btnLabel.y = bg.height - btnLabel.height >> 1;
 		}
 
+		private var interval:uint = 300;
+		private var lastClick:Number = getTimer();
+
+		private function onIntercept(event:MouseEvent):void
+		{
+			if(false == useClickDelay)
+			{
+				return;
+			}
+			var t:Number = getTimer();
+			//			trace(t,lastClick);
+			if(t - lastClick < clickDelay)
+			{
+				event.stopImmediatePropagation();
+			}
+			lastClick = t;
+			//			trace("internal click");
+		}
+
+		/**	是否使用双击间隔机制*/
+		public function get useClickDelay():Boolean
+		{
+			return _useClickDelay;
+		}
+
+		public function set useClickDelay(value:Boolean):void
+		{
+			_useClickDelay = value;
+		}
+
+		/**	鼠标双击间隔，默认为300毫秒*/
+		public function get clickDelay():Number
+		{
+			return _clickDelay;
+		}
+
+		public function set clickDelay(value:Number):void
+		{
+			_clickDelay = value;
+		}
+
+
+		private var _clickDelay:Number = 350;
+		private var _useClickDelay:Boolean = false;
 	}
 }
