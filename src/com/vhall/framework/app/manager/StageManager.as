@@ -1,5 +1,7 @@
 package com.vhall.framework.app.manager
 {
+	import com.vhall.framework.ui.utils.ComponentUtils;
+
 	import flash.display.BlendMode;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -109,40 +111,9 @@ package com.vhall.framework.app.manager
 			{
 				arr = [];
 				var p:Point = new Point(e.stageX, e.stageY);
-				check(stage, p, arr);
+				ComponentUtils.getObjectsUnderPoint(stage, p, arr);
 				trace(arr.join(","));
 			});
-		}
-
-		private static function check(obj:DisplayObject, pt:Point, arr:Array):void
-		{
-			if(!obj.visible)
-				return;
-			if(obj is Stage || obj.hitTestPoint(pt.x, pt.y, true))
-			{
-				if(obj is InteractiveObject && InteractiveObject(obj).mouseEnabled)
-					arr.push(obj);
-				if(obj is DisplayObjectContainer)
-				{
-					var doc:DisplayObjectContainer = obj as DisplayObjectContainer;
-					if(doc.mouseChildren && doc.numChildren)
-					{
-						var n:int = doc.numChildren;
-						for(var i:int = 0; i < n; i++)
-						{
-							try
-							{
-								var child:DisplayObject = doc.getChildAt(i);
-								check(child, pt, arr);
-							}
-							catch(e:Error)
-							{
-								//another sandbox?
-							}
-						}
-					}
-				}
-			}
 		}
 	}
 }

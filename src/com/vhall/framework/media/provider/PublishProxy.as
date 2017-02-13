@@ -391,7 +391,7 @@ package com.vhall.framework.media.provider
 					cam.setMode(camWidth, camHeight, 15);
 					//设置带宽会耗费网速256000/8.0
 					cam.setQuality(0, 75);
-					cam.setKeyFrameInterval(15);
+					cam.setKeyFrameInterval(30);
 					cam.setMotionLevel(50);
 					//本地显示回放是否使用压缩后的视频流，设置为true显示画面和用户更像是
 					//cam.setLoopback(true);
