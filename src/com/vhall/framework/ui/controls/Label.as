@@ -44,6 +44,7 @@ package com.vhall.framework.ui.controls
 			_tf = new TextField();
 			_tf.defaultTextFormat = new TextFormat("Microsoft YaHei", 12, 0x383838);
 			_tf.selectable = false;
+			_tf.background = false;
 			_formmat = _tf.defaultTextFormat;
 			addChild(_tf);
 

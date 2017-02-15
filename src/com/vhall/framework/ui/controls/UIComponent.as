@@ -68,13 +68,7 @@ package com.vhall.framework.ui.controls
 		/**	渲染显示列表*/
 		protected function updateDisplay():void
 		{
-			if(scaleChanged || pivotChanged)
-			{
-				scaleChanged = false;
-				pivotChanged = false;
-				this.x = originX;
-				this.y = originY;
-			}
+
 		}
 
 		/**	尺寸变更函数*/
@@ -108,16 +102,16 @@ package com.vhall.framework.ui.controls
 		override public function set width(value:Number):void
 		{
 			if(_width == value)
-			{
 				return;
-			}
+
 			_width = value;
+			_explicitWidth = value;
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override public function get width():Number
 		{
-			return _width == 0 ? super.width : _width;
+			return !isNaN(_explicitWidth) ? _explicitWidth : _width == 0 ? super.width : _width;
 		}
 
 		protected var _height:Number = 0;
@@ -125,87 +119,27 @@ package com.vhall.framework.ui.controls
 		override public function set height(value:Number):void
 		{
 			if(_height == value)
-			{
 				return;
-			}
+
 			_height = value;
+			_explicitHeight = value;
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		override public function get height():Number
 		{
-			return _height == 0 ? super.height : _height;
-		}
-
-		protected var realXPos:Number = 0;
-
-		protected var originX:Number = 0;
-
-		override public function set x(value:Number):void
-		{
-			if(x == value)
-			{
-				return;
-			}
-			originX = value;
-			if(_pivot.x == 0)
-			{
-				realXPos = value;
-			}
-			else
-			{
-				realXPos = value - _pivot.x * scaleX
-			}
-			super.x = realXPos;
-			RenderManager.getInstance().invalidate(updateDisplay);
-		}
-
-		override public function get x():Number
-		{
-			return _pivot.x == 0 ? super.x : originX;
-		}
-
-		protected var realYPos:Number = 0;
-
-		protected var originY:Number = 0;
-
-		override public function set y(value:Number):void
-		{
-			if(y == value)
-			{
-				return;
-			}
-			originY = value;
-			if(_pivot.y == 0)
-			{
-				realYPos = value;
-			}
-			else
-			{
-				realYPos = value - _pivot.y * scaleY;
-			}
-			super.y = realYPos;
-			RenderManager.getInstance().invalidate(updateDisplay);
-		}
-
-		override public function get y():Number
-		{
-			return _pivot.y == 0 ? super.y : originY;
+			return !isNaN(_explicitHeight) ? _explicitHeight : _height == 0 ? super.height : _height;
 		}
 
 		override public function set scaleX(value:Number):void
 		{
 			super.scaleX = value;
-			scaleChanged = true;
-//			_width *= scaleX;
 			RenderManager.getInstance().invalidate(sizeChanged);
 		}
 
 		override public function set scaleY(value:Number):void
 		{
 			super.scaleY = value;
-			scaleChanged = true;
-//			_height *= scaleY;
 			RenderManager.getInstance().invalidate(sizeChanged);
 		}
 
@@ -258,6 +192,12 @@ package com.vhall.framework.ui.controls
 			invalidate();
 		}
 
+		/**	延迟到下一帧渲染*/
+		public function validateNextFrame():void
+		{
+			RenderManager.getInstance().invalidate(invalidate);
+		}
+
 		/**显示边框*/
 		public function showBorder(color:uint = 0xff0000):void
 		{
@@ -303,7 +243,9 @@ package com.vhall.framework.ui.controls
 
 		private var _scale:Number = 1;
 
-		private var _pivot:Point = new Point();
+		private var _explicitWidth:Number;
+
+		private var _explicitHeight:Number;
 
 		/**
 		 * tips 出现的位置， 上下左右，或者随鼠标而动， <b>top, left, right, bottom, none</b>
@@ -476,23 +418,24 @@ package com.vhall.framework.ui.controls
 			return new Point(this.x, this.y);
 		}
 
-		/**	获取注册点*/
-		public function get pivot():Point
+		public function set explicitWidth(value:Number):void
 		{
-			return _pivot;
+			this._explicitWidth = value;
 		}
 
-		public function set pivot(p:Point):void
+		public function get explicitWidth():Number
 		{
-			_pivot = p;
-			pivotChanged = true;
-			invalidate();
+			return this._explicitWidth;
 		}
 
-		protected var pivotChanged:Boolean = false;
+		public function set explicitHeight(value:Number):void
+		{
+			this._explicitHeight = value;
+		}
 
-		protected var scaleChanged:Boolean = false;
+		public function get explicitHeight():Number
+		{
+			return this._explicitHeight;
+		}
 	}
 }
-
-

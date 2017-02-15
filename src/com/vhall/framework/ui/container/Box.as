@@ -2,18 +2,22 @@ package com.vhall.framework.ui.container
 {
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.ui.controls.UIComponent;
+	import com.vhall.framework.ui.interfaces.ILayout;
+	import com.vhall.framework.ui.layout.Layout;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
 	/**
-	 *	容器基类
+	 * 容器基类
 	 * @author Sol
-	 *	@date 2016-05-17
+	 * @date 2016-05-17
 	 */
 	public class Box extends UIComponent
 	{
 		protected var children:Vector.<DisplayObject>;
+
+		protected var _layout:ILayout;
 
 		public function Box(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
@@ -88,10 +92,10 @@ package com.vhall.framework.ui.container
 				return null;
 			}
 
-//			children.splice(index, 1);
-//			var obj:DisplayObject = super.removeChildAt(index);
-//			RenderManager.getInstance().invalidate(invalidate);
-//			return obj;
+			//			children.splice(index, 1);
+			//			var obj:DisplayObject = super.removeChildAt(index);
+			//			RenderManager.getInstance().invalidate(invalidate);
+			//			return obj;
 
 			var obj:DisplayObject = removeChild(getChildAt(index));
 			RenderManager.getInstance().invalidate(invalidate);
@@ -99,7 +103,7 @@ package com.vhall.framework.ui.container
 		}
 
 		/**
-		 *	半开半闭区间  [bengin, end)
+		 * 半开半闭区间  [bengin, end)
 		 * @param beginIndex
 		 * @param endIndex
 		 *
@@ -146,7 +150,14 @@ package com.vhall.framework.ui.container
 				}
 			}
 
-			layoutChildren();
+			if(this._layout == null)
+			{
+				this._layout = new Layout();
+			}
+
+			this.layout.doLayout(this);
+//			this._width = this.layout.measureWidth;
+//			this._height = this.layout.measureHeight;
 		}
 
 		public function addChildAbove(target:DisplayObject, child:DisplayObject):void
@@ -174,99 +185,30 @@ package com.vhall.framework.ui.container
 			return children;
 		}
 
-		/**
-		 *	布局
-		 *
-		 */
-		protected function layoutChildren():void
+		public function set layout(value:ILayout):void
 		{
-			var child:DisplayObject;
-			var num:int = numChildren;
-			var comp:UIComponent;
-			var calcW:Number = 0;
-			var calcH:Number = 0;
-
-			var i:int = 0;
-			//计算预估关高
-//			for(i = 0; i < num; i++)
-//			{
-//				child = this.getChildAt(i);
-//				var w:Number = child.width + child.x;
-//				var h:Number = child.height + child.y;
-//				calcW = w > calcW ? w : calcW;
-//				calcH = h > calcH ? h : calcH;
-//			}
-
-//			var explicitw:Number = _width > calcW ? _width : calcW;
-//			var explicith:Number = _height > calcH ? _height : calcH;
-
-			var explicitw:Number = width;
-			var explicith:Number = height;
-
-			// 根据预估的宽高进行布局
-			for(i = 0; i < num; i++)
+			if(this._layout && this._layout.toString() == value.toString())
 			{
-				child = this.getChildAt(i);
-				if((child is UIComponent) == false)
-				{
-					continue;
-				}
-
-				comp = child as UIComponent;
-				// 如果上下左右有不为空的，则进行布局
-				if(comp.left != null || comp.right != null || comp.top != null || comp.bottom != null)
-				{
-					// 左右都有，重新计算宽
-					if(comp.left != null && comp.right != null)
-					{
-						comp.width = explicitw - Number(comp.left) - Number(comp.right);
-						comp.x = Number(comp.left);
-					}
-					else
-					{
-						if(comp.left != null)
-						{
-							comp.x = Number(comp.left);
-						}
-
-						if(comp.right != null)
-						{
-							comp.x = explicitw - Number(comp.width) - Number(comp.right);
-						}
-					}
-
-					//上下都有， 重新计算高度
-					if(comp.top != null && comp.bottom != null)
-					{
-						comp.height = explicith - Number(comp.top) - Number(comp.bottom);
-						comp.y = Number(comp.top);
-					}
-					else
-					{
-						if(comp.top != null)
-						{
-							comp.y = Number(comp.top)
-						}
-						if(comp.bottom != null)
-						{
-							comp.y = explicith - Number(comp.height) - Number(comp.bottom);
-						}
-					}
-				}
-
-				if(!isNaN(comp.horizontalCenter))
-				{
-					UIComponent(comp).x = (explicitw - comp.width >> 1) + UIComponent(comp).horizontalCenter;
-				}
-
-				if(!isNaN(comp.verticalCenter))
-				{
-					UIComponent(comp).y = (explicith - comp.height >> 1) + UIComponent(comp).verticalCenter;
-				}
+				return;
 			}
 
-			this._width = explicitw;
-			this._height = explicith;
+			this._layout = value;
+			RenderManager.getInstance().invalidate(invalidate);
 		}
+
+		public function get layout():ILayout
+		{
+			return this._layout;
+		}
+
+//		override public function get width():Number
+//		{
+//			return this._layout.measureWidth;
+//		}
+//
+//		override public function get height():Number
+//		{
+//			return this._layout.measureHeight;
+//		}
 	}
 }

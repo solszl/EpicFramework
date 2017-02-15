@@ -5,6 +5,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.container.HBox;
 	import com.vhall.framework.ui.container.VBox;
 	import com.vhall.framework.ui.event.ListEvent;
+	import com.vhall.framework.ui.interfaces.ILayout;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -20,19 +21,15 @@ package com.vhall.framework.ui.controls
 	[Event(name = "select", type = "flash.events.Event")]
 	public class List extends Box
 	{
-		/**	水平*/
-		public static const HORIZONTAL:String = "horizontal";
-		/**	纵向*/
-		public static const VERTICAL:String = "vertical";
-
-		private var direction:String = VERTICAL;
-
 		/**	真正的承载容器*/
 		private var con:Box;
 
 		private var _dataProvider:Array;
+
 		private var _selectIndex:int = -1;
+
 		private var _selectData:Object;
+
 		private var _selectItem:ItemRender;
 
 		/** 数据源是否发生变化*/
@@ -46,13 +43,8 @@ package com.vhall.framework.ui.controls
 
 		public var renderCall:Function = null;
 
-		/**	列表项间距*/
-		private var gap:Number;
-
-		public function List(direction:String = VERTICAL, parent:DisplayObjectContainer = null, gap:Number = 2, xpos:Number = 0, ypos:Number = 0)
+		public function List(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
-			this.direction = direction;
-			this.gap = gap;
 			super(parent, xpos, ypos);
 		}
 
@@ -65,23 +57,22 @@ package com.vhall.framework.ui.controls
 		override protected function createChildren():void
 		{
 			super.createChildren();
-			if(direction == VERTICAL)
-			{
-				con = new VBox(this);
-				VBox(con).gap = gap;
-			}
-			else
-			{
-				con = new HBox(this);
-				HBox(con).gap = gap;
-			}
+			con = new Box(this);
 		}
+
+		override public function set layout(value:ILayout):void
+		{
+			super.layout = value;
+			con.layout = value;
+		}
+
 
 		override protected function invalidate():void
 		{
 			if(dataProviderChanged)
 			{
 				var item:ItemRender;
+
 				// 数据发生变化的时候， 将数据项全部移除
 				while(con.numChildren)
 				{
@@ -94,6 +85,7 @@ package com.vhall.framework.ui.controls
 				if(dataProvider)
 				{
 					var len:int = dataProvider.length;
+
 					for(var i:int = 0; i < len; i++)
 					{
 						item = createItem(dataProvider, i);
@@ -129,6 +121,7 @@ package com.vhall.framework.ui.controls
 		protected function onMouseHandler(e:MouseEvent):void
 		{
 			e.stopImmediatePropagation();
+
 			if(e.target is ItemRender)
 			{
 				switch(e.type)
@@ -144,8 +137,8 @@ package com.vhall.framework.ui.controls
 						{
 							return;
 						}
-						ItemRender(e.target).onMouseClick();
 						selectItem = e.target as ItemRender;
+						ItemRender(e.target).onMouseClick();
 						break;
 					default:
 						break;
@@ -154,7 +147,7 @@ package com.vhall.framework.ui.controls
 		}
 
 		/**
-		 *	不派发事件的设置选中项
+		 * 不派发事件的设置选中项
 		 * @param value 索引
 		 *
 		 */
@@ -203,6 +196,7 @@ package com.vhall.framework.ui.controls
 			item.data = datas[idx];
 			item.showDefaultLabel = showDefaultLabel;
 			addEvents(item);
+
 			// 如果设定了渲染设置数据的回调
 			if(renderCall != null)
 			{
@@ -321,6 +315,7 @@ package com.vhall.framework.ui.controls
 				var e:ListEvent = new ListEvent(type);
 				e.data = selectData;
 				e.index = selectIndex;
+				e.item = selectItem;
 				dispatchEvent(e);
 			}
 		}

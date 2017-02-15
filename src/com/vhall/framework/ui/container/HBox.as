@@ -1,6 +1,8 @@
 package com.vhall.framework.ui.container
 {
+	import com.adobe.tvsdk.mediacore.ABRControlParameters;
 	import com.vhall.framework.ui.controls.UIComponent;
+	import com.vhall.framework.ui.layout.HorizontalLayout;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -12,159 +14,52 @@ package com.vhall.framework.ui.container
 	 */
 	public class HBox extends Box
 	{
-		public var gap:Number = 0;
-
-		/**	初始化的时候， 距离左边距多少*/
-		public var marginLeft:Number = 0;
-
-		public var marginRight:Number = 0;
-
-		private var maxHeight:Number = 0;
+		public var _gap:Number = 0;
 
 		private var _verticalAlign:String = "center";
 
 		private var _horizontalAlign:String = "left";
 
-		private var calcW:Number = 0;
-
 		public function HBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
-			gap = 5;
 			super(parent, xpos, ypos);
+			_layout = new HorizontalLayout();
+			gap = 5;
 		}
 
-		override protected function updateDisplay():void
+		public function set gap(value:Number):void
 		{
-			super.updateDisplay();
-			// 纵向布局
-			layoutVertical();
-			// 横向布局，左中右
-			layoutHorizontal();
+			HorizontalLayout(_layout).gap = value;
 		}
 
-		override protected function layoutChildren():void
+		public function get gap():Number
 		{
-//			super.layoutChildren();
-			calcW = 0;
-			var numChild:int = this.numChildren;
-			var child:DisplayObject;
-			var xpos:Number = marginLeft;
-			// hbox内，显示的元素总数
-			var showChildrenCount:int = 0;
-			for(var i:int = 0; i < numChild; i++)
-			{
-				child = getChildAt(i);
-
-				if(child is UIComponent && (child as UIComponent).visible == false)
-				{
-					continue;
-				}
-
-				child.x = xpos;
-				xpos += child.width;
-				xpos += gap;
-				calcW += child.width;
-				showChildrenCount++;
-				//取出来最高的，以便纵向布局使用
-				maxHeight = child.height > maxHeight ? child.height : maxHeight;
-			}
-
-			maxHeight = maxHeight > _height ? maxHeight : _height;
-			calcW += (showChildrenCount - 1) * gap;
-			width = calcW + marginRight;
+			return HorizontalLayout(_layout).gap;
 		}
 
-		protected function layoutVertical():void
-		{
-			var numChild:int = this.numChildren;
-			var child:DisplayObject;
-			for(var i:int = 0; i < numChild; i++)
-			{
-				child = getChildAt(i);
-				switch(verticalAlign)
-				{
-					case "top":
-						child.y = 0;
-						break;
-					case "center":
-						child.y = (maxHeight - child.height) / 2;
-						break;
-					case "bottom":
-						child.y = maxHeight - child.height;
-						break;
-					default:
-						child.y = 0;
-						break;
-				}
-			}
-		}
-
-		protected function layoutHorizontal():void
-		{
-			if(_horizontalAlign == "left")
-			{
-				return;
-			}
-
-			var deltaX:Number = _width - calcW;
-			var child:DisplayObject;
-			var i:int = 0;
-			for(i = 0; i < numChildren; i++)
-			{
-				child = getChildAt(i);
-				switch(_horizontalAlign)
-				{
-					case "center":
-						child.x += deltaX >> 1;
-						break;
-					case "right":
-						child.x += deltaX;
-						break;
-				}
-			}
-		}
-
-		/**
-		 * 纵向布局对齐，默认：<b>top</b>
-		 * <li/><b> top </b> 顶端对齐</br>
-		 * <li/><b> center </b> 中间对齐</br>
-		 * <li/><b> bottom </b> 底部对齐</br>
-		 */
-		[Inspectable(category = "General", enumeration = "top, center, bottom", defaultValue = "center")]
-		public function get verticalAlign():String
-		{
-			return _verticalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set verticalAlign(value:String):void
-		{
-			_verticalAlign = value;
-		}
-
-		/**
-		 * 横向布局对齐，默认：<b>left</b>
-		 * <li/><b> left </b> 左对齐</br>
-		 * <li/><b> middle </b> 中间对齐</br>
-		 * <li/><b> right </b> 右对奇</br>
-		 */
-		[Inspectable(category = "General", enumeration = "left, middle, right", defaultValue = "left")]
+		[Inspectable(category = "General", enumeration = "left,right,center", defaultValue = "left")]
 		public function get horizontalAlign():String
 		{
-			return _horizontalAlign;
+			return HorizontalLayout(_layout).horizontalAlign;
 		}
 
 		/**
-		 * @private
+		 *  @private
 		 */
 		public function set horizontalAlign(value:String):void
 		{
-			_horizontalAlign = value;
+			HorizontalLayout(_layout).horizontalAlign = value;
 		}
 
+		[Inspectable(category = "General", enumeration = "top,center,bottom", defaultValue = "top")]
+		public function get verticalAlign():String
+		{
+			return HorizontalLayout(_layout).verticalAlign;
+		}
 
+		public function set verticalAlign(value:String):void
+		{
+			HorizontalLayout(_layout).verticalAlign = value;
+		}
 	}
 }
-;
