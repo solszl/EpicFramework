@@ -15,9 +15,9 @@ package com.vhall.framework.ui.layout
 	{
 		protected var type:String;
 
-		protected var _measureHeight:Number;
+		protected var _measureHeight:Number = 0;
 
-		protected var _measureWidth:Number;
+		protected var _measureWidth:Number = 0;
 
 		protected var target:Box;
 
@@ -117,7 +117,7 @@ package com.vhall.framework.ui.layout
 				}
 			}
 
-			this._measureHeight = explicitw;
+			this._measureWidth = explicitw;
 			this._measureHeight = explicith;
 		}
 

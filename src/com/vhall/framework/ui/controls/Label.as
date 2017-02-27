@@ -48,6 +48,15 @@ package com.vhall.framework.ui.controls
 			_formmat = _tf.defaultTextFormat;
 			addChild(_tf);
 
+			var os:String = flash.system.Capabilities.os.toLowerCase();
+			if(os.indexOf("mac") >= 0)
+			{
+				_tf.y = 4;
+			}
+			else
+			{
+				_tf.y = 0;
+			}
 			font = "Microsoft YaHei";
 //			sizeChanged();
 		}
@@ -97,7 +106,7 @@ package com.vhall.framework.ui.controls
 				this._tf.text = _text;
 			}
 
-			RenderManager.getInstance().invalidate(invalidate);
+			validateNextFrame();
 		}
 
 		/**
@@ -349,7 +358,6 @@ package com.vhall.framework.ui.controls
 		{
 			super.sizeChanged();
 
-
 			if(!html)
 			{
 				if(_textformmatChanged)
@@ -365,12 +373,13 @@ package com.vhall.framework.ui.controls
 					_tf.appendText(' ');
 				}
 
-				if(align == "left")
+				if(isNaN(explicitWidth))
 				{
 					_tf.width = _tf.textWidth + 4 + _formmat.indent;
-					_width = _tf.width;
+					_width = _tf.textWidth;
 				}
 			}
+
 			_tf.height = Math.max(_tf.textHeight + 4, 20);
 			_height = _tf.height;
 		}
@@ -378,7 +387,7 @@ package com.vhall.framework.ui.controls
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
-			_tf.y = height - _tf.height >> 1;
+			_tf.y = (height - _tf.height) / 2;
 		}
 	}
 }

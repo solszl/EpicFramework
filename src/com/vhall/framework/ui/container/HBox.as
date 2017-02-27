@@ -1,10 +1,7 @@
 package com.vhall.framework.ui.container
 {
-	import com.adobe.tvsdk.mediacore.ABRControlParameters;
-	import com.vhall.framework.ui.controls.UIComponent;
 	import com.vhall.framework.ui.layout.HorizontalLayout;
 
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
 	/**
@@ -51,7 +48,7 @@ package com.vhall.framework.ui.container
 			HorizontalLayout(_layout).horizontalAlign = value;
 		}
 
-		[Inspectable(category = "General", enumeration = "top,center,bottom", defaultValue = "top")]
+		[Inspectable(category = "General", enumeration = "top,middle,bottom", defaultValue = "top")]
 		public function get verticalAlign():String
 		{
 			return HorizontalLayout(_layout).verticalAlign;
@@ -60,6 +57,30 @@ package com.vhall.framework.ui.container
 		public function set verticalAlign(value:String):void
 		{
 			HorizontalLayout(_layout).verticalAlign = value;
+		}
+
+		override public function get width():Number
+		{
+			if(isNaN(explicitWidth))
+			{
+				return this._layout.measureWidth;
+			}
+			else
+			{
+				return super.width;
+			}
+		}
+
+		override public function get height():Number
+		{
+			if(isNaN(explicitHeight))
+			{
+				return this._layout.measureHeight;
+			}
+			else
+			{
+				return super.height;
+			}
 		}
 	}
 }

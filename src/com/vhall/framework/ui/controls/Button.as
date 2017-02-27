@@ -41,6 +41,7 @@ package com.vhall.framework.ui.controls
 			propertiesDic["labelColor"] = [];
 			super(parent, xpos, ypos);
 			this.btnLabel.text = "";
+			this.btnLabel.validateNow();
 			labelColor = Style.Button_Label_Color;
 		}
 
@@ -68,7 +69,7 @@ package com.vhall.framework.ui.controls
 			addEventListener(MouseEvent.CLICK, onMouse);
 		}
 
-		protected var stateMap:Object = {"rollOver":1, "rollOut":0, "mouseDown":2, "mouseUp":1, "selected":2};
+		protected var stateMap:Object = {"rollOver": 1, "rollOut": 0, "mouseDown": 2, "mouseUp": 1, "selected": 2};
 
 		private var _state:int = -1;
 
@@ -271,8 +272,8 @@ package com.vhall.framework.ui.controls
 					return
 				}
 
-				bg.source = getProperty("skin", state);
 				bg.setBitmapDataCallBK = updateDisplay;
+				bg.source = getProperty("skin", state);
 				btnLabel.text = getProperty("label", state) == null ? "" : getProperty("label", state).toString();
 				btnLabel.color = getProperty("labelColor", state) == null ? Style.Button_Label_Color : getProperty("labelColor", state);
 				lastState = state;
@@ -285,8 +286,8 @@ package com.vhall.framework.ui.controls
 				_labelChanged = false;
 			}
 
-			bg.width = _width;
-			bg.height = _height;
+//			bg.width = _width;
+//			bg.height = _height;
 			width = bg.width;
 			height = bg.height;
 			btnLabel.width = width;

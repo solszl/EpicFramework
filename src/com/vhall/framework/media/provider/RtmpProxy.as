@@ -237,7 +237,13 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetConnection_Connect_AppShutDown:
 				case InfoCode.NetConnection_Connect_Rejected:
 					gc();
-					excute(MediaProxyStates.CONNECT_FAILED, e.info.code);
+					var nc:NetConnection = e.target as NetConnection;
+					var uri:String = "";
+					if(nc)
+					{
+						uri = nc.uri;
+					}
+					excute(MediaProxyStates.CONNECT_FAILED, e.info.code, uri);
 					break;
 				case InfoCode.NetStream_Buffer_Empty:
 					excute(MediaProxyStates.STREAM_LOADING);
@@ -310,7 +316,7 @@ package com.vhall.framework.media.provider
 		 */
 		protected function get client():Object
 		{
-			return {"onPublishData":onPublishData, "onBWCheck":onBWCheck, "onBWDone":onBWDone, "onCuePoint":onCurePoint, "onImageData":onImageData, "onMetaData":onMetaData, "onPlayStatus":onPlayStatus, "onSeekPoint":onSeekPoint, "onTextData":onTextData};
+			return {"onPublishData": onPublishData, "onBWCheck": onBWCheck, "onBWDone": onBWDone, "onCuePoint": onCurePoint, "onImageData": onImageData, "onMetaData": onMetaData, "onPlayStatus": onPlayStatus, "onSeekPoint": onSeekPoint, "onTextData": onTextData};
 		}
 
 		/**

@@ -53,7 +53,9 @@ package com.vhall.framework.ui.controls
 			super.createChildren();
 			lbl = new Label(this);
 			lbl.height = 20;
-			lbl.text = "text";
+			lbl.text = "";
+			lbl.validateNow();
+			lbl.width = width;
 		}
 
 		/**	鼠标划过*/

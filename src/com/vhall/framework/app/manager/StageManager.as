@@ -30,6 +30,9 @@ package com.vhall.framework.app.manager
 
 		public static function init(root:Sprite):void
 		{
+			if(root.stage == null)
+				return;
+
 			StageManager.root = root;
 			StageManager.root.blendMode = BlendMode.NORMAL;
 			StageManager.root.tabEnabled = false;
