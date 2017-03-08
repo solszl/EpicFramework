@@ -41,7 +41,7 @@ package com.vhall.framework.keyboard
 			// 如果当前正在输入文本，不相应快捷键检测
 			if(e.target is TextField)
 			{
-				trace("检测当前target为输入框", e.keyCode);
+//				trace("检测当前target为输入框", e.keyCode);
 				return;
 			}
 

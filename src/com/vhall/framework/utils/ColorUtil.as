@@ -120,7 +120,7 @@ package com.vhall.framework.utils
 				}
 				else
 				{
-					filter = new GlowFilter(color, 1, 3, 3, 6, 2, inner);
+					filter = new GlowFilter(color, 0.5, 5, 5, 6, 2, inner);
 					filters.push(filter);
 				}
 

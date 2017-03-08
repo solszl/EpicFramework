@@ -207,7 +207,7 @@ package com.vhall.framework.ui.controls
 		{
 			var p:Point = this.localToGlobal(new Point());
 
-			if((p.y + height + _list.height) > StageManager.stageHeight)
+			if((y + height + _list.height) > StageManager.stageHeight)
 			{
 				_listDirection = 0;
 				_list.move(p.x, p.y - _list.height);

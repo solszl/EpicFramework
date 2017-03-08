@@ -20,6 +20,11 @@ package com.vhall.framework.ui.container
 		public function HBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
 			super(parent, xpos, ypos);
+		}
+
+		override protected function createChildren():void
+		{
+			super.createChildren();
 			_layout = new HorizontalLayout();
 			gap = 5;
 		}
