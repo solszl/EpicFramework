@@ -89,6 +89,8 @@ package com.vhall.framework.media.provider
 
 		/** 出错，参数为错误说明*/
 		public static const PROXY_ERROR:String = "proxyError";
+
+		public static const PUBLISH_FAILED:String = "publishFailed";
 	}
 }
 

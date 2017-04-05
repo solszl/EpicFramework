@@ -74,10 +74,35 @@ package com.vhall.framework.media.provider
 				case InfoCode.NetStream_Publish_BadName:
 					_published = false;
 					excute(MediaProxyStates.PUBLISH_BAD_NAME, _streamUrl);
+					excute(MediaProxyStates.PUBLISH_FAILED, 7);
 					break;
 				case InfoCode.NetStream_Unpublish_Success:
 					_published = false;
 					excute(MediaProxyStates.UN_PUBLISH_SUCCESS);
+					break;
+				case InfoCode.NetStream_Publish_AlreadyPublished:
+					_published = false;
+					excute(MediaProxyStates.PUBLISH_FAILED, 1);
+					break;
+				case InfoCode.NetStream_Publish_AuthFailed:
+					_published = false;
+					excute(MediaProxyStates.PUBLISH_FAILED, 2);
+					break;
+				case InfoCode.NetStream_Publish_BlackList:
+					_published = false;
+					excute(MediaProxyStates.PUBLISH_FAILED, 3);
+					break;
+				case InfoCode.NetStream_Publish_KickOut:
+					_published = false;
+					excute(MediaProxyStates.PUBLISH_FAILED, 4);
+					break;
+				case InfoCode.NetStream_Publish_NotWhiteList:
+					_published = false;
+					excute(MediaProxyStates.PUBLISH_FAILED, 5);
+					break;
+				case InfoCode.NetStream_Publish_TokenEmpty:
+					_published = false;
+					excute(MediaProxyStates.PUBLISH_FAILED, 6);
 					break;
 			}
 		}

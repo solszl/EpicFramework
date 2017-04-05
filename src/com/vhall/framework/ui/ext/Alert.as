@@ -3,6 +3,7 @@ package com.vhall.framework.ui.ext
 	import com.vhall.framework.app.manager.RenderManager;
 	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.container.Box;
+	import com.vhall.framework.ui.container.HBox;
 	import com.vhall.framework.ui.controls.Button;
 	import com.vhall.framework.ui.controls.Image;
 	import com.vhall.framework.ui.controls.Label;
@@ -30,15 +31,13 @@ package com.vhall.framework.ui.ext
 
 		private var lblContent:Label;
 
-		private var imgIcon:Image;
-
 		private var buttonPool:Array = [];
 
 		private static var alertPool:Array = [];
 
 		private static var closeHandle:Function;
 
-		private var buttonContainer:Sprite;
+		private var buttonContainer:HBox;
 
 		private var buttons:Object = {};
 
@@ -70,26 +69,21 @@ package com.vhall.framework.ui.ext
 			lblTitle.text = "title";
 
 			lblContent = new Label(this, 90, 40);
+			lblContent.align = "center";
 			lblContent.text = "content";
-
-			imgIcon = new Image(this, 50, 75);
-			imgIcon.setSize(32, 32);
-			imgIcon.source = null;
 
 			drawBackground();
 
-			buttonContainer = new Sprite();
-			addChild(buttonContainer);
+			buttonContainer = new HBox(this);
 		}
 
-		public static function show(title:String = "", content:String = "", flag:uint = Alert.OK, closeHandler:Function = null, icon:Object = null):Alert
+		public static function show(title:String = "", content:String = "", flag:uint = Alert.OK, closeHandler:Function = null):Alert
 		{
 			closeHandle = closeHandler;
 			flags = flag;
 			var alert:Alert = alertPool.length > 0 ? alertPool.pop() : new Alert();
 			alert.title = title;
 			alert.content = content;
-			alert.icon = icon;
 			PopupManager.addPopup(alert, StageManager.stage);
 			return alert;
 		}
@@ -112,19 +106,18 @@ package com.vhall.framework.ui.ext
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
-		public function set icon(value:Object):void
-		{
-			_icon = value;
-			RenderManager.getInstance().invalidate(invalidate);
-		}
-
 		override protected function invalidate():void
 		{
 			lblTitle.text = _title;
 			lblContent.text = _content;
-			imgIcon.source = _icon;
 			generateButtons();
 			super.invalidate();
+		}
+
+		override protected function sizeChanged():void
+		{
+			super.sizeChanged();
+			lblContent.width = width;
 		}
 
 		override protected function updateDisplay():void
@@ -135,20 +128,7 @@ package com.vhall.framework.ui.ext
 			buttonContainer.y = height - 30 - 15;
 
 			lblContent.y = height - lblContent.height >> 1;
-
-			if(imgIcon.source == null)
-			{
-				lblContent.width = width;
-				lblContent.align = "center";
-				lblContent.x = width - lblContent.width >> 1;
-			}
-			else
-			{
-				lblContent.width = 200;
-				lblContent.align = "left";
-				lblContent.x = 90;
-			}
-			imgIcon.setSize(32, 32);
+			lblContent.x = width - lblContent.width >> 1;
 		}
 
 		private function generateButtons():void
@@ -244,6 +224,8 @@ package com.vhall.framework.ui.ext
 			graphics.beginFill(0xF3F3F3);
 			graphics.drawRect(3, 3, 294, 32);
 			graphics.endFill();
+
+			width = 300;
 		}
 	}
 }

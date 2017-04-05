@@ -16,6 +16,7 @@ package com.vhall.framework.media.video
 	import com.vhall.framework.media.provider.MediaProxyStates;
 	import com.vhall.framework.media.provider.MediaProxyType;
 	import com.vhall.framework.media.provider.ProxyConfig;
+	import com.vhall.framework.ui.controls.UIComponent;
 
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -33,7 +34,7 @@ package com.vhall.framework.media.video
 	/**
 	 * 封装视频播放video
 	 */
-	public class VideoPlayer extends Sprite implements IVideoPlayer
+	public class VideoPlayer extends UIComponent implements IVideoPlayer
 	{
 		private var _video:CouplingVideo;
 
@@ -75,6 +76,8 @@ package com.vhall.framework.media.video
 			_viewPort = _video.getBounds(this);
 
 			_videoOption = VideoOptions.op;
+
+			super()
 
 			if(stage)
 				videoStage = stage;
@@ -173,6 +176,9 @@ package com.vhall.framework.media.video
 						break;
 					case MediaProxyStates.UN_PUBLISH_SUCCESS:
 						//if(_type==MediaProxyType.PUBLISH) stop();
+						break;
+					case MediaProxyStates.PUBLISH_FAILED:
+						trace(value[0]);
 						break;
 				}
 			}
@@ -277,7 +283,7 @@ package com.vhall.framework.media.video
 		private function updateVideo():void
 		{
 			drawBackground();
-			var size:Object = {width:0, height:0};
+			var size:Object = {width: 854, height: 480};
 			if(_video.isCamera)
 			{
 				if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
@@ -515,7 +521,7 @@ package com.vhall.framework.media.video
 		 * 播放器背景颜色,默认为黑色0xFFFFFF
 		 * @param value 0~0xFFFFFF
 		 */
-		public function set backgroundColor(value:int):void
+		override public function set backgroundColor(value:uint):void
 		{
 			_backgroundColor = Math.min(0xFFFFFF, Math.max(0, value));
 			drawBackground();
