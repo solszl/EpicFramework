@@ -16,9 +16,9 @@ package com.vhall.framework.media.video
 	import com.vhall.framework.media.provider.MediaProxyStates;
 	import com.vhall.framework.media.provider.MediaProxyType;
 	import com.vhall.framework.media.provider.ProxyConfig;
+	import com.vhall.framework.tween.AppTween;
 	import com.vhall.framework.ui.controls.UIComponent;
 
-	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -62,6 +62,8 @@ package com.vhall.framework.media.video
 		private var _handler:Function;
 
 		private var _state:String;
+
+		private var interval:uint = 0;
 
 		/**
 		 * 默认显示大小320X240
@@ -274,7 +276,11 @@ package com.vhall.framework.media.video
 			{
 				Log.info("摄像头：" + _cam + "\n麦克风：" + _mic + "\n尺寸:" + _camWidth + "X" + _camHeight + "\n地址：" + uri + "\n流名称:" + stream);
 			}
-			connect(MediaProxyType.PUBLISH, uri, stream, handler)
+
+			Logger.getLogger().info("sleep 1000ms");
+			AppTween.killTweensOf(this);
+			AppTween.delayedCall(1, connect, [MediaProxyType.PUBLISH, uri, stream, handler]);
+//			connect(MediaProxyType.PUBLISH, uri, stream, handler);
 		}
 
 		/**

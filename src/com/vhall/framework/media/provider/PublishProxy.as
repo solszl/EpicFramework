@@ -23,7 +23,6 @@ package com.vhall.framework.media.provider
 	import flash.system.SecurityPanel;
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
-	import flash.utils.setTimeout;
 
 	CONFIG::LOGGING
 	{

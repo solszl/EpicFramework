@@ -51,10 +51,9 @@ package com.vhall.framework.ui.controls
 		override protected function createChildren():void
 		{
 			super.createChildren();
-			lbl = new Label(this);
+			lbl = new Label();
 			lbl.height = 20;
 			lbl.width = width;
-			lbl.validateNow();
 		}
 
 		/**	鼠标划过*/
@@ -158,7 +157,22 @@ package com.vhall.framework.ui.controls
 		public function set showDefaultLabel(value:Boolean):void
 		{
 			_showDefaultLabel = value;
-			lbl.visible = _showDefaultLabel;
+			if(value)
+			{
+				if(lbl.parent)
+				{
+					lbl.visible = true;
+				}
+				else
+				{
+					addChild(lbl);
+					validateNextFrame();
+				}
+			}
+			else
+			{
+				lbl && lbl.removeFromParent();
+			}
 		}
 
 		public var overColor:uint = 0xDCDCDC;
