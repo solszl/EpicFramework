@@ -125,18 +125,22 @@ package com.vhall.framework.media.video
 			//每次调用connect清空上次代理，要保持请用changeVideoUrl
 			dispose();
 
-			_proxy = MediaProxyFactory.create(type);
-			_handler = handler;
-			_type = type;
-			_proxy.bufferTime = ProxyConfig.BufferTime;
-			//推流之外的播放器，启用图像增强
-			eyefidelity = _eyefidelity;
+			Logger.getLogger().info("sleep 1000ms");
+			AppTween.killTweensOf(this);
+			AppTween.delayedCall(1, function():void
+			{
+				_proxy = MediaProxyFactory.create(type);
+				_handler = handler;
+				_type = type;
+				_proxy.bufferTime = ProxyConfig.BufferTime;
+				//推流之外的播放器，启用图像增强
+				eyefidelity = _eyefidelity;
 
-			_proxy.stage = _videoOption.stage;
-			_proxy.transition = _videoOption.transition;
+				_proxy.stage = _videoOption.stage;
+				_proxy.transition = _videoOption.transition;
 
-			_proxy.connect(uri, stream, proxyHandler, autoPlay, startPostion);
-
+				_proxy.connect(uri, stream, proxyHandler, autoPlay, startPostion);
+			});
 		}
 
 		private function proxyHandler(states:String, ... value):void
@@ -277,10 +281,10 @@ package com.vhall.framework.media.video
 				Log.info("摄像头：" + _cam + "\n麦克风：" + _mic + "\n尺寸:" + _camWidth + "X" + _camHeight + "\n地址：" + uri + "\n流名称:" + stream);
 			}
 
-			Logger.getLogger().info("sleep 1000ms");
-			AppTween.killTweensOf(this);
-			AppTween.delayedCall(1, connect, [MediaProxyType.PUBLISH, uri, stream, handler]);
-//			connect(MediaProxyType.PUBLISH, uri, stream, handler);
+//			Logger.getLogger().info("sleep 1000ms");
+//			AppTween.killTweensOf(this);
+//			AppTween.delayedCall(1, connect, [MediaProxyType.PUBLISH, uri, stream, handler]);
+			connect(MediaProxyType.PUBLISH, uri, stream, handler);
 		}
 
 		/**

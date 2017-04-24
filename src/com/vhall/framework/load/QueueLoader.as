@@ -31,6 +31,8 @@ package com.vhall.framework.load
 		private var onProgressCallBack:Function;
 		private var onItemFailedCallBack:Function;
 
+		private var loading:Boolean = false;
+
 		private static const _swfContext:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
 
 		public function QueueLoader()
@@ -39,14 +41,16 @@ package com.vhall.framework.load
 
 		public function startQueue(loadList:Array, onItemComplete:Function = null, onAllComplete:Function = null, onProgress:Function = null, onItemFailed:Function = null):void
 		{
-			initLoaders();
-
 			this.loadList = this.loadList.concat(loadList);
 			this.onItemCompleteCallBack = onItemComplete;
 			this.onAllCompleteCallBack = onAllComplete;
 			this.onProgressCallBack = onProgress;
 			this.onItemFailedCallBack = onItemFailed;
-			loadNext();
+			if(loading == false)
+			{
+				initLoaders();
+				loadNext();
+			}
 		}
 
 		private function loadNext():void
@@ -81,6 +85,7 @@ package com.vhall.framework.load
 			var request:URLRequest = new URLRequest(currentItem.url);
 			request.method = URLRequestMethod.GET;
 			urlLoader.load(request);
+			loading = true;
 		}
 
 		public function stopQueueLoad():void
@@ -138,6 +143,8 @@ package com.vhall.framework.load
 			{
 				onAllCompleteCallBack();
 			}
+
+			loading = false;
 		}
 
 		protected function onIO_Error(e:IOErrorEvent):void
