@@ -16,15 +16,17 @@ package com.vhall.framework.media.video
 	import com.vhall.framework.media.provider.MediaProxyStates;
 	import com.vhall.framework.media.provider.MediaProxyType;
 	import com.vhall.framework.media.provider.ProxyConfig;
-	import com.vhall.framework.tween.AppTween;
 	import com.vhall.framework.ui.controls.UIComponent;
 
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
 	import flash.media.Camera;
 	import flash.media.Microphone;
 	import flash.net.NetStream;
+	import flash.utils.Timer;
+	import flash.utils.getTimer;
 
 	CONFIG::LOGGING
 	{
@@ -65,6 +67,10 @@ package com.vhall.framework.media.video
 
 		private var interval:uint = 0;
 
+		private var timer:Timer;
+
+		private var _startPosition:Number;
+
 		/**
 		 * 默认显示大小320X240
 		 */
@@ -79,6 +85,8 @@ package com.vhall.framework.media.video
 
 			_videoOption = VideoOptions.op;
 
+			timer = new Timer(1000);
+			uid = getTimer().toString();
 			super()
 
 			if(stage)
@@ -103,6 +111,8 @@ package com.vhall.framework.media.video
 			}
 		}
 
+		private var uid:String;
+
 		/**
 		 * 创建一个视频播放器
 		 * @return
@@ -125,22 +135,48 @@ package com.vhall.framework.media.video
 			//每次调用connect清空上次代理，要保持请用changeVideoUrl
 			dispose();
 
-			Logger.getLogger().info("sleep 1000ms");
-			AppTween.killTweensOf(this);
-			AppTween.delayedCall(1, function():void
+			if(timer.running)
+				return;
+			Logger.getLogger().info(uid, "sleep 1000ms");
+			timer.addEventListener(TimerEvent.TIMER, onTimer);
+			timer.start();
+			_proxy = MediaProxyFactory.create(type);
+			_handler = handler;
+			_type = type;
+			_proxy.bufferTime = ProxyConfig.BufferTime;
+			//推流之外的播放器，启用图像增强
+			eyefidelity = _eyefidelity;
+
+			_proxy.stage = _videoOption.stage;
+			_proxy.transition = _videoOption.transition;
+
+			_startPosition = startPostion;
+			_uri = uri;
+			_stream = stream;
+			_autoPlay = autoPlay;
+//			_proxy.connect(uri, stream, proxyHandler, autoPlay, _startPosition);
+//			AppTween.killTweensOf(this);
+//			AppTween.delayedCall(1, function():void
+//			{
+//			});
+		}
+
+		private var _uri:String;
+		private var _stream:String;
+		private var _autoPlay:Boolean;
+
+		private function onTimer(e:TimerEvent):void
+		{
+			timer.removeEventListener(TimerEvent.TIMER, onTimer);
+			timer.reset();
+			if(_proxy)
 			{
-				_proxy = MediaProxyFactory.create(type);
-				_handler = handler;
-				_type = type;
-				_proxy.bufferTime = ProxyConfig.BufferTime;
-				//推流之外的播放器，启用图像增强
-				eyefidelity = _eyefidelity;
-
-				_proxy.stage = _videoOption.stage;
-				_proxy.transition = _videoOption.transition;
-
-				_proxy.connect(uri, stream, proxyHandler, autoPlay, startPostion);
-			});
+				_proxy.connect(_uri, _stream, proxyHandler, _autoPlay, _startPosition);
+			}
+			else
+			{
+				Logger.getLogger().info("代理为空");
+			}
 		}
 
 		private function proxyHandler(states:String, ... value):void
@@ -163,7 +199,6 @@ package com.vhall.framework.media.video
 						}
 						volume = _videoOption.volume;
 						mute = _videoOption.mute;
-
 						break;
 					case MediaProxyStates.STREAM_TRANSITION:
 					case MediaProxyStates.STREAM_FULL:
@@ -328,9 +363,9 @@ package com.vhall.framework.media.video
 		 */
 		private function drawBackground(alpha:Number = 1):void
 		{
+			this.graphics.clear();
 			if(!bgVisble)
 				return;
-			this.graphics.clear();
 			this.graphics.beginFill(_backgroundColor, alpha);
 			this.graphics.drawRect(_viewPort.left, _viewPort.top, _viewPort.width, _viewPort.height);
 			this.graphics.endFill();

@@ -201,7 +201,7 @@ package com.vhall.framework.ui.controls
 				else
 				{
 					var loader:ResourceLoader = new ResourceLoader();
-					var item:Object = {type:2, url:value};
+					var item:Object = {type: 2, url: value};
 					loader.load(item, complete, null, failed)
 				}
 			}
@@ -250,7 +250,7 @@ package com.vhall.framework.ui.controls
 				height = bmd.height;
 			}
 			setBitmapData(bmd);
-			ResourceItems.addToCache(item.url, content as DisplayObject);
+			ResourceItems.addToCache(item.url, content);
 		}
 
 		private function failed(item:Object, msg:String):void

@@ -63,6 +63,11 @@ package com.vhall.framework.load
 			currentItem = loadList.shift();
 			loadedCount++;
 
+			if(ResourceItems.hasLoaded(currentItem.url))
+			{
+				loadNext();
+			}
+
 			if(currentItem.hasOwnProperty("type"))
 			{
 				switch(currentItem.type)

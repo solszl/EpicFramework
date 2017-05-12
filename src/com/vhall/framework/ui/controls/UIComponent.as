@@ -166,6 +166,9 @@ package com.vhall.framework.ui.controls
 		{
 			this._width = Math.round(w);
 			this._height = Math.round(h);
+
+			this._explicitWidth = this._width;
+			this._explicitHeight = this._height;
 			RenderManager.getInstance().invalidate(invalidate);
 		}
 
@@ -207,7 +210,7 @@ package com.vhall.framework.ui.controls
 			graphics.endFill();
 		}
 
-		private static const info:String = "[{0}] width: {1} , height: {2} , x: {3} , y: {4} , haveParent, {5}, onStage: {6}";
+		private static const info:String = "[{0}] width: {1} , height: {2} , x: {3} , y: {4} , haveParent, {5}, onStage: {6}, visibile:{7}";
 
 		/**
 		 * 拿到组件的宽,高,X,Y,以及反射出来的名字
@@ -216,7 +219,7 @@ package com.vhall.framework.ui.controls
 		 */
 		public function get selfInfo():String
 		{
-			return StringUtil.substitute(info, getQualifiedClassName(this), width, height, x, y, this.parent != null, this.stage != null);
+			return StringUtil.substitute(info, getQualifiedClassName(this), width, height, x, y, this.parent != null, this.stage != null, visible);
 		}
 
 		private var _tooltip:Object;

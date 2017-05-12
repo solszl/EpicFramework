@@ -43,17 +43,23 @@ package com.vhall.framework.load
 		 * 添加文件到缓存中
 		 * @param key 通常为路径
 		 * @param content 图片为bitmap，动画为movieclip
+		 * @param forceUpdate 是否强制刷新
 		 *
 		 */
-		public static function addToCache(key:String, content:DisplayObject):void
+		public static function addToCache(key:String, content:Object, forceUpdate:Boolean = false):void
 		{
-			if(key in loadedItems)
+			if(content == null)
 			{
 				return;
 			}
 
-			if(content == null)
+			if(key in loadedItems)
 			{
+				if(forceUpdate == true)
+				{
+					loadedItems[key] = content;
+				}
+
 				return;
 			}
 
