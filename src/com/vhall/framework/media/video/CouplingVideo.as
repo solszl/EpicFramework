@@ -30,7 +30,7 @@ package com.vhall.framework.media.video
 
 		/**
 		 * 摄像头回放和流回放组合，默认大小320*280,启用smoothing
-		 */		
+		 */
 		public function CouplingVideo()
 		{
 			super();
@@ -56,21 +56,25 @@ package com.vhall.framework.media.video
 					_cameraVideo ||= new Video();
 					_cameraVideo.attachCamera(source as Camera);
 					_useVideo = _cameraVideo;
-				}else{
+				}
+				else
+				{
 					_streamVideo ||= new Video();
 					_streamVideo.attachNetStream(source as NetStream);
 					_useVideo = _streamVideo;
 				}
 				addChild(_useVideo);
 				update();
-			}else{
+			}
+			else
+			{
 				stop();
 			}
 		}
 
 		/**
 		 * 停止视频播放
-		 */		
+		 */
 		public function stop():void
 		{
 			if(_useVideo)
@@ -87,7 +91,8 @@ package com.vhall.framework.media.video
 						break;
 				}
 				_useVideo.clear();
-				if(_useVideo.parent){
+				if(_useVideo.parent)
+				{
 					_useVideo.parent.removeChild(_useVideo);
 				}
 				_useVideo = null;
@@ -97,7 +102,7 @@ package com.vhall.framework.media.video
 
 		/**
 		 * 清楚视频最后一帧
-		 */		
+		 */
 		public function clear():void
 		{
 			if(_useVideo)
@@ -118,8 +123,8 @@ package com.vhall.framework.media.video
 
 		override public function getBounds(targetCoordinateSpace:DisplayObject):Rectangle
 		{
-			var rect:Rectangle = new Rectangle(x,y,_width,_height);
-			var p:Point = targetCoordinateSpace.globalToLocal(localToGlobal(new Point(0,0)));
+			var rect:Rectangle = new Rectangle(x, y, _width, _height);
+			var p:Point = targetCoordinateSpace.globalToLocal(localToGlobal(new Point(0, 0)));
 			rect.x = p.x;
 			rect.y = p.y;
 			return rect;
@@ -184,7 +189,7 @@ package com.vhall.framework.media.video
 		/**
 		 * 是否为摄像头捕获
 		 * @return
-		 */		
+		 */
 		public function get isCamera():Boolean
 		{
 			return _cameraVideo && _useVideo == _cameraVideo;

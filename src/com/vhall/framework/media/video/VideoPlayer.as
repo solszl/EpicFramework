@@ -343,18 +343,18 @@ package com.vhall.framework.media.video
 			}
 			else
 			{
-				size.width = _video.videoWidth;
-				size.height = _video.videoHeight;
+				if(_video.videoWidth != 0)
+					size.width = _video.videoWidth;
+				if(_video.videoHeight != 0)
+					size.height = _video.videoHeight;
 			}
-
-			super.visible = this._type == MediaProxyType.PUBLISH || !(_video.videoHeight == 0 || _video.videoWidth == 0);
-
 			var ratio:Number = Math.min(_viewPort.width / size.width, _viewPort.height / size.height);
 
 			_video.width = size.width * ratio;
 			_video.height = size.height * ratio;
 			_video.x = _viewPort.left + (_viewPort.width - _video.width >> 1);
 			_video.y = _viewPort.top + (_viewPort.height - _video.height >> 1);
+//			super.visible = this._type == MediaProxyType.PUBLISH || !(_video.videoHeight == 0 || _video.videoWidth == 0);
 		}
 
 		/**

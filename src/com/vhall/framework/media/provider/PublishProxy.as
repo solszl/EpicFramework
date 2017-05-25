@@ -10,6 +10,7 @@
 package com.vhall.framework.media.provider
 {
 	import com.vhall.framework.media.interfaces.IPublish;
+	import com.vhall.framework.utils.StringUtil;
 
 	import flash.events.NetStatusEvent;
 	import flash.events.StatusEvent;
@@ -403,7 +404,7 @@ package com.vhall.framework.media.provider
 		 */
 		private function getCameraByName(name:String, camWidth:uint = 320, camHeight:uint = 280):Camera
 		{
-			if(name == null)
+			if(StringUtil.isNullOrEmpty(name))
 				return null;
 			if(Camera.isSupported)
 			{

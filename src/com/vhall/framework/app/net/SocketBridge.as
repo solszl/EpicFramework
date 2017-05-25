@@ -81,10 +81,18 @@ package com.vhall.framework.app.net
 			socket.readBytes(receBytes);
 			// 将所读的二进制数据转换为字符串
 			var s:String = receBytes.readMultiByte(receBytes.length, "");
+
 			// 反序列化字符串拿到消息体
-			var o:Object = JSON.parse(s); //com.adobe.serialization.json.JSON.decode(s);
-			Logger.getLogger("MSG Socket").info("received: " + o.type);
-			handleMap[o.type](o);
+			try
+			{
+				var o:Object = JSON.parse(s); //com.adobe.serialization.json.JSON.decode(s);
+				Logger.getLogger("MSG Socket").info("received: " + o.type);
+				handleMap[o.type](o);
+			}
+			catch(e:Error)
+			{
+				Logger.getLogger("MSG Socket").info("解析数据出错，可能发生粘包。received: " + s);
+			}
 		}
 
 		protected function socketHandler(e:Event):void
@@ -92,13 +100,16 @@ package com.vhall.framework.app.net
 			Logger.getLogger("MSG Socket").info(e.type);
 			handleMap[e.type](e);
 		}
+
 		/**
 		 *是否连接了
 		 * @return
 		 *
 		 */
-		public function isConnect():Boolean{
-			if(socket){
+		public function isConnect():Boolean
+		{
+			if(socket)
+			{
 				return socket.connected;
 			}
 			return false;

@@ -6,6 +6,7 @@ package com.vhall.framework.ui.controls
 	import com.vhall.framework.ui.interfaces.IToolTip;
 	import com.vhall.framework.ui.manager.TooltipManager;
 	import com.vhall.framework.utils.StringUtil;
+	import com.vhall.framework.utils.UUID;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
@@ -44,6 +45,7 @@ package com.vhall.framework.ui.controls
 		/**初始化方法*/
 		protected function init():void
 		{
+			_uuid = UUID.create();
 			// subclass overwrite
 			createChildren();
 		}
@@ -210,7 +212,7 @@ package com.vhall.framework.ui.controls
 			graphics.endFill();
 		}
 
-		private static const info:String = "[{0}] width: {1} , height: {2} , x: {3} , y: {4} , haveParent, {5}, onStage: {6}, visibile:{7}";
+		private static const info:String = "[{0}], uuid: {8}, width: {1} , height: {2} , x: {3} , y: {4} , haveParent, {5}, onStage: {6}, visibile:{7}";
 
 		/**
 		 * 拿到组件的宽,高,X,Y,以及反射出来的名字
@@ -219,8 +221,10 @@ package com.vhall.framework.ui.controls
 		 */
 		public function get selfInfo():String
 		{
-			return StringUtil.substitute(info, getQualifiedClassName(this), width, height, x, y, this.parent != null, this.stage != null, visible);
+			return StringUtil.substitute(info, getQualifiedClassName(this), width, height, x, y, this.parent != null, this.stage != null, visible, this.uuid);
 		}
+
+		private var _uuid:String;
 
 		private var _tooltip:Object;
 
@@ -439,6 +443,11 @@ package com.vhall.framework.ui.controls
 		public function get explicitHeight():Number
 		{
 			return this._explicitHeight;
+		}
+
+		public function get uuid():String
+		{
+			return this._uuid;
 		}
 	}
 }
