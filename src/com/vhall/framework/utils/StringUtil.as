@@ -111,16 +111,35 @@ package com.vhall.framework.utils
 			return "";
 		}
 
-		public static function beginWith(str:String,source:String):Boolean
+		public static function beginWith(str:String, source:String):Boolean
 		{
-			if(isNullOrEmpty(str)) return true;
+			if(isNullOrEmpty(str))
+				return true;
 			return source.indexOf(str) == 0;
 		}
 
-		public static function endWith(str:String,source:String):Boolean
+		public static function endWith(str:String, source:String):Boolean
 		{
-			if(isNullOrEmpty(str)) return true;
+			if(isNullOrEmpty(str))
+				return true;
 			return (source.lastIndexOf(str) + str.length) == source.length;
+		}
+
+		/**
+		 * 自动补0， 用于 时间补0 相关， 如7秒 要显示07秒
+		 * @param num 原始数据
+		 * @param length 目标数据位数
+		 * @return
+		 *
+		 */
+		public static function zero(num:*, length:int = 2):String
+		{
+			var str:String = '' + num;
+			while(str.length < length)
+			{
+				str = '0' + str;
+			}
+			return str;
 		}
 	}
 }

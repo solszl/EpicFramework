@@ -100,7 +100,7 @@ package com.vhall.framework.media.provider
 			}
 
 
-			bufferTime = ProxyConfig.BufferTime
+			bufferTime = ProxyConfig.BufferTime;
 
 			_ns.addEventListener(NetStatusEvent.NET_STATUS, statusHandler);
 			_ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR, errorHandler);

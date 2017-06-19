@@ -47,7 +47,7 @@ package com.vhall.framework.ui.controls
 		/**	方向*/
 		protected var direction:String;
 
-		protected var draging:Boolean;
+		public var draging:Boolean;
 
 		/** 已播放进度*/
 		protected var _finished:Image;

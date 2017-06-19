@@ -1,6 +1,7 @@
 package com.vhall.framework.ui.ext
 {
 	import com.vhall.framework.ui.controls.Label;
+	import com.vhall.framework.utils.StringUtil;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -102,11 +103,12 @@ package com.vhall.framework.ui.ext
 			ms %= ONE_MINUTE;
 			var s:int = ms / ONE_SECOND;
 
-			var h_str:String = h > 9 ? String(h) : fillZero ? "0" + h : h + "";
-			var m_str:String = m > 9 ? String(m) : fillZero ? "0" + m : m + "";
-			var s_str:String = s > 9 ? String(s) : fillZero ? "0" + s : s + "";
+//			var h_str:String = h > 9 ? String(h) : fillZero ? "0" + h : h + "";
+//			var m_str:String = m > 9 ? String(m) : fillZero ? "0" + m : m + "";
+//			var s_str:String = s > 9 ? String(s) : fillZero ? "0" + s : s + "";
+//			return h_str + ":" + m_str + ":" + s_str;
 
-			return h_str + ":" + m_str + ":" + s_str;
+			return StringUtil.zero(h) + ":" + StringUtil.zero(m) + ":" + StringUtil.zero(s);
 		}
 
 		/**	毫秒值*/

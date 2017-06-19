@@ -65,7 +65,7 @@ package com.vhall.framework.media.video
 
 		private var _state:String;
 
-		private var interval:uint = 0;
+		public var interval:uint = 1000;
 
 		private var timer:Timer;
 
@@ -85,7 +85,7 @@ package com.vhall.framework.media.video
 
 			_videoOption = VideoOptions.op;
 
-			timer = new Timer(1000);
+			timer = new Timer(interval);
 			uid = getTimer().toString();
 			super()
 
@@ -135,9 +135,10 @@ package com.vhall.framework.media.video
 			//每次调用connect清空上次代理，要保持请用changeVideoUrl
 			dispose();
 
+			timer.delay = interval;
 			if(timer.running)
 				return;
-			Logger.getLogger().info(uid, "sleep 1000ms");
+			Logger.getLogger().info(uid, "sleep " + interval + "ms");
 			timer.addEventListener(TimerEvent.TIMER, onTimer);
 			timer.start();
 			_proxy = MediaProxyFactory.create(type);
@@ -404,6 +405,7 @@ package com.vhall.framework.media.video
 			_proxy = null;
 			_type = null;
 			_video.clear();
+			interval = 1000;
 		}
 
 		override public function get visible():Boolean
