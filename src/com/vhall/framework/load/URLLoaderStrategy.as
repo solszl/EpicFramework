@@ -107,6 +107,7 @@ package com.vhall.framework.load
 
 		override public function deinitLoader():void
 		{
+
 			this.currentItem = null;
 			this.complete = null;
 			this.progress = null;
@@ -114,7 +115,7 @@ package com.vhall.framework.load
 
 			this.urlRequest = null
 			this.urlLoader.data = null;
-			this.urlLoader.close()
+			//			this.urlLoader.close(); @see IOError
 			this.urlLoader.removeEventListener(Event.COMPLETE, onCompleteHandler);
 			this.urlLoader.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler);
 			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, onIOErrorHandler);

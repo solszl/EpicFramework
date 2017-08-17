@@ -19,8 +19,7 @@ package com.vhall.framework.ui.utils
 		/**
 		 *	创建一个可交互的可显示对象
 		 */
-		public static function genInteractiveRect(w:Number, h:Number, p:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, fillColor:uint = 0xC0C0C0, fillAlpha:Number = 1, borderThickness:Number = NaN,
-			borderColor:uint = 0, borderAlpha:Number = 1, ellipseWidth:Number = 0, ellipseHeight:Number = 0):UIComponent
+		public static function genInteractiveRect(w:Number, h:Number, p:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, fillColor:uint = 0xC0C0C0, fillAlpha:Number = 1, borderThickness:Number = NaN, borderColor:uint = 0, borderAlpha:Number = 1, ellipseWidth:Number = 0, ellipseHeight:Number = 0):UIComponent
 		{
 			var comp:UIComponent = new UIComponent(p, xpos, ypos);
 			var temp:Number = isNaN(borderThickness) ? 0 : borderThickness / 2;
@@ -31,7 +30,7 @@ package com.vhall.framework.ui.utils
 					graphics.lineStyle(borderThickness, borderColor, borderAlpha, true);
 				}
 				graphics.beginFill(fillColor, fillAlpha);
-				graphics.drawRoundRect(0, 0, w - 2 * temp, h - 2 * temp, ellipseWidth, ellipseHeight);
+				graphics.drawRoundRect(0, 0, w, h, ellipseWidth, ellipseHeight);
 				graphics.endFill();
 			}
 			return comp;
@@ -51,8 +50,7 @@ package com.vhall.framework.ui.utils
 		 * @return 一个可交互的圆
 		 *
 		 */
-		public static function genInteractiveCircle(r:Number, p:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, fillColor:uint = 0, fillAlpha:Number = 1, borderThickness:Number = NaN,
-			borderColor:uint = 0, borderAplha:Number = 1):UIComponent
+		public static function genInteractiveCircle(r:Number, p:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, fillColor:uint = 0, fillAlpha:Number = 1, borderThickness:Number = NaN, borderColor:uint = 0, borderAplha:Number = 1):UIComponent
 		{
 			var comp:UIComponent = new UIComponent(p, xpos, ypos);
 			var temp:Number = isNaN(borderThickness) ? 0 : borderThickness / 2;

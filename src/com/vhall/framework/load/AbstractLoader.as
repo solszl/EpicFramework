@@ -91,7 +91,7 @@ package com.vhall.framework.load
 
 			this._isLoading = false;
 			failed(currentItem, "[HTTPStatus] " + event.status);
-			deinitLoader();
+//			deinitLoader();
 		}
 
 		protected function onSecurityErrorHandler(event:SecurityErrorEvent):void

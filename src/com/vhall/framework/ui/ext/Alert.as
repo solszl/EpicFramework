@@ -124,7 +124,7 @@ package com.vhall.framework.ui.ext
 		{
 			super.updateDisplay();
 			var btnW:Number = buttonContainer.numChildren * 60 + (buttonContainer.numChildren - 1) * 5
-			buttonContainer.x = (width - btnW) * .5;
+			buttonContainer.x = (width - buttonContainer.width) * .5;
 			buttonContainer.y = height - 30 - 15;
 
 			lblContent.y = height - lblContent.height >> 1;
@@ -194,17 +194,19 @@ package com.vhall.framework.ui.ext
 		private function createButton(label:String, eventKey:uint):Button
 		{
 			var button:Button = buttonPool.length > 0 ? buttonPool.pop() : new Button();
-			button.skin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xfbfbfb, 1, 1, 0xd0cdcd);
-			button.labelColor = "0x555555~0x555555~0xffffff";
+			button.skin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xfbfbfb); //, 1, 1, 0xd0cdcd
+			button.labelColor = "0x555555~0xffffff~0xffffff";
 			button.overSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xf34b46);
 			button.downSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xf34b46);
 			button.labelSize = 14;
 			button.buttonMode = true;
 			button.label = label;
-			button.setSize(60, 30);
-			button.x = buttonContainer.numChildren * (5 + 60);
+//			button.setSize(76, 30);
+			button.x = buttonContainer.numChildren * (5 + 76);
 			button.addEventListener(MouseEvent.CLICK, clickHandler, false, 0, true);
 			button.userData = eventKey;
+			button.validateNow();
+			button.showBorder(0xd0cdcd);
 
 			return Button(buttonContainer.addChild(button));
 		}

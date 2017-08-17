@@ -118,5 +118,15 @@ package com.vhall.framework.app.manager
 				trace(arr.join(","));
 			});
 		}
+
+		/**
+		 * 获取当前舞台的缩放状态， 是否是全屏状态
+		 * @return
+		 *
+		 */
+		public static function get isFullscreen():Boolean
+		{
+			return stage.displayState == StageDisplayState.FULL_SCREEN;
+		}
 	}
 }

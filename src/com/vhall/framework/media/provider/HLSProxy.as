@@ -166,10 +166,19 @@ package com.vhall.framework.media.provider
 
 		override public function toggle():void
 		{
+//			stream && stream.togglePause();
+//			_playing ? excute(MediaProxyStates.STREAM_UNPAUSE) : excute(MediaProxyStates.STREAM_PAUSE);
+			if(_playing)
+			{
+				excute(MediaProxyStates.STREAM_PAUSE);
+				stream && stream.pause();
+			}
+			else
+			{
+				excute(MediaProxyStates.STREAM_UNPAUSE);
+				stream && stream.resume();
+			}
 			super.toggle();
-			stream && stream.togglePause();
-			_playing ? excute(MediaProxyStates.STREAM_UNPAUSE) : excute(MediaProxyStates.STREAM_PAUSE);
-			;
 		}
 
 		protected function onHLSHandler(e:HLSEvent):void
@@ -242,7 +251,6 @@ package com.vhall.framework.media.provider
 							excute(MediaProxyStates.SEEK_NOTIFY);
 							break;
 						case "SEEKED":
-							_playing = true;
 							excute(MediaProxyStates.SEEK_COMPLETE);
 							break;
 					}

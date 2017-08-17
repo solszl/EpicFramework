@@ -11,6 +11,7 @@ package com.vhall.framework.media.provider
 {
 	import com.vhall.framework.log.Logger;
 
+	import flash.events.NetStatusEvent;
 	import flash.net.NetStreamPlayOptions;
 	import flash.net.NetStreamPlayTransitions;
 	import flash.utils.getTimer;
@@ -60,11 +61,13 @@ package com.vhall.framework.media.provider
 			}
 
 			_startTime = getTimer();
-			seekTime = 0;
+			seekTime = startPostion;
 		}
 
 		override public function changeVideoUrl(uri:String, streamUrl:String, autoPlay:Boolean = true, startPostion:Number = 0):void
 		{
+			this.connect(uri, streamUrl, _handler, autoPlay, startPostion);
+			return;
 			var oldUri:String = this._uri;
 			var oldStreamUrl:String = this._streamUrl;
 
@@ -111,7 +114,7 @@ package com.vhall.framework.media.provider
 			super.createStream();
 
 			this.inBufferSeek = true;
-			this.bufferTimeMax = 60;
+			this.bufferTimeMax = 15;
 		}
 
 		override public function start():void
@@ -128,7 +131,7 @@ package com.vhall.framework.media.provider
 		override public function get time():Number
 		{
 			if(_ns)
-				return seekTime + _ns.time;
+				return _startPostion + _ns.time;
 			return 0;
 		}
 
@@ -138,22 +141,17 @@ package com.vhall.framework.media.provider
 		{
 			//			if(_ns)
 			//				_ns.seek(value);
+			Logger.getLogger("HttpProxy").info("time:" + value);
 			if(_ns)
 			{
-				seekTime = value;
+				_startPostion = value;
 				_ns.play(this.uri + "?start=" + value);
 			}
 		}
 
-		private var oldDuration:Number = 0;
-
 		override public function get duration():Number
 		{
-			if(seekTime == 0)
-			{
-				oldDuration = _duration;
-			}
-			return oldDuration;
+			return _duration;
 		}
 
 		override public function get bytesLoaded():int
@@ -174,6 +172,90 @@ package com.vhall.framework.media.provider
 		{
 			var speed:uint = (bytesLoaded / 1024) / ((getTimer() - _startTime) / 1000);
 			return _type.toLocaleUpperCase() + "播放平均网速：" + speed.toFixed(2) + " k/s";
+		}
+
+		override protected function statusHandler(e:NetStatusEvent):void
+		{
+			switch(e.info.code)
+			{
+				case InfoCode.NetConnection_Connect_Success:
+					stopConnFailTime();
+					onBufferEmpty();
+					createStream();
+
+					time = _startPostion;
+					break;
+				case InfoCode.NetConnection_Connect_Closed:
+				case InfoCode.NetConnection_Connect_Failed:
+				case InfoCode.NetConnection_Connect_AppShutDown:
+				case InfoCode.NetConnection_Connect_Rejected:
+					gc();
+					break;
+				case InfoCode.NetStream_Buffer_Empty:
+					excute(MediaProxyStates.STREAM_LOADING);
+					onBufferEmpty();
+					break;
+				case InfoCode.NetStream_Buffer_Full:
+					excute(MediaProxyStates.STREAM_FULL);
+					onBufferFull();
+					break;
+				case InfoCode.NetStream_Play_Start:
+					excute(MediaProxyStates.STREAM_START);
+					break;
+				case InfoCode.NetStream_Play_Stop:
+					excute(MediaProxyStates.STREAM_STOP);
+					break;
+				case InfoCode.NetStream_Play_StreamNotFound:
+					excute(MediaProxyStates.STREAM_NOT_FOUND, _uri, _streamUrl);
+					break;
+				case InfoCode.NetStream_Seek_Failed:
+				case InfoCode.NetStream_Seek_InvalidTime:
+					excute(MediaProxyStates.SEEK_FAILED, e.info.code);
+					break;
+				case InfoCode.NetStream_Seek_Notify:
+					excute(MediaProxyStates.SEEK_NOTIFY);
+					break;
+				case InfoCode.NetStream_Seek_Complete:
+					_playing = true;
+					excute(MediaProxyStates.SEEK_COMPLETE);
+					break;
+				case InfoCode.NetStream_Video_DimensionChange:
+					//视频源尺寸改变
+					excute(MediaProxyStates.STREAM_SIZE_NOTIFY);
+					break;
+				case InfoCode.NetStream_Pause_Notify:
+					excute(MediaProxyStates.STREAM_PAUSE);
+					break;
+				case InfoCode.NetStream_Unpause_Notify:
+					excute(MediaProxyStates.STREAM_UNPAUSE);
+					break;
+				case InfoCode.NetStream_Play_PublishNotify:
+					excute(MediaProxyStates.PUBLISH_NOTIFY);
+					break;
+				case InfoCode.NetStream_Play_UnpublishNotify:
+					excute(MediaProxyStates.UN_PUBLISH_NOTIFY);
+					break;
+				case InfoCode.NetStream_Play_Transition:
+					excute(MediaProxyStates.STREAM_TRANSITION);
+				default:
+					break;
+			}
+		}
+
+		override public function dispose():void
+		{
+			super.dispose();
+			_startPostion = 0;
+		}
+
+		override protected function onMetaData(value:* = null):void
+		{
+			if(value && value["duration"])
+			{
+				_duration = value["duration"];
+				_duration = _duration + _startPostion;
+				excute(MediaProxyStates.DURATION_NOTIFY, _duration);
+			}
 		}
 	}
 }
