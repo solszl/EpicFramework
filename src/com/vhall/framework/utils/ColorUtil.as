@@ -237,6 +237,14 @@ package com.vhall.framework.utils
 			cm.reset();
 			displayObject.filters = [new ColorMatrixFilter(cm)];
 		}
+
+		public static function fromRGB(r:Number = 0, g:Number = 0, b:Number = 0):uint
+		{
+			r = MathUtil.limitIn(r, 0, 255);
+			g = MathUtil.limitIn(g, 0, 255);
+			b = MathUtil.limitIn(b, 0, 255);
+			return int(r) << 16 | int(g) << 8 | int(b);
+		}
 	}
 }
 
