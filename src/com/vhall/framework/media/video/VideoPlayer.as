@@ -329,7 +329,7 @@ package com.vhall.framework.media.video
 		private function updateVideo():void
 		{
 			drawBackground();
-			var size:Object = {width: 854, height: 480};
+			var size:Object = baselineSize; //{width: 854, height: 480};
 			if(_video.isCamera)
 			{
 				if(_proxy && _proxy.type == MediaProxyType.PUBLISH)
@@ -466,6 +466,14 @@ package com.vhall.framework.media.video
 				//_video.clear();
 				//_video.attachCamera(this.isPlaying?((_proxy as IPublish).usedCam):null);
 			}
+		}
+
+		private var baselineSize:Object = {width: 854, height: 640};
+
+		/**	由于有的时候设置的播放器并不是推流负责推流，拉流负责拉流，可能拉流负责的回显，此时需要手动设置一下回显的宽高， 以便显示正常*/
+		public function setBaselineSize(obj:Object):void
+		{
+			baselineSize = obj;
 		}
 
 		/**
