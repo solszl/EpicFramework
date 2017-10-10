@@ -257,6 +257,21 @@ package com.vhall.framework.media.provider
 				excute(MediaProxyStates.DURATION_NOTIFY, _duration);
 			}
 		}
+
+		override public function toggle():void
+		{
+			if(_playing)
+			{
+				excute(MediaProxyStates.STREAM_PAUSE);
+				stream && stream.pause();
+			}
+			else
+			{
+				excute(MediaProxyStates.STREAM_UNPAUSE);
+				stream && stream.resume();
+			}
+			_playing = !_playing;
+		}
 	}
 }
 

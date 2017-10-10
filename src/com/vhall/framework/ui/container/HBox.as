@@ -11,7 +11,7 @@ package com.vhall.framework.ui.container
 	 */
 	public class HBox extends Box
 	{
-		public var _gap:Number = 0;
+		private var _gap:Number = 0;
 
 		private var _verticalAlign:String = "center";
 

@@ -38,7 +38,6 @@ package com.vhall.framework.app.net
 				return;
 			}
 
-
 			try
 			{
 				if(msg_body is String)
@@ -53,7 +52,7 @@ package com.vhall.framework.app.net
 			}
 			catch(e:Error)
 			{
-				Logger.getLogger("AbsBridge").info("ERROR " + e.errorID + ":" + e.message);
+				Logger.getLogger("AbsBridge").info("ERROR " + e.errorID + ":" + e.message, handleMap == null, msg, msg_body);
 			}
 		}
 
