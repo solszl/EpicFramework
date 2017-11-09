@@ -322,13 +322,11 @@ package com.vhall.framework.ui.controls
 				return;
 			}
 			var t:Number = getTimer();
-			//			trace(t,lastClick);
 			if(t - lastClick < clickDelay)
 			{
 				event.stopImmediatePropagation();
 			}
 			lastClick = t;
-			//			trace("internal click");
 		}
 
 		/**	是否使用双击间隔机制*/

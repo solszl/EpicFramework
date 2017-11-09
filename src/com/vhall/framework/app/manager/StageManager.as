@@ -3,9 +3,6 @@ package com.vhall.framework.app.manager
 	import com.vhall.framework.ui.utils.ComponentUtils;
 
 	import flash.display.BlendMode;
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
-	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.display.StageAlign;
@@ -99,7 +96,7 @@ package com.vhall.framework.app.manager
 			}
 
 			var content:String = "【Error】:\n It's probably a bug, please contact Sol::<a herf ='mailto:zhenliang.sun@vhall.com'</a>" + msg;
-			trace(content);
+//			trace(content);
 		}
 
 		public static function toggleFullscreen(e:MouseEvent = null):void
