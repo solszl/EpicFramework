@@ -10,10 +10,10 @@
 package com.vhall.framework.media.provider
 {
 	import com.vhall.framework.log.Logger;
+	import com.vhall.framework.utils.StringUtil;
 
 	import flash.events.NetStatusEvent;
 	import flash.net.NetStreamPlayOptions;
-	import flash.net.NetStreamPlayTransitions;
 	import flash.utils.getTimer;
 
 	CONFIG::LOGGING
@@ -145,7 +145,11 @@ package com.vhall.framework.media.provider
 			if(_ns)
 			{
 				_startPostion = value;
-				_ns.play(this.uri + "?start=" + value);
+				var temp:String = "{0}start=";
+				var char:String = "&";
+				char = this.uri.indexOf("?") > -1 ? "&" : "?";
+				var res:String = StringUtil.substitute(temp, char);
+				_ns.play(this.uri + res + value);
 			}
 		}
 

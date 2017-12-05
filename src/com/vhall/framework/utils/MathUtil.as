@@ -14,12 +14,22 @@ package com.vhall.framework.utils
 		 * @param v	数值
 		 * @param min	最大值
 		 * @param max	最小值
-		 * <table><tr><td>123</td><td>456</td><tr></table>
-		 *
 		 */
 		public static function limitIn(v:Number, min:Number, max:Number):Number
 		{
 			return Math.min(Math.max(v, min), max);
+		}
+
+		public static function random(min:int, max:int):int
+		{
+			if(min > max)
+			{
+				min = min ^ max;
+				max = min ^ max;
+				min = min ^ max;
+			}
+
+			return Math.floor(Math.random() * (max - min + 1) + min);
 		}
 	}
 }
