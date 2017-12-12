@@ -149,7 +149,8 @@ package com.vhall.framework.media.provider
 				var char:String = "&";
 				char = this.uri.indexOf("?") > -1 ? "&" : "?";
 				var res:String = StringUtil.substitute(temp, char);
-				_ns.play(this.uri + res + value);
+				var mp4url:String = this.uri + res + value;
+				_ns.play(mp4url);
 			}
 		}
 

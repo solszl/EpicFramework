@@ -91,6 +91,8 @@ package com.vhall.framework.media.provider
 		public static const PROXY_ERROR:String = "proxyError";
 
 		public static const PUBLISH_FAILED:String = "publishFailed";
+
+		public static const DISPATCH_MEDIA_EVENT:String = "dispatchMediaEvent";
 	}
 }
 

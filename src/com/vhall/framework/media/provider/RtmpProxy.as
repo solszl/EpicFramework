@@ -225,6 +225,7 @@ package com.vhall.framework.media.provider
 			{
 				Log.info("状态码：" + e.info.code + (e.info.description ? " 描述：" + e.info.description : "") + "类型：" + _type);
 			}
+			excute(MediaProxyStates.DISPATCH_MEDIA_EVENT, e.info.code);
 			switch(e.info.code)
 			{
 				case InfoCode.NetConnection_Connect_Success:
