@@ -3,9 +3,11 @@ package com.vhall.framework.ui.utils
 	import com.vhall.framework.ui.controls.UIComponent;
 
 	import flash.display.BitmapData;
+	import flash.display.CapsStyle;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.InteractiveObject;
+	import flash.display.JointStyle;
 	import flash.display.Stage;
 	import flash.geom.Point;
 
@@ -53,18 +55,14 @@ package com.vhall.framework.ui.utils
 		public static function genInteractiveCircle(r:Number, p:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, fillColor:uint = 0, fillAlpha:Number = 1, borderThickness:Number = NaN, borderColor:uint = 0, borderAplha:Number = 1):UIComponent
 		{
 			var comp:UIComponent = new UIComponent(p, xpos, ypos);
-			var temp:Number = isNaN(borderThickness) ? 0 : borderThickness / 2;
-			with(comp)
+			if(!isNaN(borderThickness))
 			{
-				if(!isNaN(borderThickness))
-				{
-					graphics.lineStyle(borderThickness, borderColor, borderAplha, true);
-				}
-
-				graphics.beginFill(fillColor, fillAlpha);
-				graphics.drawCircle(r, r, r - temp);
-				graphics.endFill();
+				comp.graphics.lineStyle(borderThickness, borderColor, borderAplha, false, "normal", CapsStyle.ROUND, JointStyle.ROUND);
 			}
+
+			comp.graphics.beginFill(fillColor, fillAlpha);
+			comp.graphics.drawCircle(r, r, r);
+			comp.graphics.endFill();
 
 			return comp;
 		}

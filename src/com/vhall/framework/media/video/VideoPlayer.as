@@ -586,7 +586,7 @@ package com.vhall.framework.media.video
 		 * 播放器背景颜色透明度
 		 * @param value 0~1
 		 */
-		public function set backgroundAlpha(value:Number):void
+		override public function set backgroundAlpha(value:Number):void
 		{
 			drawBackground(Math.min(1, Math.max(0, value)));
 		}

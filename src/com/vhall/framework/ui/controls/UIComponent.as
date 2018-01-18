@@ -397,9 +397,17 @@ package com.vhall.framework.ui.controls
 			{
 				return;
 			}
-			graphics.beginFill(value);
+			graphics.beginFill(value, _backgroundAlpha);
 			graphics.drawRect(0, 0, width, height);
 			graphics.endFill();
+		}
+
+		private var _backgroundAlpha:Number = 1;
+
+		public function set backgroundAlpha(value:Number):void
+		{
+			this._backgroundAlpha = value;
+			RenderManager.getInstance().invalidate(invalidate);
 		}
 
 		public function set scale(value:Number):void

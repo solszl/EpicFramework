@@ -17,6 +17,8 @@ package com.vhall.framework.ui.container
 
 		private var _horizontalAlign:String = "left";
 
+		public var marginRight:Number = 0;
+
 		public function HBox(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
 			super(parent, xpos, ypos);
@@ -26,6 +28,7 @@ package com.vhall.framework.ui.container
 		{
 			super.createChildren();
 			_layout = new HorizontalLayout();
+			HorizontalLayout(_layout).setTarget(this);
 			gap = 5;
 		}
 
@@ -37,6 +40,11 @@ package com.vhall.framework.ui.container
 		public function get gap():Number
 		{
 			return HorizontalLayout(_layout).gap;
+		}
+
+		public function set marginLeft(value:Number):void
+		{
+			HorizontalLayout(_layout).marginLeft = value;
 		}
 
 		[Inspectable(category = "General", enumeration = "left,right,center", defaultValue = "left")]

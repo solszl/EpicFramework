@@ -131,6 +131,11 @@ package com.vhall.framework.ui.layout
 			return this._measureWidth;
 		}
 
+		public function setTarget(value:Box):void
+		{
+			this.target = value;
+		}
+
 		public function toString():String
 		{
 			return type;
