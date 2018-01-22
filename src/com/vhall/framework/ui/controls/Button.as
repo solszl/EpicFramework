@@ -291,6 +291,8 @@ package com.vhall.framework.ui.controls
 			width = bg.width;
 			height = bg.height;
 			btnLabel.width = width;
+			if(!useFilter)
+				return;
 			switch(state)
 			{
 				case 0:
@@ -354,5 +356,7 @@ package com.vhall.framework.ui.controls
 
 		private var _clickDelay:Number = 350;
 		private var _useClickDelay:Boolean = false;
+
+		public var useFilter:Boolean = true;
 	}
 }

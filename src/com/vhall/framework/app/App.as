@@ -59,60 +59,9 @@ package com.vhall.framework.app
 
 		protected function initBaseURL():void
 		{
-			//"http://ccstatic01.e.vhall.com/player/"
-
-			//"//ccstatic01.e.vhall.com/document"
-			// 取消一个测试URL机制。
-//			if(loaderInfo.parameters.hasOwnProperty("skinUrl"))
-//			{
-//				baseURL = loaderInfo.parameters["skinUrl"];
-//			}
-//			else if(loaderInfo.parameters.hasOwnProperty("doc_srv"))
-//			{
-//				var ul:String = loaderInfo.parameters["doc_srv"];
-//				var str:String = ul.substr(0, ul.lastIndexOf('/') + 1);
-//				baseURL = "http:" + str + "player/";
-//			}
-
-			Logger.getLogger().info(loaderInfo.url);
-			if(loaderInfo.url.toLowerCase().indexOf("https") == 0)
-			{
-				protocol = "https:";
-			}
-
-			if(loaderInfo.parameters.hasOwnProperty("skinUrl"))
-			{
-				var ul:String = loaderInfo.parameters["skinUrl"];
-
-				// http://domain/abc/1.swf
-				// domain
-				if(ul.indexOf("//") >= 0)
-				{
-					ul = ul.substr(ul.indexOf("//") + 2);
-				}
-				var str:String = getUrlString(ul);
-				if(str.indexOf("http://") >= 0)
-				{
-					baseURL = str + "player/";
-				}
-				else
-				{
-
-					baseURL = protocol + "//" + str + "/player/";
-				}
-			}
-
-//			if (loaderInfo.parameters.hasOwnProperty("doc_srv"))
-//			{
-//				var ul:String=loaderInfo.parameters["doc_srv"];
-//				var str:String=ul.substr(0, ul.lastIndexOf('/') + 1);
-//				baseURL="http:" + str + "player/";
-//			}
-
-			if(loaderInfo.parameters.hasOwnProperty("resPath"))
-			{
-				baseURL = loaderInfo.parameters["resPath"];
-			}
+			Logger.getLogger().info("swf URL:", loaderInfo.url);
+			var url:String = loaderInfo.url;
+			baseURL = url.substring(0, url.lastIndexOf("/")) + "/";
 
 			if(loaderInfo.url.indexOf("file") >= 0)
 			{
