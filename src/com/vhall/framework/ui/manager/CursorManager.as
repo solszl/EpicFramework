@@ -49,5 +49,10 @@ package com.vhall.framework.ui.manager
 		{
 			CursorManagerImpl.getInstance().unuseCursor();
 		}
+
+		public static function get currentCursor():String
+		{
+			return CursorManagerImpl.getInstance().currentCursor;
+		}
 	}
 }

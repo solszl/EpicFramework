@@ -59,9 +59,38 @@ package com.vhall.framework.app
 
 		protected function initBaseURL():void
 		{
-			Logger.getLogger().info("swf URL:", loaderInfo.url);
-			var url:String = loaderInfo.url;
-			baseURL = url.substring(0, url.lastIndexOf("/")) + "/";
+			Logger.getLogger().info(loaderInfo.url);
+			if(loaderInfo.url.toLowerCase().indexOf("https") == 0)
+			{
+				protocol = "https:";
+			}
+
+			if(loaderInfo.parameters.hasOwnProperty("skinUrl"))
+			{
+				var ul:String = loaderInfo.parameters["skinUrl"];
+
+				// http://domain/abc/1.swf
+				// domain
+				if(ul.indexOf("//") >= 0)
+				{
+					ul = ul.substr(ul.indexOf("//") + 2);
+				}
+				var str:String = getUrlString(ul);
+				if(str.indexOf("http://") >= 0)
+				{
+					baseURL = str + "vhallclass/player/";
+				}
+				else
+				{
+
+					baseURL = protocol + "//" + str + "/vhallclass/player/";
+				}
+			}
+
+			if(loaderInfo.parameters.hasOwnProperty("resPath"))
+			{
+				baseURL = loaderInfo.parameters["resPath"];
+			}
 
 			if(loaderInfo.url.indexOf("file") >= 0)
 			{

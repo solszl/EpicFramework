@@ -73,5 +73,10 @@ package com.vhall.framework.ui.manager
 		{
 			Mouse.cursor = MouseCursor.AUTO;
 		}
+
+		public function get currentCursor():String
+		{
+			return Mouse.cursor;
+		}
 	}
 }
