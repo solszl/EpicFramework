@@ -145,8 +145,11 @@ package com.vhall.framework.media.provider
 		override public function stop():void
 		{
 			super.stop();
-			stream && stream.close();
-			stream.removeEventListener(NetStatusEvent.NET_STATUS, streamNetStatusEventHandler);
+			if(stream)
+			{
+				stream.close();
+				stream.removeEventListener(NetStatusEvent.NET_STATUS, streamNetStatusEventHandler);
+			}
 			gc();
 		}
 

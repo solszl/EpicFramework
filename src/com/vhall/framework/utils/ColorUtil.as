@@ -98,7 +98,7 @@ package com.vhall.framework.utils
 		 * @param color
 		 *
 		 */
-		public static function addRing(obj:DisplayObject, color:uint, inner:Boolean = false):void
+		public static function addRing(obj:DisplayObject, color:uint, inner:Boolean = false, alpha:Number = 0.5, strength:Number = 2):void
 		{
 			if(obj)
 			{
@@ -120,7 +120,7 @@ package com.vhall.framework.utils
 				}
 				else
 				{
-					filter = new GlowFilter(color, 0.5, 5, 5, 6, 2, inner);
+					filter = new GlowFilter(color, 0.5, 5, 5, 2, 1, inner);
 					filters.push(filter);
 				}
 
