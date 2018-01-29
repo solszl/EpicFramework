@@ -98,5 +98,15 @@ package com.vhall.framework.ui.controls
 			super.updateDisplay();
 			_tf.y = height - _tf.height >> 1;
 		}
+
+		override public function get width():Number
+		{
+			return _tf.width;
+		}
+
+		override public function get height():Number
+		{
+			return _tf.height;
+		}
 	}
 }

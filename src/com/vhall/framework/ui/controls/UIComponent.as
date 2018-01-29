@@ -208,7 +208,7 @@ package com.vhall.framework.ui.controls
 		{
 			graphics.clear();
 			graphics.lineStyle(1, color);
-			graphics.drawRect(0, -1, width, height + 1);
+			graphics.drawRect(-1, -1, width + 1, height + 1);
 			graphics.endFill();
 		}
 
