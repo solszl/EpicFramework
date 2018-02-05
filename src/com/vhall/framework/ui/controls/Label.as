@@ -52,12 +52,14 @@ package com.vhall.framework.ui.controls
 			if(os.indexOf("mac") >= 0)
 			{
 				_tf.y = 4;
+				font = "PingFangSC-Regular";
 			}
 			else
 			{
 				_tf.y = 0;
+				font = "Microsoft YaHei";
 			}
-			font = "Microsoft YaHei";
+
 //			sizeChanged();
 		}
 
