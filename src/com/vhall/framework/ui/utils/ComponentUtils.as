@@ -1,5 +1,6 @@
 package com.vhall.framework.ui.utils
 {
+	import com.vhall.framework.app.manager.StageManager;
 	import com.vhall.framework.ui.controls.UIComponent;
 
 	import flash.display.BitmapData;
@@ -10,6 +11,7 @@ package com.vhall.framework.ui.utils
 	import flash.display.JointStyle;
 	import flash.display.Stage;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	/**
 	 *	技术控件工具类
@@ -116,6 +118,71 @@ package com.vhall.framework.ui.utils
 				}
 
 			}
+		}
+
+		/**
+		 * 判断2个矩形相交的矩形 类似 Rectangle的intersection方法, 创建本方法的原因是因为EpicFramework 内部的scale， 组件缩放后，使用getBounds 和getRect 所返回的矩形大小不对
+		 * @param fromTarget
+		 * @param toTarget
+		 * @return
+		 *
+		 */
+		public static function getIntersect(fromTarget:DisplayObject, toTarget:DisplayObject):Rectangle
+		{
+			var fromRect:Rectangle = fromTarget.getBounds(fromTarget);
+			var toRect:Rectangle = new Rectangle(toTarget.x, toTarget.y, toTarget.width * toTarget.scaleX, toTarget.height * toTarget.scaleY);
+			var rect:Rectangle = fromRect.intersection(toRect);
+
+			var x:Number, y:Number, w:Number, h:Number;
+			if(rect.x <= 0 && rect.width + rect.x < StageManager.stageWidth)
+			{
+				x = 0;
+				w = rect.width + rect.x;
+			}
+
+			if(rect.x <= 0 && rect.width + rect.x > StageManager.stageWidth)
+			{
+				x = 0;
+				w = StageManager.stageWidth;
+			}
+
+			if(rect.x > 0 && rect.x + rect.width < StageManager.stageWidth)
+			{
+				x = rect.x;
+				w = rect.width;
+			}
+
+			if(rect.x > 0 && rect.x + rect.width > StageManager.stageWidth)
+			{
+				x = rect.x;
+				w = StageManager.stageWidth - rect.x;
+			}
+
+			if(rect.y <= 0 && rect.y + rect.height < StageManager.stageHeight)
+			{
+				y = 0;
+				h = rect.height + rect.y;
+			}
+
+			if(rect.y <= 0 && rect.y + rect.height > StageManager.stageHeight)
+			{
+				y = 0;
+				h = StageManager.stageHeight;
+			}
+
+			if(rect.y > 0 && rect.y + rect.height > StageManager.stageHeight)
+			{
+				y = rect.y;
+				h = StageManager.stageHeight - rect.y;
+			}
+
+			if(rect.y > 0 && rect.y + rect.height < StageManager.stageHeight)
+			{
+				y = rect.y;
+				h = rect.height;
+			}
+
+			return new Rectangle(x, y, w, h);
 		}
 	}
 }
