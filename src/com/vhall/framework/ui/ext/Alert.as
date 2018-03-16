@@ -63,9 +63,9 @@ package com.vhall.framework.ui.ext
 		{
 			super.createChildren();
 
-			lblTitle = new Label(this, 0, 8);
-			lblTitle.fontSize = 16;
-			lblTitle.align = "center";
+			lblTitle = new Label(this, 12, 8);
+			lblTitle.fontSize = 13;
+			lblTitle.bold = true;
 			lblTitle.text = "title";
 
 			lblContent = new Label(this, 90, 40);
@@ -118,7 +118,6 @@ package com.vhall.framework.ui.ext
 		{
 			super.sizeChanged();
 			lblContent.width = width;
-			lblTitle.width = width;
 		}
 
 		override protected function updateDisplay():void
@@ -197,18 +196,17 @@ package com.vhall.framework.ui.ext
 			var button:Button = buttonPool.length > 0 ? buttonPool.pop() : new Button();
 			button.skin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xfbfbfb); //, 1, 1, 0xd0cdcd
 			button.labelColor = "0x555555~0xffffff~0xffffff";
-			button.overSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0x52cc90);
-			button.downSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0x52cc90);
-			button.labelSize = 12;
+			button.overSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xf34b46);
+			button.downSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xf34b46);
+			button.labelSize = 14;
 			button.buttonMode = true;
 			button.label = label;
-//			button.setSize(76, 30);
+			//			button.setSize(76, 30);
 			button.x = buttonContainer.numChildren * (5 + 76);
 			button.addEventListener(MouseEvent.CLICK, clickHandler, false, 0, true);
 			button.userData = eventKey;
 			button.validateNow();
 			button.showBorder(0xd0cdcd);
-			button.useFilter = false;
 
 			return Button(buttonContainer.addChild(button));
 		}
@@ -217,17 +215,17 @@ package com.vhall.framework.ui.ext
 		{
 			graphics.clear();
 			// 灰色背景
-			graphics.beginFill(0x52cc90);
-			graphics.drawRoundRect(0, 0, 300, 180, 8, 8);
+			graphics.beginFill(0x000000, 0.15);
+			graphics.drawRect(0, 0, 300, 180);
 			graphics.endFill();
 			// 白色背景
 			graphics.beginFill(0xFFFFFF);
-			graphics.drawRect(0, 5, 300, 175);
+			graphics.drawRect(3, 3, 294, 174);
 			graphics.endFill();
 			// 标题背景
-//			graphics.beginFill(0xF3F3F3);
-//			graphics.drawRect(3, 3, 294, 32);
-//			graphics.endFill();
+			graphics.beginFill(0xF3F3F3);
+			graphics.drawRect(3, 3, 294, 32);
+			graphics.endFill();
 
 			width = 300;
 		}

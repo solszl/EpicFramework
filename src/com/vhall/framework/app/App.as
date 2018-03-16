@@ -78,12 +78,12 @@ package com.vhall.framework.app
 				var str:String = getUrlString(ul);
 				if(str.indexOf("http://") >= 0)
 				{
-					baseURL = str + "vhallclass/player/";
+					baseURL = str + "player/";
 				}
 				else
 				{
 
-					baseURL = protocol + "//" + str + "/vhallclass/player/";
+					baseURL = protocol + "//" + str + "/player/";
 				}
 			}
 
