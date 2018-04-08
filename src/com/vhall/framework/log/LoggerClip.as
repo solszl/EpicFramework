@@ -11,7 +11,7 @@ package com.vhall.framework.log
 	public class LoggerClip extends Sprite implements ILoggerClip
 	{
 		/**	内容最大行数*/
-		private static var MAX_LINES:Number = 100; //单屏19条，存留3屏
+		private static var MAX_LINES:Number = 300; //单屏19条，存留3屏
 		/**	当前行数*/
 		private var curLines:int = 0;
 		private var mcOutput:TextField;
@@ -41,9 +41,9 @@ package com.vhall.framework.log
 			closeBtn.htmlText = "<a href='event:link'>关闭</a>";
 			closeBtn.mouseEnabled = true;
 			var _styleSheet:StyleSheet = new StyleSheet();
-			_styleSheet.setStyle("a:hover", {color:"#FFFFFF", textDecoration:"none"});
-			_styleSheet.setStyle("a:link", {color:"#ffff00", textDecoration:"none"});
-			_styleSheet.setStyle("a:active", {color:"#FF0000", textDecoration:"none"});
+			_styleSheet.setStyle("a:hover", {color: "#FFFFFF", textDecoration: "none"});
+			_styleSheet.setStyle("a:link", {color: "#ffff00", textDecoration: "none"});
+			_styleSheet.setStyle("a:active", {color: "#FF0000", textDecoration: "none"});
 			closeBtn.styleSheet = _styleSheet;
 			addChild(closeBtn);
 			closeBtn.addEventListener(TextEvent.LINK, onClose);
