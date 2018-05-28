@@ -22,6 +22,9 @@ package com.vhall.framework.ui.ext
 	 */
 	public class Alert extends Box
 	{
+		[Embed(source = "assets/close.png")]
+		private var close:Class;
+
 		public function Alert(parent:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0)
 		{
 			super(parent, xpos, ypos);
@@ -59,11 +62,13 @@ package com.vhall.framework.ui.ext
 
 		private static var flags:uint;
 
+		private var btnClose:Button;
+
 		override protected function createChildren():void
 		{
 			super.createChildren();
 
-			lblTitle = new Label(this, 12, 8);
+			lblTitle = new Label(this, 20, 8);
 			lblTitle.fontSize = 13;
 			lblTitle.bold = true;
 			lblTitle.text = "title";
@@ -75,6 +80,12 @@ package com.vhall.framework.ui.ext
 			drawBackground();
 
 			buttonContainer = new HBox(this);
+			buttonContainer.gap = 10;
+			btnClose = new Button(this);
+			btnClose.right = 10;
+			btnClose.y = 10;
+			btnClose.skin = close;
+			btnClose.addEventListener(MouseEvent.CLICK, onCloseHandler);
 		}
 
 		public static function show(title:String = "", content:String = "", flag:uint = Alert.OK, closeHandler:Function = null):Alert
@@ -123,11 +134,11 @@ package com.vhall.framework.ui.ext
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
-			var btnW:Number = buttonContainer.numChildren * 60 + (buttonContainer.numChildren - 1) * 5
+			var btnW:Number = buttonContainer.numChildren * 78 + (buttonContainer.numChildren - 1) * 10;
 			buttonContainer.x = (width - buttonContainer.width) * .5;
-			buttonContainer.y = height - 30 - 15;
+			buttonContainer.y = height - 30 - 15 - 5;
 
-			lblContent.y = height - lblContent.height >> 1;
+			lblContent.y = (height - lblContent.height >> 1) - 10;
 			lblContent.x = width - lblContent.width >> 1;
 		}
 
@@ -176,6 +187,17 @@ package com.vhall.framework.ui.ext
 			alertPool.push(this);
 		}
 
+		private function onCloseHandler(e:MouseEvent):void
+		{
+			PopupManager.removePopup(this);
+			if(closeHandle != null)
+			{
+				var closeEvent:CloseEvent = new CloseEvent(CloseEvent.CLOSE, false, false, getDetailBy(null));
+				closeHandle(closeEvent);
+			}
+			alertPool.push(this);
+		}
+
 		private function getDetailBy(button:Button):int
 		{
 			if(button == null)
@@ -194,19 +216,31 @@ package com.vhall.framework.ui.ext
 		private function createButton(label:String, eventKey:uint):Button
 		{
 			var button:Button = buttonPool.length > 0 ? buttonPool.pop() : new Button();
-			button.skin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xfbfbfb); //, 1, 1, 0xd0cdcd
-			button.labelColor = "0x555555~0xffffff~0xffffff";
-			button.overSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xf34b46);
-			button.downSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xf34b46);
+			switch(eventKey)
+			{
+				case Alert.OK:
+				case Alert.YES:
+					genRedSkin(button);
+					break;
+				case Alert.CANCEL:
+				case Alert.NO:
+					genNormalSkin(button);
+					break;
+				default:
+					genNormalSkin(button);
+					break;
+			}
+
 			button.labelSize = 14;
 			button.buttonMode = true;
 			button.label = label;
+			button.useFilter = false;
 			//			button.setSize(76, 30);
 			button.x = buttonContainer.numChildren * (5 + 76);
 			button.addEventListener(MouseEvent.CLICK, clickHandler, false, 0, true);
 			button.userData = eventKey;
-			button.validateNow();
-			button.showBorder(0xd0cdcd);
+//			button.validateNow();
+//			button.showBorder(0xd0cdcd);
 
 			return Button(buttonContainer.addChild(button));
 		}
@@ -215,19 +249,37 @@ package com.vhall.framework.ui.ext
 		{
 			graphics.clear();
 			// 灰色背景
-			graphics.beginFill(0x000000, 0.15);
-			graphics.drawRect(0, 0, 300, 180);
+			graphics.beginFill(0xfc565a);
+			graphics.drawRoundRect(0, 0, 300, 160, 8, 8);
 			graphics.endFill();
 			// 白色背景
 			graphics.beginFill(0xFFFFFF);
-			graphics.drawRect(3, 3, 294, 174);
+			graphics.drawRect(0, 5, 300, 160);
 			graphics.endFill();
 			// 标题背景
-			graphics.beginFill(0xF3F3F3);
-			graphics.drawRect(3, 3, 294, 32);
-			graphics.endFill();
+			//			graphics.beginFill(0xF3F3F3);
+			//			graphics.drawRect(3, 3, 294, 32);
+			//			graphics.endFill();
 
 			width = 300;
+		}
+
+		private function genNormalSkin(button:Button):Button
+		{
+			button.overSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xd2d2d2, 1, 1, 0xd2d2d2, 1, 4, 4);
+			button.downSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0x999999, 1, 1, 0x999999, 1, 4, 4);
+			button.skin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xffffff, 1, 1, 0x999999, 1, 4, 4);
+			button.labelColor = "0x999999~0xffffff~0xffffff";
+			return button;
+		}
+
+		private function genRedSkin(button:Button):Button
+		{
+			button.overSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xfc5659, 1, 1, 0xfc5659, 1, 4, 4);
+			button.downSkin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xe24d4f, 1, 1, 0xe24d4f, 1, 4, 4);
+			button.skin = ComponentUtils.genInteractiveRect(76, 28, null, 0, 0, 0xFFFFFF, 1, 1, 0xfc5659, 1, 4, 4);
+			button.labelColor = "0xfc5659~0xffffff~0xffffff";
+			return button;
 		}
 	}
 }

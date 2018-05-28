@@ -26,7 +26,6 @@ package com.vhall.framework.ui.utils
 		public static function genInteractiveRect(w:Number, h:Number, p:DisplayObjectContainer = null, xpos:Number = 0, ypos:Number = 0, fillColor:uint = 0xC0C0C0, fillAlpha:Number = 1, borderThickness:Number = NaN, borderColor:uint = 0, borderAlpha:Number = 1, ellipseWidth:Number = 0, ellipseHeight:Number = 0):UIComponent
 		{
 			var comp:UIComponent = new UIComponent(p, xpos, ypos);
-			var temp:Number = isNaN(borderThickness) ? 0 : borderThickness / 2;
 			with(comp)
 			{
 				if(!isNaN(borderThickness))
@@ -34,7 +33,7 @@ package com.vhall.framework.ui.utils
 					graphics.lineStyle(borderThickness, borderColor, borderAlpha, true);
 				}
 				graphics.beginFill(fillColor, fillAlpha);
-				graphics.drawRoundRect(0, 0, w, h, ellipseWidth, ellipseHeight);
+				graphics.drawRoundRect(0, 0, Math.max(w - 1, 1), Math.max(h - 1, 1), ellipseWidth, ellipseHeight);
 				graphics.endFill();
 			}
 			return comp;

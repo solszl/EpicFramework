@@ -47,19 +47,6 @@ package com.vhall.framework.ui.controls
 			_tf.background = false;
 			_formmat = _tf.defaultTextFormat;
 			addChild(_tf);
-
-			var os:String = flash.system.Capabilities.os.toLowerCase();
-			if(os.indexOf("mac") >= 0)
-			{
-				_tf.y = 4;
-				font = "PingFangSC-Regular";
-			}
-			else
-			{
-				_tf.y = 0;
-				font = "Microsoft YaHei";
-			}
-
 //			sizeChanged();
 		}
 
@@ -389,7 +376,9 @@ package com.vhall.framework.ui.controls
 		override protected function updateDisplay():void
 		{
 			super.updateDisplay();
-			_tf.y = (height - _tf.height) / 2;
+			var os:String = flash.system.Capabilities.os.toLowerCase();
+			var maigc:Number = os.indexOf("mac") >= 0 ? 1 : 0
+			_tf.y = (height - _tf.height) / 2 + maigc;
 		}
 	}
 }

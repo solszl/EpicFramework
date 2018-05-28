@@ -1,5 +1,7 @@
 package com.vhall.framework.app.net
 {
+	import com.vhall.framework.log.Logger;
+
 	import flash.external.ExternalInterface;
 
 	/**
@@ -45,6 +47,7 @@ package com.vhall.framework.app.net
 		{
 			if(!ExternalInterface.available)
 			{
+				Logger.getLogger().info("ExternalInterface unsupport!");
 				return;
 			}
 			if(wb == null)
@@ -52,7 +55,14 @@ package com.vhall.framework.app.net
 				initWebBridge();
 			}
 
-			ExternalInterface.addCallback(name, wb.handle);
+			try
+			{
+				ExternalInterface.addCallback(name, wb.handle);
+			}
+			catch(e:Error)
+			{
+				Logger.getLogger().info("add web callback error:" + e.message);
+			}
 		}
 
 		/**

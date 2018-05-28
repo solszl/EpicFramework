@@ -21,7 +21,7 @@ package com.vhall.framework.ui.controls
 
 		private static const PADDING:Number = 4;
 
-		private static const MSG:String = "<font color='#FFFFFF' font-family='Microsoft YaHei'>{0}</font>";
+		private static const MSG:String = "<font color='#FFFFFF' face='Microsoft YaHei'>{0}</font>";
 
 		private static const MAX_WIDTH:Number = 200;
 
