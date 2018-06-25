@@ -42,7 +42,14 @@ package com.vhall.framework.ui.controls
 			super.createChildren();
 
 			_tf = new TextField();
-			_tf.defaultTextFormat = new TextFormat("Microsoft YaHei", 12, 0x383838);
+//			_tf.defaultTextFormat = new TextFormat("Microsoft YaHei", 12, 0x383838);
+
+			var font:String = "Microsoft YaHei";
+			if(flash.system.Capabilities.manufacturer == "Google Pepper")
+			{
+				font = "微软雅黑";
+			}
+			_tf.defaultTextFormat = new TextFormat(font, 12, 0x383838);
 			_tf.selectable = false;
 			_tf.background = false;
 			_formmat = _tf.defaultTextFormat;
@@ -93,6 +100,7 @@ package com.vhall.framework.ui.controls
 			else
 			{
 				this._tf.text = _text;
+//				this._tf.setTextFormat(_formmat);
 			}
 
 			validateNextFrame();

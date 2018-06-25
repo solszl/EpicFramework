@@ -176,7 +176,9 @@ package com.vhall.framework.media.video
 			}
 			else
 			{
-				Logger.getLogger().info("代理为空");
+				Logger.getLogger().info("代理为空，创建新代理");
+				_proxy = MediaProxyFactory.create(type);
+				onTimer(null);
 			}
 		}
 
